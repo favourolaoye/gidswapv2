@@ -9,11 +9,11 @@ import { useTheme } from "next-themes";
 import { dt } from "framer-motion/client";
 
 export default function Footer() {
+  const date = new Date().getFullYear();
   function ThemeToggle() {
     const { theme, setTheme } = useTheme();
-    const dt = new Date().getFullYear();
     return (
-      <div className="hidden sm:flex h-11 items-center justify-between gap-2 rounded-full bg-gray-50 dark:bg-neutral-800 p-1 transition-all">
+      <div className="hidden sm:flex h-11 items-center justify-between gap-2 rounded-full bg-blue-500 dark:bg-neutral-800 p-1 transition-all">
         <button
           onClick={() => setTheme("system")}
           className={`flex cursor-pointer items-center justify-center rounded-full transition-colors h-9 px-4 ${
@@ -52,7 +52,7 @@ export default function Footer() {
       <div className="mx-auto w-full transition-all">
         <p className="absolute bottom-8 left-4 z-20 text-xs font-medium md:left-20">
           <span className="text-gray-500 dark:text-white/50">
-            © 2025 All rights reserved
+            © {date} All rights reserved
           </span>{" "}
           <a
             href="https://paycrest.io"
