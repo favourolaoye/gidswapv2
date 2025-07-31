@@ -41,6 +41,11 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-lavender-50: var(--lavender-50);
+  --color-lavender-100: var(--lavender-100);
+  --color-lavender-200: var(--lavender-200);
+  --color-lavender-500: var(--lavender-500);
+  --color-lavender-600: var(--lavender-600);
 }
 
 :root {
@@ -76,6 +81,11 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --lavender-50: "#F5F3FF";
+  --lavender-100: "#EDE9FE";
+  --lavender-200: "#DDD6FE";
+  --lavender-500: "#8B85F4";
+  --lavender-600: "#7C76E0";
 }
 
 .dark {
