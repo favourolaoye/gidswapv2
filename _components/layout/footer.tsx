@@ -70,9 +70,9 @@ export default function Footer() {
               <Image
                 src="/images/gidswap-icon.png"
                 alt="NextWeb3App Logo Icon"
-                width={100}
-                height={100}
-                className="size-[40px]"
+                width={40}
+                height={70}
+                // className="size-[40px]"
               />
       
           </div>
