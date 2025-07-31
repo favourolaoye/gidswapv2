@@ -15,7 +15,7 @@ module.exports = {
           600: "#7C76E0",
         },
         "accent-gray": "#F1F1F1",
-        "noblocks-blue": "#43B9FB", // From noblocks.xyz SVG
+        "noblocks-blue": "#43B9FB", 
       },
       animation: {
         "slide-up": "slide-up 0.5s ease-out",

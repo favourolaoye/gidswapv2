@@ -26,7 +26,6 @@ import { useCaseNoExp, useWeb3Dengen } from "@/lib/constants";
 import WaysToUse from "@/components/sections/WaysToUse";
 import RatesSection from "@/components/sections/Rates";
 import FaqsSection from "@/components/sections/Faqs";
-import LiquidityProviderSection from "@/components/sections/LiquidityProvider";
 import MobileAppSection from "@/components/sections/MobileApp";
 import Footer from "@/components/layout/footer";
 
@@ -126,10 +125,6 @@ export default function LandingPage() {
 
             {/* FAQ Section */}
             <FaqsSection />
-
-            {/* Liquidity Provider Section */}
-            <LiquidityProviderSection />
-
             {/* Mobile App Section */}
             <MobileAppSection />
           </div>
