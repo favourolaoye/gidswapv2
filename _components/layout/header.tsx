@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button } from "../ui/animate-section";
+import { Button } from "@/src/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 
@@ -24,7 +24,7 @@ export default function Header() {
                   className="size-[18px] sm:hidden"
                 />
                 <Image
-                  src={"/images/noblocks-logo.svg"}
+                  src={"/images/giddyimg.png"}
                   width={100}
                   height={100}
                   alt="Noblocks logo"
@@ -39,7 +39,7 @@ export default function Header() {
           <Button
             variant="secondary"
             size="sm"
-            className="bg-purple-50 text-purple-500 hover:bg-purple-100 dark:bg-purple-500/[12%] dark:text-purple-500 dark:hover:bg-purple-500/[20%]"
+            className="bg-purple-50 text-blue-500 hover:bg-purple-100 dark:bg-blue-500/[12%] dark:text-blue-500 dark:hover:bg-blue-500/[20%]"
           >
             Sign in
           </Button>

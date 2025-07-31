@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AnimatedSection } from "../ui/animate-section";
+import { AnimatedSection } from "@/src/components/ui/animate-section";
 import { faqs } from "@/lib/constants";
 import { Plus } from "lucide-react";
 

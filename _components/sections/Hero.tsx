@@ -1,7 +1,7 @@
 import { ArrowUpDown, ChevronDown } from "lucide-react";
-import { Button } from "../ui/animate-section";
-import { AnimatedSection } from "../ui/animate-section";
-import { Input } from "../ui/input";
+import { Button } from "@/src/components/ui/button";
+import { AnimatedSection } from "@/src/components/ui/animate-section";
+import { Input } from "@/src/components/ui/input";
 import { useState } from "react";
 import Image from "next/image";
 
@@ -20,9 +20,9 @@ export default function Hero() {
           <section className="w-full px-5 mb-12">
             <h1 className="flex flex-col items-center gap-1 text-center font-semibold">
               <span className="text-3xl text-gray-600 dark:text-white/80 sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem]">
-                Change stablecoins
+                Change crypto
               </span>
-              <span className="text-[2.5rem] italic font-bold sm:text-[3.45rem] md:text-[4.75rem] lg:text-[5.25rem]">
+              <span className="text-[2.5rem] font-bold sm:text-[3.25rem] md:text-[4.75rem] lg:text-[5.25rem]">
                 to cash in seconds
               </span>
             </h1>
@@ -96,7 +96,7 @@ export default function Hero() {
                         id="amount-received"
                         inputMode="decimal"
                         className="w-full rounded-xl border-b border-transparent bg-transparent py-2 text-3xl outline-none transition-all placeholder:text-gray-400 focus:outline-none disabled:cursor-not-allowed dark:placeholder:text-white/30 text-neutral-900 dark:text-white/80"
-                        value={receiveAmount}
+                        value={Number(receiveAmount) * 2}
                         onChange={(e) => setReceiveAmount(e.target.value)}
                         placeholder="0"
                         title="Enter amount to receive"
@@ -106,13 +106,13 @@ export default function Hero() {
                         <Button
                           variant="default"
                           size="sm"
-                          className="flex h-9 rounded-full px-4 bg-purple-400 text-white"
+                          className="flex h-9 rounded-full px-4 bg-blue-400  font-bolder hover: text-blue-900"
                         >
                           <div className="flex gap-1 items-center">
                             <p className="whitespace-nowrap font-medium">
                               Select currency
                             </p>
-                            <ChevronDown className="size-4 text-white" />
+                            <ChevronDown className="size-4 text-blue" />
                           </div>
                         </Button>
                       </div>
@@ -211,7 +211,7 @@ export default function Hero() {
             className="select-none text-sm font-normal text-text-disabled dark:text-white/30"
             style={{ transform: "translateY(-2.92266px)" }}
           >
-            Scroll down to learn more
+            {/* Scroll down to learn more */}
           </div>
           <span className="mt-3">
             <svg

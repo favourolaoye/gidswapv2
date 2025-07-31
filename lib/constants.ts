@@ -31,19 +31,19 @@ export const useWeb3Dengen = [
 export // FAQ data
 const faqs = [
   {
-    question: "What is Noblocks?",
+    question: "What is Gidswap?",
     answer:
-      "Noblocks is a decentralized platform that allows you to convert stablecoins to local currency quickly and securely.",
+      "Gidswap is a decentralized platform that allows you to convert stablecoins to local currency quickly and securely.",
   },
   {
-    question: "Who is Noblocks for?",
+    question: "Who is Gidswap for?",
     answer:
-      "Noblocks is for anyone who needs to convert stablecoins to local currency, including traders, businesses, and individual users.",
+      "Gidswap is for anyone who needs to convert stablecoins to local currency, including traders, businesses, and individual users.",
   },
   {
-    question: "How does Noblocks work?",
+    question: "How does Gidswap work?",
     answer:
-      "Noblocks connects users with liquidity providers through smart contracts to facilitate fast and secure currency exchanges.",
+      "Gidswap connects users with liquidity providers through smart contracts to facilitate fast and secure currency exchanges.",
   },
   {
     question: "Who is a provider?",

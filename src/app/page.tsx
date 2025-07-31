@@ -66,7 +66,7 @@ export default function LandingPage() {
                             playsInline
                           >
                             <source
-                              src="/videos/noblocks-walkthrough.mp4"
+                              src="/videos/gidswap.mp4"
                               type="video/mp4"
                             />
                           </video>
@@ -82,7 +82,7 @@ export default function LandingPage() {
                             }`}
                           >
                             <div className="h-16 w-16 sm:h-32 sm:w-32 rounded-full bg-white/5 flex items-center justify-center">
-                              <div className="h-12 w-12 sm:h-24 sm:w-24 rounded-full bg-pink-500 flex items-center justify-center">
+                              <div className="h-12 w-12 sm:h-24 sm:w-24 rounded-full bg-blue-500 flex items-center justify-center">
                                 <Play className="h-6 w-6 sm:h-8 sm:w-8 text-white ml-1" />
                               </div>
                             </div>

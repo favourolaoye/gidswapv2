@@ -1,5 +1,5 @@
 import React from "react";
-import { AnimatedSection } from "../ui/animate-section";
+import { AnimatedSection } from "@/src/components/ui/animate-section";
 import { useCaseNoExp, useWeb3Dengen } from "@/lib/constants";
 import Image from "next/image";
 
@@ -11,8 +11,8 @@ export default function WaysToUse() {
           <span className="text-2xl font-semibold sm:text-4xl md:text-5xl">
             Ways you can use{" "}
           </span>
-          <span className="text-3xl font-semibold italic sm:text-5xl md:text-6xl">
-            Noblocks
+          <span className="text-3xl font-semibold sm:text-5xl md:text-6xl">
+            Gidswap
           </span>
         </div>
 

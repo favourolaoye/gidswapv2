@@ -1,5 +1,5 @@
 import React from "react";
-import { AnimatedSection } from "../ui/animate-section";
+import { AnimatedSection } from "@/src/components/ui/animate-section";
 import Image from "next/image";
 
 export default function RatesSection() {
@@ -33,55 +33,7 @@ export default function RatesSection() {
           </button>
         </div>
         <div className="mx-auto w-full">
-          <div className="mx-auto hidden w-full max-w-[834px] dark:md:block">
-            <Image
-              alt="Rates Graph"
-              loading="lazy"
-              width={100}
-              height={100}
-              decoding="async"
-              data-nimg="1"
-              className="my-8 w-full"
-              src="/images/rates-graph.svg"
-            />
-          </div>
-          <div className="mx-auto hidden w-full dark:block dark:md:hidden">
-            <Image
-              alt="Rates Graph"
-              loading="lazy"
-              width={100}
-              height={100}
-              decoding="async"
-              data-nimg="1"
-              className="my-8 w-full"
-              src="/images/rates-graph-mobile.svg"
-            />
-          </div>
-
-          <div className="mx-auto block w-full dark:hidden md:hidden">
-            <Image
-              alt="Rates Graph"
-              loading="lazy"
-              width={100}
-              height={100}
-              decoding="async"
-              data-nimg="1"
-              className="my-8 w-full"
-              src="/images/rates-graph-mobile-light-mode.svg"
-            />
-          </div>
-          <div className="mx-auto hidden w-full max-w-[834px] md:block dark:md:hidden">
-            <Image
-              alt="Rates Graph"
-              loading="lazy"
-              width={100}
-              height={100}
-              decoding="async"
-              data-nimg="1"
-              className="my-8 w-full"
-              src="/images/rates-graph-desktop-light-mode.svg"
-            />
-          </div>
+          
         </div>
       </div>
     </AnimatedSection>
