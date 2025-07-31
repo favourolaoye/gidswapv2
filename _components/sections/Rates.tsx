@@ -11,7 +11,7 @@ export default function RatesSection() {
             Rates like no other
           </h3>
           <p className="max-w-[712px] text-center text-base font-normal leading-[30px] opacity-80 lg:text-lg">
-            You have no cause for worry when it comes to rates, Noblocks offers
+            You have no cause for worry when it comes to rates, Gidswap offers
             the best rates that beat the speed and amount for P2Ps and other
             stablecoin exchange options
           </p>
