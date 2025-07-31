@@ -3,6 +3,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body{
+  font-family: "Geist", sans-serif;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
