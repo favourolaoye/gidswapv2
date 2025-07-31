@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NextWeb3App",
+  title: "Gidswap",
   description: "A Web3 crypto-to-fiat conversion app",
 };
 
