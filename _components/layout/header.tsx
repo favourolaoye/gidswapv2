@@ -7,32 +7,32 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="fixed left-0 top-0 z-20 w-svw bg-transparent backdrop-blur transition-all dark:bg-neutral-900/95">
-      <nav className="mx-auto flex items-center justify-between py-4 px-3 text-neutral-900 lg:container dark:text-white lg:px-8">
-        <div className="flex items-start gap-2 lg:flex-1">
-          <div className="relative flex items-start gap-1"> 
-            <div className="flex items-center gap-1">
-          
-                <Image
-                  src="/images/giddyimg.png"
-                  alt="NextWeb3App Logo Icon"
-                  width={80}
-                  height={60}
-                  className="sm:hidden"
-                />
-                <Image
-                  src={"/images/giddyimg.png"}
-                  width={100}
-                  height={100}
-                  alt="Noblocks logo"
-                  className="hidden sm:flex"
-                />
-             
-              <ChevronDown className="size-5 cursor-pointer text-gray-400 transition-transform duration-200 dark:text-white/50 max-sm:hidden -rotate-90" />
-            </div>
-          </div>
+    <header className="fixed left-0 top-0 z-20 bg-transparent w-full bg- backdrop-blur transition-all dark:bg-neutral-900/95">
+      <nav className="mx-auto flex items-center justify-between py-3 px-4 text-neutral-900 lg:container dark:text-white">
+        {/* Logo & dropdown */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {/* Mobile logo */}
+          <Image
+            src="/images/giddyimg.png"
+            alt="Logo"
+            width={80}
+            height={80}
+            className="block sm:hidden"
+          />
+          {/* Desktop logo */}
+          <Image
+            src="/images/giddyimg.png"
+            alt="Logo"
+            width={80}
+            height={80}
+            className="hidden sm:block"
+          />
+          {/* Dropdown Icon */}
+          <ChevronDown className="hidden sm:inline size-5 text-gray-400 dark:text-white/50 -rotate-90" />
         </div>
-        <div className="flex gap-3 text-sm font-medium">
+
+        {/* CTA */}
+        <div className="flex items-center gap-2 text-sm font-medium">
           <Button
             variant="secondary"
             size="sm"
