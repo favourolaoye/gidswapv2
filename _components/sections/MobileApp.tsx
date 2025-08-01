@@ -5,7 +5,7 @@ import { useState } from "react";
 import Drawer from "@/_components/popups/AuthPop";
 import { Button } from "@/src/components/ui/button";
 
-export default function Home() {
+export default function Auth() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

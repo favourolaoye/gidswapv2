@@ -235,11 +235,11 @@ export default function Hero() {
       <div className="flex h-full flex-col justify-center">
         <AnimatedSection className="w-full">
           <section className="w-full px-5 mb-12">
-            <h1 className="flex flex-col items-center gap-1 text-center font-semibold font-orbitron">
-              <span className="text-3xl text-gray-600 dark:text-white/80 sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] transition-all duration-500 ease-out opacity-100 animated-text">
+            <h1 className="flex flex-col items-center gap-1 text-center font-semibold">
+              <span className="text-3xl text-gray-600 dark:text-white/80 sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] transition-all duration-500 ease-out opacity-100 animated-text font-crimson">
                 {currentAction}
               </span>
-              <span className="text-[2rem] sm:text-[2.5rem] font-bold md:text-[3.25rem] italic text-[#0d6fde] dark:text-blue-400">
+              <span className="text-[2rem] sm:text-[2.5rem] font-bold md:text-[3.25rem] text-white font-crimson">
                 crypto for cash in seconds.
               </span>
             </h1>
