@@ -2,18 +2,7 @@ export const useCaseNoExp = [
   {
     icon: "/images/transfer-stable-coin.svg",
     text: "Transfer stablecoins to cash in any bank account",
-  },
-  {
-    icon: "/images/pay-for-groceries.svg",
-    text: "Pay for your groceries and expenses swiftly",
-  },
-  {
-    icon: "/images/spend-usdc.svg",
-    text: "Spend USDC/USDT comfortably with no exchange",
-  },
-];
-
-export const useWeb3Dengen = [
+  }, 
   {
     icon: "/images/turn-defi-to-cash.svg",
     text: "Turn your DEFI yields into cash easily",
@@ -26,6 +15,10 @@ export const useWeb3Dengen = [
     icon: "/images/no-issue-dex.svg",
     text: "No issues of losses or security concerns like DEXes",
   },
+];
+
+export const useWeb3Dengen = [
+
 ];
 
 export // FAQ data

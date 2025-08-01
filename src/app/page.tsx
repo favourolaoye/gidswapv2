@@ -26,6 +26,7 @@ import FaqsSection from "@/_components/sections/Faqs";
 import MobileAppSection from "@/_components/sections/MobileApp";
 import Footer from "@/_components/layout/footer";
 import VideoSection from "@/_components/sections/OnboardVideo";
+import Community from "@/_components/sections/community";
 
 export default function LandingPage() {
   return (
@@ -48,6 +49,8 @@ export default function LandingPage() {
 
             {/* FAQ Section */}
             <FaqsSection />
+
+            <Community/>
             {/* Mobile App Section */}
             {/* <MobileAppSection /> */}
           </div>

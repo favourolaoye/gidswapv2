@@ -16,10 +16,10 @@ export default function WaysToUse() {
           </span>
         </div>
 
-        <div className="container mx-auto grid w-full grid-cols-1 gap-4 md:max-w-4xl md:grid-cols-2 md:gap-6 md:rounded-[28px] md:border md:border-gray-200 md:p-6 dark:md:border-white/10">
+        <div className="container mx-auto grid w-full grid-cols-1 md:max-w-4xl md:grid-cols-1 md:gap-6 md:rounded-[28px] md:border md:border-gray-200 md:p-6 dark:md:border-white/10">
           <div className="flex flex-col gap-2 rounded-3xl bg-gray-50 px-2 pb-2 pt-4 dark:bg-white/5 md:gap-4 md:px-4 md:py-4">
             <h4 className="mb-4 text-base font-medium text-gray-700 dark:text-white/80 sm:text-lg">
-              No Crypto Experience
+              No Crypto Experience <span className="text-2xl font-bolder">.</span> Web3 Native and degen
             </h4>
 
             {useCaseNoExp.map((data, index) => (
@@ -41,7 +41,7 @@ export default function WaysToUse() {
             ))}
           </div>
 
-          <div className="flex flex-col gap-2 rounded-3xl bg-gray-50 px-2 pb-2 pt-4 dark:bg-white/5 md:gap-4 md:px-4 md:py-4">
+          {/* <div className="flex flex-col gap-2 rounded-3xl bg-gray-50 px-2 pb-2 pt-4 dark:bg-white/5 md:gap-4 md:px-4 md:py-4">
             <h4 className="mb-4 text-base font-medium text-gray-700 dark:text-white/80 sm:text-lg">
               Web3 Native & Degen
             </h4>
@@ -63,7 +63,7 @@ export default function WaysToUse() {
                 </span>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
     </AnimatedSection>
