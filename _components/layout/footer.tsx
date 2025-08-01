@@ -10,7 +10,7 @@ import { useTheme } from "next-themes";
 
 export default function Footer() {
   const date = new Date().getFullYear();
-
+  
 
   return (
     <footer className="relative flex flex-col justify-between mx-auto w-full max-w-6xl px-5 py-5 min-h-[200px] bg-blue-900/90 backdrop-blur-sm">

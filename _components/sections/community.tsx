@@ -17,20 +17,25 @@ export default function Community() {
                     </h3>
 
                     <div className="flex justify-around">
-                        <Link href="https://www.x.com/_favourolaoye">
-                        <div className="w-[3.5rem] h-[3.5rem] rounded-[50%] bg-blue-400/90 flex items-center justify-center">
-                            <BsTwitterX size={30}/>
-                        </div>
+                        <Link href="https://www.x.com/gidswap_">
+                            <div className="w-[3.5rem] h-[3.5rem] rounded-[50%] bg-blue-400/90 flex items-center justify-center">
+                                <BsTwitterX size={30} />
+                            </div>
                         </Link>
-                        <div className="w-[3.5rem] h-[3.5rem] rounded-[50%] bg-blue-400/90 flex items-center justify-center">
-                            <FaFacebookF size={30}/>
-                        </div>
-                        <div className="w-[3.5rem] h-[3.5rem] rounded-[50%] bg-blue-400/90 flex items-center justify-center">
-                            <FaInstagram size={30}/>
-                        </div>
-                        <div className="w-[3.5rem] h-[3.5rem] rounded-[50%] bg-blue-400/90 flex items-center justify-center">
-                            <FaTelegramPlane size={30}/>
-                        </div>
+                        <Link href="https://www.facebook.com/gidswap">
+                            <div className="w-[3.5rem] h-[3.5rem] rounded-[50%] bg-blue-400/90 flex items-center justify-center">
+                                <FaFacebookF size={30} />
+                            </div></Link>
+                        <Link href="https://www.instagram.com/gidswap">
+                            <div className="w-[3.5rem] h-[3.5rem] rounded-[50%] bg-blue-400/90 flex items-center justify-center">
+                                <FaInstagram size={30} />
+                            </div>
+                        </Link>
+                        <Link href="#">
+                            <div className="w-[3.5rem] h-[3.5rem] rounded-[50%] bg-blue-400/90 flex items-center justify-center">
+                                <FaTelegramPlane size={30} />
+                            </div>
+                        </Link>
                     </div>
                 </div>
             </div>
