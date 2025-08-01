@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -131,5 +132,54 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .futuristic-button {
+    position: relative;
+    overflow: hidden;
+  }
+  .futuristic-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(13, 111, 222, 0.2),
+      transparent
+    );
+    transition: left 0.5s ease-out;
+  }
+  .futuristic-button:hover::before {
+    left: 100%;
+  }
+  .animated-text {
+    animation: fadeOut 5s infinite;
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+  }
+}
+
+@layer base {
+  .font-orbitron {
+    font-family: "Orbitron", sans-serif;
   }
 }

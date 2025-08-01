@@ -2,11 +2,9 @@
 
 import React from "react";
 import { AnimatedSection } from "@/src/components/ui/animate-section";
-import { Button } from "@/src/components/ui/button";
 import Image from "next/image";
 import { Instagram, Linkedin, Moon, Sun, Twitter } from "lucide-react";
 import { useTheme } from "next-themes";
-import { dt } from "framer-motion/client";
 
 export default function Footer() {
   const date = new Date().getFullYear();

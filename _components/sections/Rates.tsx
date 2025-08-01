@@ -1,6 +1,5 @@
 import React from "react";
 import { AnimatedSection } from "@/src/components/ui/animate-section";
-import Image from "next/image";
 
 export default function RatesSection() {
   return (
@@ -15,26 +14,21 @@ export default function RatesSection() {
             the best rates that beat the speed and amount for P2Ps and other
             stablecoin exchange options
           </p>
-          <button className="flex items-center gap-2 text-base font-medium hover:cursor-pointer hover:opacity-80">
+          <button
+            className="futuristic-button group flex items-center gap-2 px-6 py-3 text-base font-medium rounded-full transition-all duration-300 ease-out hover:scale-105 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[#0d6fde] focus:ring-offset-2 dark:focus:ring-offset-[#1a1a1a]
+        bg-gradient-to-r from-[#0d6fde] to-[#3b82f6] text-white
+        dark:from-[#0d6fde]/80 dark:to-[#3b82f6]/80 dark:text-gray-100
+        hover:shadow-[0_0_15px_rgba(13,111,222,0.5)] dark:hover:shadow-[0_0_15px_rgba(13,111,222,0.3)]"
+          >
             Get started
-            <svg
-              className="size-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M14 12L4 12M18.5859 13.6026L17.6194 14.3639C16.0536 15.5974 15.2707 16.2141 14.6354 15.9328C14 15.6515 14 14.6881 14 12.7613L14 11.2387C14 9.31191 14 8.34853 14.6354 8.06721C15.2707 7.7859 16.0536 8.40264 17.6194 9.63612L18.5858 10.3974C19.5286 11.1401 20 11.5115 20 12C20 12.4885 19.5286 12.8599 18.5859 13.6026Z"
-              />
-            </svg>
+            <img
+              src="/images/arrowwhite.svg"
+              alt="get started icon"
+              className="h-6"
+            />
           </button>
         </div>
-        <div className="mx-auto w-full">
-          
-        </div>
+        <div className="mx-auto w-full"></div>
       </div>
     </AnimatedSection>
   );
