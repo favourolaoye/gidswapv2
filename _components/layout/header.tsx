@@ -15,7 +15,7 @@ export default function Header() {
           <Image
             src="/images/giddyimg.png"
             alt="Logo"
-            width={80}
+            width={100}
             height={80}
             className="block sm:hidden"
           />
