@@ -7,8 +7,8 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="fixed left-0 top-0 z-20 bg-transparent w-full bg- backdrop-blur transition-all dark:bg-neutral-900/95">
-      <nav className="mx-auto flex items-center justify-between py-3 px-4 text-neutral-900 lg:container dark:text-white">
+    <header className="sticky left-0 top-0 z-20 bg-transparent w-full bg- backdrop-blur transition-all dark:bg-neutral-900/95">
+      <nav className="mx-auto container max-w-6xl flex items-center justify-between py-3 px-4 text-neutral-900 dark:text-white">
         {/* Logo & dropdown */}
         <div className="flex items-center gap-2 flex-shrink-0">
           {/* Mobile logo */}

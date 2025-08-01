@@ -7,9 +7,9 @@ export default function FaqsSection() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <AnimatedSection>
-      <section className="mx-auto mb-20 flex w-full max-w-[999px] flex-col gap-6 px-5 lg:mb-72 lg:grid lg:grid-cols-[1fr_2fr]">
-        <h2 className="flex gap-1 text-center text-3xl font-semibold italic sm:gap-2 sm:text-5xl md:text-6xl lg:max-w-[294px] lg:flex-col lg:items-start lg:gap-5 lg:text-left lg:leading-[0.9]">
+    <AnimatedSection className="w-full">
+      <section className="mx-auto mb-20 flex w-full max-w-[999px] flex-col gap-6 px-5 lg:mb-30 lg:grid lg:grid-cols-[1fr_2fr]">
+        <h2 className="flex gap-1 text-center text-3xl font-semibold italic sm:gap-2 sm:text-5xl md:text-6xl lg:max-w-[294px] lg:flex-col lg:items-start lg:gap-5 lg:text-left lg:leading-[0.9] flex-wrap">
           <span>Frequently </span>
           <span>Asked </span>
           <span>Questions</span>
