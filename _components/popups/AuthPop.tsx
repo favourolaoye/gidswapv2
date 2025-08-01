@@ -21,7 +21,7 @@ export default function Authpop({ isOpen, onClose, children, className }: Authpo
       {/* Authpop Panel */}
       <div
         className={cn(
-          "absolute w-full max-w-md rounded-t-xl bg-white p-6 shadow-lg transition-all duration-300",
+          "absolute w-full max-w-md rounded-t-xl bg-white p-6 shadow-lg transition-all duration-300 dark:bg-transparent backdrop-blur-sm",
           "bottom-0 left-1/2 -translate-x-1/2",
           "md:top-1/2 md:bottom-auto md:rounded-xl md:translate-y-[-50%]",
           className
