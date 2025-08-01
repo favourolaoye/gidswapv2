@@ -24,10 +24,10 @@ export default function Hero() {
           <section className="w-full px-5 mb-12">
             <h1 className="flex flex-col items-center gap-1 text-center font-semibold">
               <span className="text-3xl text-gray-600 dark:text-white/80 sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem]">
-                Change crypto
+                Buy, sell, or swap
               </span>
               <span className="text-[2rem] font-bold sm:text-[3.25rem] md:text-[4.75rem] lg:text-[5.25rem]">
-                to cash in seconds
+                crypto for cash in seconds.
               </span>
             </h1>
           </section>
