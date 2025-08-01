@@ -3,7 +3,7 @@
 import React from "react";
 import { AnimatedSection } from "@/src/components/ui/animate-section";
 import Image from "next/image";
-import { FaFacebookF, FaInstagram, FaTelegramPlane } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import {BsTwitterX} from "react-icons/bs"
 import Link from "next/link";
 import { useTheme } from "next-themes";
