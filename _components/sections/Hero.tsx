@@ -26,7 +26,7 @@ export default function Hero() {
               <span className="text-3xl text-gray-600 dark:text-white/80 sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem]">
                 Buy, sell, or swap
               </span>
-              <span className="text-[1rem] font-bold sm:text-[2rem] md:text-[3rem] lg:text-[4rem]">
+              <span className="text-[2rem] font-bold sm:text-[3.25rem] md:text-[4rem]">
                 crypto for cash in seconds.
               </span>
             </h1>
@@ -38,7 +38,7 @@ export default function Hero() {
           onValueChange={setSelectedTab}
           className="w-full space-y-6"
         >
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-4 px-5">
             <TabsList className="grid grid-cols-3 w-full max-w-md">
               <TabsTrigger value="buy">Buy</TabsTrigger>
               <TabsTrigger value="sell">Sell</TabsTrigger>
