@@ -11,7 +11,7 @@ export default function WaysToUse() {
           <span className="text-2xl font-semibold sm:text-4xl md:text-5xl">
             Ways you can use{" "}
           </span>
-          <span className="text-3xl font-semibold sm:text-5xl md:text-6xl font-crimson">
+          <span className="text-3xl font-semibold sm:text-5xl md:text-6xl font-crimson italic">
             Gidswap
           </span>
         </div>

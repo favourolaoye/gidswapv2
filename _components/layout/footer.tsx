@@ -7,7 +7,9 @@ import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import {BsTwitterX} from "react-icons/bs"
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { MdOutlineEmail } from "react-icons/md";
 
+import { FaTiktok } from "react-icons/fa";
 export default function Footer() {
   const date = new Date().getFullYear();
   
@@ -17,7 +19,7 @@ export default function Footer() {
       <div className="flex justify-between">
         <div className="w-fit">
           <Image
-            src="/images/Gidswaplogo.png"
+            src="/images/gidsfull.png"
             width={100}
             height={100}
             className="object-contain"
@@ -27,14 +29,14 @@ export default function Footer() {
         </div>
         <div className="flex align-center">
           <div className="flex justify-between gap-5">
-            <Link href="https://www.x.com/gidswap_">
+            <Link href="https://www.tiktok.com/gidswap_">
               <div className="w-[2rem] h-[2rem] rounded-[50%] bg-transparent backdrop-blur-sm flex items-center justify-center">
-                <BsTwitterX size={20} />
+                <FaTiktok size={20} />
               </div>
             </Link>
-            <Link href="https://www.facebook.com/gidswap">
+            <Link href="mailto:support@gidswap.com">
             <div className="w-[2rem] h-[2rem] rounded-[50%] bg-transparent backdrop-blur-sm flex items-center justify-center">
-              <FaFacebookF size={20} />
+              <MdOutlineEmail size={25} />
             </div>
             </Link>
             <Link href="https://www.instagram.com/gidswap">

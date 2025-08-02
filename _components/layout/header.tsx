@@ -4,13 +4,14 @@ import React from "react";
 import { Button } from "@/src/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
+import PolicyPrivacyPop from "../popups/policy-privacy";
 
 export default function Header() {
   return (
     <header className="sticky left-0 top-0 z-20 bg-transparent w-full bg- backdrop-blur transition-all dark:bg-neutral-900/95">
       <nav className="mx-auto container max-w-6xl flex items-center justify-between py-3 px-4 text-neutral-900 dark:text-white">
         {/* Logo & dropdown */}
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="relative flex items-center gap-2 flex-shrink-0 group">
           {/* Mobile logo */}
           <Image
             src="/images/giddyimg.png"
@@ -21,14 +22,15 @@ export default function Header() {
           />
           {/* Desktop logo */}
           <Image
-            src="/images/giddyimg.png"
+            src="/images/gidsfull.png"
             alt="Logo"
             width={80}
             height={80}
             className="hidden sm:block"
           />
           {/* Dropdown Icon */}
-          <ChevronDown className="hidden sm:inline size-5 text-gray-400 dark:text-white/50 -rotate-90" />
+          <ChevronDown className="hidden sm:inline size-5 text-gray-400 dark:text-white/50 transition-transform duration-200 group-hover:rotate-180"/>
+          <PolicyPrivacyPop/>
         </div>
 
         {/* CTA

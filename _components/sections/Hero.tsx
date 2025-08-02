@@ -90,7 +90,8 @@ const SwapForm: React.FC<{
                 inputMode="decimal"
                 className="w-full rounded-lg border-b border-transparent bg-transparent py-1 text-2xl outline-none placeholder:text-gray-400  text-neutral-900 dark:text-white/80"
                 value={sendAmount}
-                onChange={(e) => handleAmountChange(e, setSendAmount)}
+                onChange={(e) => 
+                  handleAmountChange(e, setSendAmount)}
                 placeholder="0"
                 type="text"
                 maxLength={10}
@@ -99,7 +100,9 @@ const SwapForm: React.FC<{
                 variant="outline"
                 size="sm"
                 className="futuristic-button flex h-8 items-center gap-1 rounded-full p-1 bg-transparent border-[#0d6fde] text-[#0d6fde] hover:bg-[#0d6fde]/10 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400/10 hover:shadow-[0_0_6px_rgba(13,111,222,0.3)]"
-                onClick={() => setSendCurrency(currencies[0])} // Placeholder for dropdown
+                onClick={(e) => {
+                  e.preventDefault() 
+                  setSendCurrency(currencies[0])}} 
               >
                 <Image
                   src={sendCurrency.logo}
@@ -149,7 +152,9 @@ const SwapForm: React.FC<{
                 variant="outline"
                 size="sm"
                 className="futuristic-button flex h-8 items-center gap-1 rounded-full p-1 text-[#0d6fde] hover:bg-[#0d6fde]/10"
-                onClick={() => setReceiveCurrency(currencies[1])} // Placeholder for dropdown
+                onClick={(e) => {
+                  e.preventDefault()
+                  setReceiveCurrency(currencies[1])}} 
               >
                 <Image
                   src={receiveCurrency.logo || "/images/usdc-logo.svg"}
@@ -236,10 +241,10 @@ export default function Hero() {
         <AnimatedSection className="w-full">
           <section className="w-full px-5 mb-12">
             <h1 className="flex flex-col items-center gap-1 text-center font-semibold">
-              <span className="text-3xl text-gray-600 dark:text-white/80 sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] transition-all duration-500 ease-out opacity-100 animated-text font-crimson">
+              <span className="text-3xl text-gray-600 dark:text-white/80 sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] transition-all duration-500 ease-out opacity-100 animated-text">
                 {currentAction}
               </span>
-              <span className="text-[2rem] sm:text-[2.5rem] font-bold md:text-[3.25rem] text-white font-crimson">
+              <span className="text-[2rem] sm:text-[2.5rem] font-bold md:text-[3.25rem] text-white font-crimson italic">
                 crypto for cash in seconds.
               </span>
             </h1>

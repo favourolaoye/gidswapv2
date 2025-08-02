@@ -22,7 +22,7 @@ export default function FaqsSection() {
                 onClick={() => setOpenFaq(openFaq === index ? null : index)}
                 className="flex w-full items-center gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-4 text-left focus:outline-none dark:border-white/10 dark:bg-white/5"
               >
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-green-600">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600/60">
                   <Plus className="h-4 w-4 text-white dark:text-black" />
                 </span>
                 <span className="text-base font-medium text-black dark:text-white/80">
