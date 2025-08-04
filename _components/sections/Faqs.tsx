@@ -26,7 +26,7 @@ export default function FaqsSection() {
               >
                 <span
                   className={`flex h-6 w-6 items-center justify-center rounded-full ${
-                    openFaq === index ? "bg-[#0d6fde]" : "bg-green-600"
+                    openFaq === index ? "bg-[#0d6fde]" : "bg-blue-600/60"
                   }`}
                 >
                   {openFaq === index ? (
@@ -40,7 +40,7 @@ export default function FaqsSection() {
                 </span>
               </button>
               {openFaq === index && (
-                <div className="rounded-b-lg bg-white p-4 dark:bg-black/20">
+                <div className="rounded-b-lg bg-gray-100 p-4 dark:bg-black/20">
                   <p className="text-gray-600 dark:text-white/70">
                     {faq.answer}
                   </p>

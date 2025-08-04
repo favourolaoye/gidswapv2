@@ -1,5 +1,6 @@
 import React from 'react'
-import { FaFacebookF, FaInstagram, FaTelegramPlane } from 'react-icons/fa'
+import { FaFacebookF, FaTelegramPlane } from 'react-icons/fa';
+import { AiOutlineDiscord } from "react-icons/ai"
 import { BsTwitterX } from "react-icons/bs";
 import Link from 'next/link';
 export default function Community() {
@@ -28,7 +29,7 @@ export default function Community() {
                             </div></Link>
                         <Link href="https://www.instagram.com/gidswap">
                             <div className="w-[3.5rem] h-[3.5rem] rounded-[50%] bg-blue-400/90 flex items-center justify-center">
-                                <FaInstagram size={30} />
+                                <AiOutlineDiscord size={30} />
                             </div>
                         </Link>
                         <Link href="#">

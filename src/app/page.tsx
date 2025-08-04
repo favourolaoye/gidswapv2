@@ -50,14 +50,14 @@ export default function LandingPage() {
             {/* FAQ Section */}
             <FaqsSection />
 
-            <Community/>
+            <Community />
             {/* Mobile App Section */}
             {/* <MobileAppSection /> */}
           </div>
         </main>
 
         {/* Footer */}
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </div>
   );

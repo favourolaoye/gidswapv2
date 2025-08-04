@@ -189,7 +189,7 @@ export default function FooterNew() {
           </motion.div>
 
           {/* Quick Links */}
-          <motion.div
+          {/* <motion.div
             className="space-y-6"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -218,7 +218,7 @@ export default function FooterNew() {
                 </motion.a>
               ))}
             </div>
-          </motion.div>
+          </motion.div> */}
 
           {/* Contact & Social */}
           <motion.div
