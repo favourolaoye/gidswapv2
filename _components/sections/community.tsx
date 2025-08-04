@@ -133,7 +133,7 @@ export default function Community() {
           viewport={{ once: true }}
           className="relative"
         >
-          <div className="relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-3xl p-8 md:p-12 shadow-xl shadow-gray-200/20 dark:shadow-slate-900/20">
+          <div className="relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-gray-200/50 max-w-6xl mx-auto dark:border-gray-700/50 rounded-3xl p-8 md:p-12 shadow-xl shadow-gray-200/20 dark:shadow-slate-900/20">
             {/* Gradient Border Effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 w-full max-w-6xl via-purple-500/20 to-cyan-500/20 mx-auto rounded-3xl blur-xl -z-10" />
 
