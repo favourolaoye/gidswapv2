@@ -33,22 +33,11 @@ export default function Header() {
           <PolicyPrivacyPop />
         </div>
 
-        {/* CTA
-        <div className="flex items-center gap-2 text-sm font-medium">
-          <Button
-            variant="secondary"
-            size="sm"
-            className="bg-transparent text-[#0d6fde] hover:bg-transparent dark:bg-blue-500/[12%] dark:text-blue-500 dark:hover:bg-blue-500/[20%]"
-          >
-            Sign in
-          </Button>
-        </div> */}
-
         {/* CTA */}
         <div className="flex items-center gap-2 text-sm font-medium">
           <Button
             size="sm"
-            className="futuristic-button bg-blue-500/20 text-[#0d6fde] px-6 py-2  hover:text-blue-600 dark:hover:bg-blue-500/20"
+            className="cursor-pointer futuristic-button bg-blue-500/20 text-[#0d6fde] px-6 py-2 hover:bg-blue-600/20 hover:text-blue-600 dark:hover:bg-blue-500/20"
           >
             Sign in
           </Button>
