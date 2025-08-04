@@ -50,7 +50,6 @@ const setIsOpen = usePopStore((state) => state.setIsOpen);
           <Button
             size="sm"
             onClick={() => setIsOpen(true)}
-            className="bg-blue-500/20 text-[#0d6fde] px-6 py-2  hover:text-blue-600 dark:hover:bg-blue-500/20"
             className="futuristic-button bg-blue-500/20 text-[#0d6fde] px-6 py-2  hover:text-blue-600 dark:hover:bg-blue-500/20"
           >
             Sign in

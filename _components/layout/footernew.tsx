@@ -210,7 +210,6 @@ export default function FooterNew() {
               <h4 className="text-blue-200 font-semibold text-lg">
                 Connect With Us
               </h4>
-              <span className="text-blue-100/70 text-sm">Follow Us</span>
               <div className="flex gap-3">
                 {socialLinks.map((social, index) => {
                   const IconComponent = social.icon;
@@ -251,7 +250,7 @@ export default function FooterNew() {
             <span>© {date} All rights reserved</span>
             <div className="hidden md:block w-1 h-1 bg-blue-400/40 rounded-full" />
             <Link
-              href="https://paycrest.io"
+              href="https://gidswap.co"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-300 hover:text-blue-100 transition-colors duration-300 hover:underline"
