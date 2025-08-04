@@ -12,7 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import TextType from "@/src/components/ui/textType";
 
 interface Currency {
   name: string;
@@ -210,6 +209,17 @@ export default function Hero() {
   const [currentAction, setCurrentAction] = useState("Buy");
   const actions = ["Buy", "Sell", "Swap"];
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentAction((prev) => {
+        const currentIndex = actions.indexOf(prev);
+        return actions[(currentIndex + 1) % actions.length];
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleSwap = () => {
     if (!isLoggedIn) {
       setShowModal(true);
@@ -232,14 +242,9 @@ export default function Hero() {
         <AnimatedSection className="w-full">
           <section className="w-full px-5 mb-12">
             <h1 className="flex flex-col items-center gap-1 text-center font-semibold">
-              <TextType
-                className="text-3xl sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] transition-all duration-500 ease-out opacity-100"
-                text={actions.map((text) => text)}
-                typingSpeed={500}
-                pauseDuration={1500}
-                showCursor={true}
-                cursorCharacter="|"
-              />
+              <span className="text-3xl text-gray-600 dark:text-white/80 sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] transition-all duration-500 ease-out opacity-100 animated-text">
+                {currentAction}
+              </span>
               <span className="text-[2rem] sm:text-[2.5rem] font-bold md:text-[3.25rem] lg:text-[4rem] font-crimson italic">
                 crypto for cash in seconds.
               </span>

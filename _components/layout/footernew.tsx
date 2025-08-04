@@ -142,6 +142,7 @@ export default function FooterNew() {
       <div className="relative z-10 mx-auto max-w-6xl px-6 py-8">
         {/* Top Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
+          {/* <div className="flex flex-col md:flex-row justify-between gap-12 mb-16"> */}
           {/* Logo and Description */}
           <motion.div
             className="space-y-6"
@@ -188,50 +189,16 @@ export default function FooterNew() {
             </div>
           </motion.div>
 
-          {/* Quick Links */}
-          <motion.div
-            className="space-y-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            viewport={{ once: true }}
-          >
-            <h4 className="text-blue-200 font-semibold text-lg">Quick Links</h4>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                "About Us",
-                "Features",
-                "Security",
-                "API",
-                "Support",
-                "Blog",
-                "Careers",
-                "Partners",
-              ].map((link, index) => (
-                <motion.a
-                  key={link}
-                  href="#"
-                  className="text-blue-100/70 hover:text-blue-300 transition-colors duration-300 text-sm hover:translate-x-1 transform"
-                  whileHover={{ x: 4 }}
-                >
-                  {link}
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
+          <div className="flex"></div>
 
           {/* Contact & Social */}
           <motion.div
-            className="space-y-6"
+            className="space-y-6 flex flex-col md:items-end "
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <h4 className="text-blue-200 font-semibold text-lg">
-              Connect With Us
-            </h4>
-
             {/* Theme Toggle */}
             <div className="space-y-3">
               <span className="text-blue-100/70 text-sm">Theme Preference</span>
@@ -240,6 +207,9 @@ export default function FooterNew() {
 
             {/* Social Links */}
             <div className="space-y-4">
+              <h4 className="text-blue-200 font-semibold text-lg">
+                Connect With Us
+              </h4>
               <span className="text-blue-100/70 text-sm">Follow Us</span>
               <div className="flex gap-3">
                 {socialLinks.map((social, index) => {
