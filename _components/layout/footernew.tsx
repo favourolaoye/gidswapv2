@@ -142,7 +142,6 @@ export default function FooterNew() {
       <div className="relative z-10 mx-auto max-w-6xl px-6 py-8">
         {/* Top Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
-          {/* <div className="flex flex-col md:flex-row justify-between gap-12 mb-16"> */}
           {/* Logo and Description */}
           <motion.div
             className="space-y-6"

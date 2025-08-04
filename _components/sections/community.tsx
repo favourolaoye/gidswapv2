@@ -131,7 +131,7 @@ export default function Community() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true }}
-          className="relative"
+          className="relative md:px-6"
         >
           <div className="relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-gray-200/50 max-w-6xl mx-auto dark:border-gray-700/50 rounded-3xl p-8 md:p-12 shadow-xl shadow-gray-200/20 dark:shadow-slate-900/20">
             {/* Gradient Border Effect */}

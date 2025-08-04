@@ -1,7 +1,7 @@
 import { create } from "zustand";
-interface op{
-    isOpen: boolean;
-    setIsOpen: (open: boolean) => void,
+interface op {
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
 }
 const usePopStore = create<op>((set) => ({
   isOpen: false,

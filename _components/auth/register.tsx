@@ -1,17 +1,12 @@
 "use client";
 
-
 import Drawer from "@/_components/popups/AuthPop";
 import { Button } from "@/src/components/ui/button";
 import usePopStore from "@/store/popStore";
 
-
-
-
 export default function Auth() {
-
-const isOpen = usePopStore((state) => state.isOpen);
-const setIsOpen = usePopStore((state) => state.setIsOpen);
+  const isOpen = usePopStore((state) => state.isOpen);
+  const setIsOpen = usePopStore((state) => state.setIsOpen);
   return (
     <div className="p-6">
       <Button onClick={() => setIsOpen(true)}>Open Drawer</Button>
