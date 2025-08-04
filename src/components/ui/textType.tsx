@@ -29,8 +29,8 @@ const TextType = ({
   as: Component = "div",
   typingSpeed = 50,
   initialDelay = 0,
-  pauseDuration = 2000,
-  deletingSpeed = 1000,
+  pauseDuration = 1000,
+  deletingSpeed = 500,
   loop = true,
   className = "",
   showCursor = true,
@@ -181,7 +181,7 @@ const TextType = ({
       className: `inline-block whitespace-pre-wrap tracking-tight ${className}`,
       ...props,
     },
-    <span className="inline" style={{ color: getCurrentTextColor() }}>
+    <span className="inline text-gray-600 dark:text-white/80">
       {displayedText}
     </span>,
     showCursor && (

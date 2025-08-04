@@ -193,7 +193,7 @@ export default function FooterNew() {
 
           {/* Contact & Social */}
           <motion.div
-            className="space-y-6 flex flex-col items-end "
+            className="space-y-6 flex flex-col md:items-end "
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}

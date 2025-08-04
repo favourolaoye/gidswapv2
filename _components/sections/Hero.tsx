@@ -233,9 +233,9 @@ export default function Hero() {
           <section className="w-full px-5 mb-12">
             <h1 className="flex flex-col items-center gap-1 text-center font-semibold">
               <TextType
-                className="text-3xl text-gray-600 dark:text-white/80 sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] transition-all duration-500 ease-out opacity-100"
+                className="text-3xl sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] transition-all duration-500 ease-out opacity-100"
                 text={actions.map((text) => text)}
-                typingSpeed={1500}
+                typingSpeed={500}
                 pauseDuration={1500}
                 showCursor={true}
                 cursorCharacter="|"
