@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AnimatedSection } from "@/src/components/ui/animate-section";
 import { faqs } from "@/lib/constants";
-import { Minus, Plus } from "lucide-react";
+import { ChevronDown, Minus, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function FaqsSection() {
@@ -20,7 +20,7 @@ export default function FaqsSection() {
       <div className="absolute top-20 left-10 w-32 h-32 bg-blue-200/10 dark:bg-blue-500/5 rounded-full blur-xl animate-pulse" />
       <div className="absolute bottom-20 right-10 w-40 h-40 bg-purple-200/10 dark:bg-purple-500/5 rounded-full blur-xl animate-pulse delay-1000" />
       <AnimatedSection className="w-full">
-        <div className="mx-auto mb-20 flex w-full max-w-[999px] flex-col gap-6 px-5 lg:mb-30 lg:grid lg:grid-cols-[1fr_2fr]">
+        <div className="mx-auto mb-20 flex w-full max-w-[999px] flex-col gap-6 md:px-5 lg:mb-30 lg:grid lg:grid-cols-[1fr_2fr]">
           <h2 className="flex gap-1 text-center text-3xl font-semibold italic sm:gap-2 sm:text-5xl md:text-6xl lg:max-w-[294px] lg:flex-col lg:items-start lg:gap-5 lg:text-left lg:leading-[0.9] flex-wrap">
             <span>Frequently </span>
             <span>Asked </span>
@@ -77,7 +77,7 @@ export default function FaqsSection() {
                         )}
                       </AnimatePresence>
                     </motion.div>
-                    <span className="text-base font-medium text-black dark:text-white/80">
+                    <span className="text-base font-medium text-black dark:text-white/80 flex-1">
                       {faq.question}
                     </span>
                     {/* Chevron Indicator */}
@@ -86,19 +86,7 @@ export default function FaqsSection() {
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="text-gray-400 dark:text-gray-500"
                     >
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
+                      <ChevronDown className="w-6 h-6" />
                     </motion.div>
                   </motion.button>
                   <AnimatePresence>
