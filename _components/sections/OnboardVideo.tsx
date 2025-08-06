@@ -2,6 +2,7 @@ import { AnimatedSection } from "@/src/components/ui/animate-section";
 import { Play } from "lucide-react";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 export default function VideoSection() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -20,7 +21,7 @@ export default function VideoSection() {
   };
   return (
     <AnimatedSection>
-      <div className="-mt-2 w-full lg:-mt-4">
+      <div className="-mt-2 w-full lg:-mt-4 overflow-hidden ">
         <div className="mx-auto mb-20 w-full max-w-[62.75rem] scroll-mt-24 px-5 md:mb-48">
           <div className="relative mx-auto flex w-full max-w-[800px] items-center justify-center">
             <div className="relative w-full rounded-3xl">
@@ -62,7 +63,19 @@ export default function VideoSection() {
                 </div>
               </div>
             </div>
-            <div className="pointer-events-none absolute -bottom-16 right-0 w-[320px] select-none max-lg:w-[220px] max-md:w-[180px] max-sm:w-[90px] sm:-bottom-20 sm:-right-8 md:-bottom-24 md:-right-16 lg:-bottom-32 lg:-right-24 z-10">
+            <motion.div
+              animate={{
+                scale: [1, 0.4, 1],
+                y: [10, 50, 10],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+                delay: 1,
+              }}
+              className="pointer-events-none absolute -bottom-16 right-0 w-[320px] select-none max-lg:w-[220px] max-md:w-[180px] max-sm:w-[90px] sm:-bottom-20 sm:-right-8 md:-bottom-24 md:-right-16 lg:-bottom-32 lg:-right-24 z-10"
+            >
               <Image
                 src="/images/video-plane-img.svg"
                 alt="Video Plane Image"
@@ -72,7 +85,7 @@ export default function VideoSection() {
                 height={100}
                 className="h-auto w-full"
               />
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

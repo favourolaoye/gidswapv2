@@ -13,14 +13,28 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import TextType from "@/src/components/ui/textType";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-interface Currency {
+export interface Currency {
   name: string;
   logo: string;
   rate: number;
 }
 
-const currencies: Currency[] = [
+export const currencies: Currency[] = [
   { name: "USDC", logo: "/images/usdc-logo.svg", rate: 1 },
   { name: "ETH", logo: "/images/usdc-logo.svg", rate: 0.0005 },
   { name: "BTC", logo: "/images/usdc-logo.svg", rate: 0.00002 },
@@ -35,6 +49,7 @@ const SwapForm: React.FC<{
   setReceiveAmount: (value: string) => void;
   receiveCurrency: Currency;
   setReceiveCurrency: (currency: Currency) => void;
+  setShowModal: (value: boolean) => void;
   tab: string;
 }> = ({
   sendAmount,
@@ -45,6 +60,7 @@ const SwapForm: React.FC<{
   setReceiveAmount,
   receiveCurrency,
   setReceiveCurrency,
+  setShowModal,
   tab,
 }) => {
   const handleAmountChange = (
@@ -71,7 +87,7 @@ const SwapForm: React.FC<{
     }
   }, [sendAmount, sendCurrency, receiveCurrency, setReceiveAmount]);
 
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   return (
     <form className="grid gap-3 text-sm text-gray-700 transition-all dark:text-white">
       <div className="relative rounded-[20px] bg-gray-100 p-3 dark:bg-white/5 backdrop-blur-sm">
@@ -89,33 +105,53 @@ const SwapForm: React.FC<{
               <input
                 id={`amount-sent-${tab}`}
                 inputMode="decimal"
-                className="w-full rounded-lg border-b border-transparent bg-transparent py-1 text-2xl outline-none placeholder:text-gray-400  text-neutral-900 dark:text-white/80"
+                className="w-full rounded-lg border-b border-transparent bg-transparent py-1 text-2xl outline-none placeholder:text-gray-400  text-neutral-900 dark:text-white/80 invalid:border-red-500"
                 value={sendAmount}
                 onChange={(e) => handleAmountChange(e, setSendAmount)}
                 placeholder="0"
                 type="text"
                 maxLength={10}
+                aria-describedby="send-error"
               />
-              <Button
-                variant="outline"
-                size="sm"
-                className="futuristic-button flex h-8 items-center gap-1 rounded-full p-1 bg-transparent border-[#0d6fde] text-[#0d6fde] hover:bg-[#0d6fde]/10 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400/10 hover:shadow-[0_0_6px_rgba(13,111,222,0.3)]"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setSendCurrency(currencies[0]);
-                }}
+              <Select
+                onValueChange={(value: string) =>
+                  setSendCurrency(currencies.find((c) => c.name === value)!)
+                }
+                defaultValue={sendCurrency.name}
               >
-                <Image
-                  src={sendCurrency.logo}
-                  alt={`${sendCurrency.name} Logo`}
-                  width={16}
-                  height={16}
-                  className="w-4 h-4"
-                />
-                <p className="text-xs font-medium">{sendCurrency.name}</p>
-                <ChevronDown className="size-3 text-[#0d6fde] dark:text-blue-400" />
-              </Button>
+                <SelectTrigger className="futuristic-button min-w-[100px] rounded-full flex h-8 items-center gap-2 p-2 border-[#0b5cb5] text-[#0b5cb5] hover:bg-[#0b5cb5]/10 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400/10 hover:shadow-[0_0_6px_rgba(11,92,181,0.3)]">
+                  <Image
+                    src={sendCurrency.logo}
+                    alt={`${sendCurrency.name} cryptocurrency logo`}
+                    width={16}
+                    height={16}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-xs font-medium">
+                    {sendCurrency.name}
+                  </span>
+                </SelectTrigger>
+                <SelectContent>
+                  {currencies.map((currency) => (
+                    <SelectItem key={currency.name} value={currency.name}>
+                      <Image
+                        src={currency.logo}
+                        alt={`${currency.name} cryptocurrency logo`}
+                        width={16}
+                        height={16}
+                        className="w-4 h-4"
+                      />
+                      {currency.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
+            {sendAmount && !/^\d*\.?\d*$/.test(sendAmount) && (
+              <p id="send-error" className="text-xs text-red-500">
+                Please enter a valid number.
+              </p>
+            )}
           </div>
 
           {/* Swap Arrow */}
@@ -141,33 +177,38 @@ const SwapForm: React.FC<{
               <input
                 id={`amount-received-${tab}`}
                 inputMode="decimal"
-                className="w-full rounded-lg border-b border-transparent bg-transparent py-1 text-2xl outline-none placeholder:text-gray-400 text-neutral-900 dark:text-white/80 cursor-not-allowed
-
-"
+                className="w-full rounded-lg border-b border-transparent bg-transparent py-1 text-2xl outline-none placeholder:text-gray-400 text-neutral-900 dark:text-white/80 cursor-not-allowed"
                 value={receiveAmount}
                 readOnly
                 placeholder="0"
-                title="Converted amount to receive"
+                title="Estimated amount to receive"
               />
-              <Button
-                variant="outline"
-                size="sm"
-                className="futuristic-button flex h-8 items-center gap-1 rounded-full p-1 text-[#0d6fde] hover:bg-[#0d6fde]/10"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setReceiveCurrency(currencies[1]);
-                }}
+              <Select
+                onValueChange={(value: string) =>
+                  setReceiveCurrency(currencies.find((c) => c.name === value)!)
+                }
+                defaultValue={receiveCurrency.name}
               >
-                <Image
-                  src={receiveCurrency.logo || "/images/usdc-logo.svg"}
-                  alt={`${receiveCurrency.name} Logo`}
-                  width={16}
-                  height={16}
-                  className="w-4 h-4"
-                />
-                <p className="text-xs font-medium">{receiveCurrency.name}</p>
-                <ChevronDown className="size-3 text-[#0d6fde] dark:text-blue-400" />
-              </Button>
+                <SelectTrigger className="futuristic-button min-w-[150px] w-fit flex h-9 items-center gap-2 rounded-full p-2 border-[#0b5cb5] text-[#0b5cb5] hover:bg-[#0b5cb5]/10 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400/10 hover:shadow-[0_0_6px_rgba(11,92,181,0.3)]">
+                  <Image
+                    src={receiveCurrency.logo || "/images/usdc-logo.svg"}
+                    alt={`${receiveCurrency.name} cryptocurrency logo`}
+                    width={16}
+                    height={16}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-xs font-medium">
+                    {receiveCurrency.name}
+                  </span>
+                </SelectTrigger>
+                <SelectContent>
+                  {currencies.map((currency) => (
+                    <SelectItem key={currency.name} value={currency.name}>
+                      {currency.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
@@ -205,7 +246,7 @@ export default function Hero() {
     logo: "",
     rate: 1,
   });
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Placeholder for auth check
   const [currentAction, setCurrentAction] = useState("Buy");
   const actions = ["Buy", "Sell", "Swap"];
@@ -277,6 +318,7 @@ export default function Hero() {
                       setReceiveAmount={setReceiveAmount}
                       receiveCurrency={receiveCurrency}
                       setReceiveCurrency={setReceiveCurrency}
+                      setShowModal={setShowModal}
                       tab={tab}
                     />
                   </TabsContent>

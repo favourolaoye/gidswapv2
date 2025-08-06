@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+
 import Hero from "@/_components/sections/Hero";
 import WaysToUse from "@/_components/sections/WaysToUse";
 import RatesSection from "@/_components/sections/Rates";
