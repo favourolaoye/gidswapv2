@@ -49,6 +49,7 @@ const SwapForm: React.FC<{
   setReceiveAmount: (value: string) => void;
   receiveCurrency: Currency;
   setReceiveCurrency: (currency: Currency) => void;
+  setShowModal: (value: boolean) => void;
   tab: string;
 }> = ({
   sendAmount,
@@ -59,6 +60,7 @@ const SwapForm: React.FC<{
   setReceiveAmount,
   receiveCurrency,
   setReceiveCurrency,
+  setShowModal,
   tab,
 }) => {
   const handleAmountChange = (
@@ -85,7 +87,7 @@ const SwapForm: React.FC<{
     }
   }, [sendAmount, sendCurrency, receiveCurrency, setReceiveAmount]);
 
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   return (
     <form className="grid gap-3 text-sm text-gray-700 transition-all dark:text-white">
       <div className="relative rounded-[20px] bg-gray-100 p-3 dark:bg-white/5 backdrop-blur-sm">
@@ -244,7 +246,7 @@ export default function Hero() {
     logo: "",
     rate: 1,
   });
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Placeholder for auth check
   const [currentAction, setCurrentAction] = useState("Buy");
   const actions = ["Buy", "Sell", "Swap"];
@@ -316,6 +318,7 @@ export default function Hero() {
                       setReceiveAmount={setReceiveAmount}
                       receiveCurrency={receiveCurrency}
                       setReceiveCurrency={setReceiveCurrency}
+                      setShowModal={setShowModal}
                       tab={tab}
                     />
                   </TabsContent>
