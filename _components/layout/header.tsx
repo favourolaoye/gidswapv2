@@ -1,13 +1,16 @@
 "use client";
 
-import {useState} from "react";
+import { useState } from "react";
 import { Button } from "@/src/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import RegisterModal from "../popups/RegisterModal";
 import Image from "next/image";
 import PolicyPrivacyPop from "../popups/policy-privacy";
-import usePopStore from "@/store/popStore";
+import { ChevronDown } from "lucide-react";
+
+
 export default function Header() {
-const setIsOpen = usePopStore((state) => state.setIsOpen);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <header className="sticky left-0 top-0 z-20 w-full bg-black/10 backdrop-blur transition-all dark:bg-neutral-900/95">
       <nav className="mx-auto container max-w-6xl flex items-center justify-between py-3 px-4 text-neutral-900 dark:text-white">
@@ -34,28 +37,24 @@ const setIsOpen = usePopStore((state) => state.setIsOpen);
           <PolicyPrivacyPop />
         </div>
 
-        {/* CTA
-        <div className="flex items-center gap-2 text-sm font-medium">
-          <Button
-            variant="secondary"
-            size="sm"
-            className="bg-transparent text-[#0d6fde] hover:bg-transparent dark:bg-blue-500/[12%] dark:text-blue-500 dark:hover:bg-blue-500/[20%]"
-          >
-            Sign in
-          </Button>
-        </div> */}
-
         {/* CTA */}
         <div className="flex items-center gap-2 text-sm font-medium">
-          <Button
-            size="sm"
-            onClick={() => setIsOpen(true)}
-            className="futuristic-button bg-blue-500/20 text-[#0d6fde] px-6 py-2  hover:text-blue-600 dark:hover:bg-blue-500/20"
-          >
-            Sign in
-          </Button>
+          {!isLoggedIn ? (
+            <Button
+              onClick={() => setIsOpen(true)}
+              className="cursor-pointer futuristic-button bg-blue-500/20 text-[#0d6fde] px-6 py-2 hover:bg-blue-600/20 hover:text-blue-600 dark:hover:bg-blue-500/20"
+            >
+              Sign in
+            </Button>
+          ) : (
+            <Button className="cursor-pointer futuristic-button bg-blue-500/20 text-[#0d6fde] px-6 py-2 hover:bg-blue-600/20 hover:text-blue-600 dark:hover:bg-blue-500/20">
+              Dashboard
+            </Button>
+          )}
+
         </div>
       </nav>
+          <RegisterModal open={isOpen} onClose={() => setIsOpen(false)} onComplete={() => setIsLoggedIn(true)} />
     </header>
-  );
+  )
 }

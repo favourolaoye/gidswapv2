@@ -1,30 +1,10 @@
 "use client";
 
 import type React from "react";
-
-import { useState } from "react";
-import {
-  ChevronDown,
-  Play,
-  ArrowUpDown,
-  Plus,
-  Sun,
-  Moon,
-  Instagram,
-  Linkedin,
-  Twitter,
-} from "lucide-react";
-import Image from "next/image";
-import { useRef } from "react";
-import { useTheme } from "next-themes";
-import { AnimatedSection } from "@/src/components/ui/animate-section";
 import Hero from "@/_components/sections/Hero";
-import { useCaseNoExp, useWeb3Dengen } from "@/lib/constants";
 import WaysToUse from "@/_components/sections/WaysToUse";
 import RatesSection from "@/_components/sections/Rates";
 import FaqsSection from "@/_components/sections/Faqs";
-import MobileAppSection from "@/_components/sections/MobileApp";
-import Footer from "@/_components/layout/footer";
 import VideoSection from "@/_components/sections/OnboardVideo";
 import Community from "@/_components/sections/community";
 
@@ -51,13 +31,8 @@ export default function LandingPage() {
             <FaqsSection />
 
             <Community />
-            {/* Mobile App Section */}
-            {/* <MobileAppSection /> */}
           </div>
         </main>
-
-        {/* Footer */}
-        {/* <Footer /> */}
       </div>
     </div>
   );

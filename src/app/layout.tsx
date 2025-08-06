@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import Header from "@/_components/layout/header";
 import Footer from "@/_components/layout/footer";
 import FooterNew from "@/_components/layout/footernew";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
+          <Toaster position="top-right"/>
           {children}
           {/* <Footer /> */}
           <FooterNew />

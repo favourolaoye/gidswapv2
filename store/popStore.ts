@@ -1,5 +1,5 @@
 import { create } from "zustand";
-interface op{
+interface op {
     isOpen: boolean;
     setIsOpen: (open: boolean) => void,
 }
