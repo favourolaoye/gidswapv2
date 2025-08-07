@@ -24,14 +24,14 @@ export default function StepThree({ data, onChange, onBack, onNext }: any) {
       localStorage.setItem('user', tom);
       localStorage.setItem('regstatus', JSON.stringify(regstatus));
 
-      if (res.data.success) {
-        onNext(); // move to StepFour
+      if (res.data.message) {
+        onNext(); 
       } else {
         toast.error(res.data.message || 'Registration failed.');
       }
     } catch (err: any) {
       console.error('API error:', err);
-      toast.error(err.response?.data?.message || 'Something went wrong.');
+      toast.error(`Something went wrong: ${err.response?.data?.message}`);
     } finally {
       setSubmitting(false);
     }
@@ -39,7 +39,7 @@ export default function StepThree({ data, onChange, onBack, onNext }: any) {
 
   return (
     <div>
-      <h2 className="text-lg font-bold mb-4">Step 3: Create Password</h2>
+      <h2 className="text-lg font-bold mb-4">Create Password</h2>
       <input
         type="password"
         placeholder="Password"
@@ -59,7 +59,6 @@ export default function StepThree({ data, onChange, onBack, onNext }: any) {
           {submitting ? 'Submitting...' : 'Finish'}
         </button>
       </div>
-      <Toaster position='top-right'/>
     </div>
   );
 }
