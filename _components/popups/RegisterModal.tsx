@@ -34,22 +34,18 @@ export default function RegisterModal({
     setFormData((prev) => ({ ...prev, ...data }));
   };
 
-  const handleSuccess = () => {
-    // Set token for 24hrs
-    const token = localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user")!).token
-      : null;
+const handleSuccess = () => {
+  const token = useAuthStore.getState().token;
 
-    if (token) {
-      setCookie("token", token, 24); 
-      setCookie("regstatus", "true", 24); 
-    }
+  if (token) {
+    setCookie("token", token, 24); // 24 hours
+    setCookie("regstatus", "true", 24); // Mark user as registered
+  }
 
-    onComplete();
-    onClose();
-    setStep(1);
-  };
-
+  onComplete();
+  onClose();
+  setStep(1);
+};
   useEffect(() => {
     if (!open) setStep(1); 
   }, [open]);
