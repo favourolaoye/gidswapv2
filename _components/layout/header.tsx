@@ -61,9 +61,9 @@ export default function Header() {
         {/* CTA */}
        <div className="flex items-center gap-2">
           {!isLoggedIn ? (
-            <Button onClick={handleSignInClick}>Sign in</Button>
+            <Button onClick={handleSignInClick} className="futuristic-button bg-blue-300/20 text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20">Sign in</Button>
           ) : (
-            <Button>Dashboard</Button>
+            <Button className="futuristic-button bg-blue-300/20 text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20">Dashboard</Button>
           )}
         </div>
       </nav>
