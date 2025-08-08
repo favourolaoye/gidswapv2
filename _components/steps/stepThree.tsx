@@ -1,42 +1,49 @@
 'use client';
 
+import useAuthStore from '@/store/Authstore';
 import axios from 'axios';
 import { useState } from 'react';
 import { Toaster, toast } from 'sonner'
+
 
 export default function StepThree({ data, onChange, onBack, onNext }: any) {
   const [submitting, setSubmitting] = useState(false);
   const [regstatus, setRegstatus] = useState(false);
   const url = "https://gidswap-server.onrender.com/api/auth/signup"
   const handleSubmit = async () => {
-    try {
-      setSubmitting(true);
+  try {
+    setSubmitting(true);
 
-      const res = await axios.post(url, {
-        fullName: data.fullName,
-        email: data.email,
-        password: data.password,
-      });
-      setRegstatus(true);
-      let tom = JSON.stringify(res.data);
-      let msg = res.data.message;
-      toast.success(`${msg}`)
-      localStorage.setItem('user', tom);
-      localStorage.setItem('regstatus', JSON.stringify(regstatus));
+    const res = await axios.post(url, {
+      fullName: data.fullName,
+      email: data.email,
+      password: data.password,
+    });
 
-      if (res.data.message) {
-        onNext(); 
-      } else {
-        toast.error(res.data.message || 'Registration failed.');
-      }
-    } catch (err: any) {
-      console.error('API error:', err);
-      toast.error(`Something went wrong: ${err.response?.data?.message}`);
-    } finally {
-      setSubmitting(false);
+    const msg = res.data.message;
+    const token = res.data.token;
+    const user = res.data.user;
+
+    toast.success(`${msg}`);
+
+    
+    useAuthStore.getState().setUser(user, 24);  
+    useAuthStore.getState().setToken(token, 24);
+
+
+    if (msg) {
+      onNext();
+    } else {
+      toast.error(res.data.message || 'Registration failed.');
     }
-  };
 
+  } catch (err: any) {
+    console.error('API error:', err);
+    toast.error(`Something went wrong: ${err.response?.data?.message || 'Unknown error'}`);
+  } finally {
+    setSubmitting(false);
+  }
+};
   return (
     <div>
       <h2 className="text-lg font-bold mb-4">Create Password</h2>
