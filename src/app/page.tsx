@@ -32,7 +32,6 @@ export default function LandingPage() {
             <FaqsSection />
 
             <Community />
-            {/* <MobileAppSection /> */}
           </div>
         </main>
       </div>

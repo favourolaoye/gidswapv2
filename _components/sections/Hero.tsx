@@ -113,7 +113,7 @@ const SwapForm: React.FC<{
                 aria-describedby="send-error"
               />
               <Select
-                onValueChange={(value) =>
+                onValueChange={(value: string) =>
                   setSendCurrency(currencies.find((c) => c.name === value)!)
                 }
                 defaultValue={sendCurrency.name}
@@ -183,7 +183,7 @@ const SwapForm: React.FC<{
                 title="Estimated amount to receive"
               />
               <Select
-                onValueChange={(value) =>
+                onValueChange={(value: string) =>
                   setReceiveCurrency(currencies.find((c) => c.name === value)!)
                 }
                 defaultValue={receiveCurrency.name}
@@ -337,42 +337,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-
-      {showModal && (
-        <Dialog open={showModal} onOpenChange={setShowModal}>
-          <DialogContent className="bg-white dark:bg-neutral-900 rounded-xl p-4">
-            <DialogHeader>
-              <DialogTitle className="text-lg font-orbitron text-[#0d6fde] dark:text-blue-400">
-                Authentication Required
-              </DialogTitle>
-              <DialogDescription className="text-sm text-gray-600 dark:text-white/80">
-                Please log in or sign up to proceed with the swap.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="flex flex-col gap-2 mt-4">
-              <Button
-                variant="outline"
-                className="futuristic-button border-[#0d6fde] text-[#0d6fde] hover:bg-[#0d6fde]/10 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400/10 w-full"
-                onClick={() => {
-                  // Handle login logic
-                  setShowModal(false);
-                }}
-              >
-                Log In
-              </Button>
-              <Button
-                className="futuristic-button bg-[#0d6fde] text-white hover:bg-[#0d6fde]/90 dark:bg-blue-400 dark:hover:bg-blue-400/90 w-full"
-                onClick={() => {
-                  // Handle signup logic
-                  setShowModal(false);
-                }}
-              >
-                Sign Up
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
     </div>
   );
 }
