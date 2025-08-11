@@ -1,39 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { Button } from "@/src/components/ui/button";
-import RegisterModal from "../popups/RegisterModal";
 import Image from "next/image";
 import PolicyPrivacyPop from "./policy-privacy";
 import { ChevronDown } from "lucide-react";
-import useAuthStore from "@/store/Authstore"; 
-import { getCookie } from "@/lib/cookieHelpers";
-import LoginModal from "../popups/LoginModal";
+import { useAuthStore } from "@/store/Authstore";
+import Link from "next/link";
 
 export default function Header() {
-  const { isLoggedIn, checkAuthStatus } = useAuthStore();
-  const [isOpen, setIsOpen] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
 
-  const handleonComplete = () => {
-    
-  }
+  const { isAuthenticated, regStatus, setRegisterModalOpen, setLoginModalOpen, initializeAuth, logout } = useAuthStore()
+
   useEffect(() => {
-    checkAuthStatus(); 
-  }, []);
+    initializeAuth()
+  }, [initializeAuth])
+
+  const handleRegisterClick = () => {
+    setRegisterModalOpen(true)
+  }
 
   const handleSignInClick = () => {
-    const token = useAuthStore.getState().token;
-    if (token) {
-      return;
-    }
-    const userWasRegistered = !!getCookie("regstatus");
-    if (userWasRegistered) {
-      setShowLogin(true);
-    } else {
-      setIsOpen(true);
-    }
-  };
+    setLoginModalOpen(true)
+  }
+
+
+
+
 
   return (
     <header className="sticky left-0 top-0 z-20 w-full bg-black/10 backdrop-blur transition-all dark:bg-neutral-900/95">
@@ -59,17 +52,44 @@ export default function Header() {
         </div>
 
         {/* CTA */}
-       <div className="flex items-center gap-2">
-          {!isLoggedIn ? (
-            <Button onClick={handleSignInClick} className="futuristic-button bg-blue-300/20 text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20">Sign in</Button>
+        <div className="flex items-center gap-2">
+          {isAuthenticated ? (
+            <>
+              <Link href="/dashboard" passHref>
+                <Button className="futuristic-button bg-blue-300/20 text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20">
+                  Dashboard
+                </Button>
+              </Link>
+              <Button
+                onClick={logout}
+                className="futuristic-button bg-blue-300/20 text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20"
+              >
+                Logout
+              </Button>
+            </>
           ) : (
-            <Button className="futuristic-button bg-blue-300/20 text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20">Dashboard</Button>
+            <>
+              {regStatus ? (
+                <Button
+                  onClick={handleSignInClick}
+                  className="futuristic-button bg-blue-300/20 text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20"
+                >
+                  Sign in
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleRegisterClick}
+                  className="futuristic-button bg-blue-300/20 text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20"
+                >
+                  Register
+                </Button>
+              )}
+            </>
           )}
         </div>
       </nav>
 
-      <RegisterModal open={isOpen} onClose={() => setIsOpen(false)} onComplete={handleonComplete} />
-      <LoginModal open={showLogin} onClose={() => setShowLogin(false)} />
+     
     </header>
   );
 }

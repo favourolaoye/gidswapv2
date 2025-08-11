@@ -6,6 +6,8 @@ import { ThemeProvider } from "next-themes";
 import Header from "@/_components/layout/header";
 import Footer from "@/_components/layout/footer";
 import { Toaster } from "sonner";
+import { RegistrationModal } from "@/_components/popups/RegisterModal";
+import { LoginModal } from "@/_components/popups/LoginModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +21,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Gidswap",
-  description: "A Web3 crypto-to-fiat conversion app",
+  description: "Your crypto paddy",
 };
 
 export default function RootLayout({
@@ -38,10 +40,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <Toaster position="top-right"/>
-          {children}
-          <Footer />
+           <Header />
+        <main>{children}</main>
+        <Footer/>
+        <RegistrationModal />
+        <LoginModal />
+        <Toaster /> 
         </ThemeProvider>
       </body>
     </html>

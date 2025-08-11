@@ -1,81 +1,84 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import ResuablePop from "./resuablepop";
-import StepOne from "../steps/stepOne";
-import StepTwo from "../steps/stepTwo";
-import StepThree from "../steps/stepThree";
-import StepFour from "../steps/stepFour";
-import useAuthStore from "@/store/Authstore";
-import { setCookie } from "@/lib/cookieHelpers";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { useAuthStore } from "@/store/Authstore"
+import { setCookie } from "@/lib/cookies"
+import ResuablePop from "./resuablepop"
+import StepOne from "../steps/stepOne"
+import StepTwo from "../steps/stepTwo"
+import StepThree from "../steps/stepThree"
 
-export default function RegisterModal({
-  open,
-  onClose,
-  onComplete,
-}: {
-  open: boolean;
-  onClose: () => void;
-  onComplete: () => void;
-}) {
-  const step = useAuthStore((state) => state.step);
-  const setStep = useAuthStore((state) => state.setStep);
+
+export function RegistrationModal() {
+  const router = useRouter()
+  const { isRegisterModalOpen, setRegisterModalOpen, setAuthStatus, setRegStatus, setToken } = useAuthStore()
+  const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    code: "", 
     password: "",
-    code: "",
-  });
+  })
 
-  const nextStep = () => setStep((step ?? 1) + 1);
-  const prevStep = () => setStep((step ?? 1) - 1);
-
-  const handleDataChange = (data: Partial<typeof formData>) => {
-    setFormData((prev) => ({ ...prev, ...data }));
-  };
-
-const handleSuccess = () => {
-  const token = useAuthStore.getState().token;
-
-  if (token) {
-    setCookie("token", token, 24); // 24 hours
-    setCookie("regstatus", "true", 24); // Mark user as registered
+  const handleFormChange = (newData: Partial<typeof formData>) => {
+    setFormData((prev) => ({ ...prev, ...newData }))
   }
 
-  onComplete();
-  onClose();
-  setStep(1);
-};
-  useEffect(() => {
-    if (!open) setStep(1); 
-  }, [open]);
+  const handleNextStep = () => setStep((prev) => prev + 1)
+  const handlePreviousStep = () => setStep((prev) => prev - 1)
+
+  // This function is called by StepThree after successful registration
+  const handleFinalRegistrationSuccess = (token: string) => {
+    // Store token (24-hour expiry)
+    setCookie("token", token, { expires: 1 }) // 1 day = 24 hours
+
+    // Store regstatus (long expiry, e.g., 10 years)
+    setCookie("regstatus", "true", { expires: 365 * 10 })
+
+    setToken(token)
+    setAuthStatus(true)
+    setRegStatus(true)
+    setRegisterModalOpen(false)
+    router.push("/dashboard")
+  }
+
+  const renderStepContent = () => {
+    switch (step) {
+      case 1:
+        return (
+          <StepOne
+            data={formData}
+            onChange={handleFormChange}
+            onNext={handleNextStep} 
+          />
+        )
+      case 2:
+        return (
+          <StepTwo
+            data={formData}
+            onChange={handleFormChange}
+            onNext={handleNextStep} 
+            onBack={handlePreviousStep}
+          />
+        )
+      case 3:
+        return (
+          <StepThree
+            data={formData}
+            onChange={handleFormChange}
+            onNext={handleFinalRegistrationSuccess} 
+            onBack={handlePreviousStep}
+          />
+        )
+      default:
+        return null
+    }
+  }
 
   return (
-    <ResuablePop open={open} onClose={onClose}>
-      {step === 1 && (
-        <StepOne
-          data={formData}
-          onNext={nextStep}
-          onChange={handleDataChange}
-        />
-      )}
-      {step === 2 && (
-        <StepTwo
-          data={formData}
-          onNext={nextStep}
-          onBack={prevStep}
-          onChange={handleDataChange}
-        />
-      )}
-      {step === 3 && (
-        <StepThree
-          data={formData}
-          onNext={nextStep}
-          onBack={prevStep}
-          onChange={handleDataChange}
-        />
-      )}
-      {step === 4 && <StepFour onFinish={handleSuccess} />}
+    <ResuablePop open={isRegisterModalOpen} onClose={() => setRegisterModalOpen(false)}>
+      {renderStepContent()}
     </ResuablePop>
-  );
+  )
 }

@@ -1,6 +1,4 @@
 'use client';
-
-import useAuthStore from '@/store/Authstore';
 import axios from 'axios';
 import { useState } from 'react';
 import { Toaster, toast } from 'sonner'
@@ -26,9 +24,7 @@ export default function StepThree({ data, onChange, onBack, onNext }: any) {
 
     toast.success(`${msg}`);
 
-    
-    useAuthStore.getState().setUser(user, 24);  
-    useAuthStore.getState().setToken(token, 24);
+  
 
 
     if (msg) {

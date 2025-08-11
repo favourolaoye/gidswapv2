@@ -1,60 +1,56 @@
-// store/AuthStore.ts
-import { create } from "zustand";
-import { setCookie, getCookie, removeCookie } from "@/lib/cookieHelpers";
+import { create } from "zustand"
+import { getCookie, removeCookie } from "@/lib/cookies"
 
-interface User {
-  email: string;
-  username: string;
+interface AuthState {
+  isRegisterModalOpen: boolean
+  isLoginModalOpen: boolean
+  isAuthenticated: boolean
+  regStatus: boolean
+  token: string | null
+  setRegisterModalOpen: (open: boolean) => void
+  setLoginModalOpen: (open: boolean) => void
+  setAuthStatus: (status: boolean) => void
+  setRegStatus: (status: boolean) => void
+  setToken: (token: string | null) => void
+  initializeAuth: () => void
+  logout: () => void
 }
 
-interface Authdata {
-  user: User | null;
-  token: string | null;
-  loading: boolean;
-  step: number;
-  isLoggedIn: boolean;
-  checkAuthStatus: () => void;
-  setStep: (step: number) => void;
-  setLoading: (loading: boolean) => void;
-  setUser: (user: User | null, duration: number) => void;
-  setToken: (token: string | null, duration: number) => void;
-  logout: () => void;
-}
-
-const useAuthStore = create<Authdata>((set) => ({
-  user: null,
+export const useAuthStore = create<AuthState>((set, get) => ({
+  isRegisterModalOpen: false,
+  isLoginModalOpen: false,
+  isAuthenticated: false,
+  regStatus: false,
   token: null,
-  loading: false,
-  step: 1,
-  isLoggedIn: false,
 
-  setStep: (step) => set({ step }),
-  setLoading: (loading) => set({ loading }),
+  setRegisterModalOpen: (open) => set({ isRegisterModalOpen: open }),
+  setLoginModalOpen: (open) => set({ isLoginModalOpen: open }),
+  setAuthStatus: (status) => set({ isAuthenticated: status }),
+  setRegStatus: (status) => set({ regStatus: status }),
+  setToken: (token) => set({ token }),
 
-  setUser: (user, duration) => {
-    if (user) setCookie("user", user, duration);
-    else removeCookie("user");
-    set({ user, isLoggedIn: !!user });
-  },
+  initializeAuth: () => {
+    // This function should be called on the client-side to initialize the store
+    // based on existing cookies.
+    const token = getCookie("token")
+    const regStatus = getCookie("regstatus") === "true"
 
-  setToken: (token, duration) => {
-    if (token) setCookie("token", token, duration);
-    else removeCookie("token");
-    set({ token });
-  },
-
-  checkAuthStatus: () => {
-    const user = getCookie("user");
-    const token = getCookie("token");
-    const isLoggedIn = !!user && !!token;
-    set({ user, token, isLoggedIn });
+    // For simplicity, we'll assume token presence means authenticated for client-side UI.
+    // In a real app, you'd validate the token's expiry here or via a server call.
+    set({
+      token: token || null,
+      isAuthenticated: !!token,
+      regStatus: regStatus,
+    })
   },
 
   logout: () => {
-    removeCookie("user");
-    removeCookie("token");
-    set({ user: null, token: null, isLoggedIn: false });
+    removeCookie("token")
+    // removeCookie("regstatus") //Remove regstatus on explicit logout
+    set({
+      isAuthenticated: false,
+      regStatus: false,
+      token: null,
+    })
   },
-}));
-
-export default useAuthStore;
+}))

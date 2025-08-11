@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import {toast, Toaster} from "sonner";
+import {toast} from "sonner";
 
 export default function StepTwo({ data, onNext, onBack, onChange }: any) {
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
