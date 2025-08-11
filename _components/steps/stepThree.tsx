@@ -50,10 +50,7 @@ export default function StepThree({ data, onChange, onBack, onNext }: any) {
         onChange={(e) => onChange({ password: e.target.value })}
         className="w-full mb-2 p-2 border rounded outline focus-visible:outline-blue-700/90"
       />
-      <div className="flex justify-between gap-5">
-        <button onClick={onBack} className="w-full bg-gray-300 text-black py-2 rounded">
-          Back
-        </button>
+      <div className="flex justify-end">
         <button
           onClick={handleSubmit}
           disabled={submitting || !data.password}

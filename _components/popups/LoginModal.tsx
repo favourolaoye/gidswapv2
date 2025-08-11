@@ -1,16 +1,13 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuthStore } from "@/store/Authstore"
 import { loginUser } from "@/lib/api"
 import { setCookie } from "@/lib/cookies"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/src/components/ui/input"
-import { Label } from "@/src/components/ui/label"
 import ResuablePop from "./resuablepop"
 
 export function LoginModal() {
@@ -19,10 +16,12 @@ export function LoginModal() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false) // ⬅️ loading state
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+    setLoading(true) // ⬅️ start loading
 
     try {
       const response = await loginUser({ email, password })
@@ -32,7 +31,7 @@ export function LoginModal() {
       setCookie("token", token, { expires: 3 })
 
       // Ensure regstatus is true on successful login
-      setCookie("regstatus", "true", { expires: 365 * 10 }) // Long expiry
+      setCookie("regstatus", "true", { expires: 365 * 10 })
 
       setToken(token)
       setAuthStatus(true)
@@ -41,6 +40,8 @@ export function LoginModal() {
     } catch (err) {
       setError("Login failed. Please check your credentials.")
       console.error(err)
+    } finally {
+      setLoading(false) // ⬅️ stop loading regardless of success/failure
     }
   }
 
@@ -48,33 +49,40 @@ export function LoginModal() {
     <ResuablePop open={isLoginModalOpen} onClose={() => setLoginModalOpen(false)}>
       <div className="space-y-4">
         <h2 className="text-2xl font-bold text-center">Sign In</h2>
-        <p className="text-sm text-muted-foreground text-center">Enter your credentials to access the dashboard.</p>
-        <form onSubmit={handleLogin} className="space-y-4">
+        
+        <form onSubmit={handleLogin} className="space-y-7">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
-              placeholder="m@example.com"
+              placeholder="me@example.com"
               required
               value={email}
+              className="p-2 md:p-5"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+          <div className="space-y-5">
             <Input
               id="password"
               type="password"
               required
               value={password}
+              className="p-2 md:p-5"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <Button type="submit" className="w-full">
-            Sign In
+          <Button
+            type="submit"
+            disabled={loading}
+            className="futuristic-button dark:bg-blue-700 dark:text-blue-50 w-full"
+          >
+            {loading ? "Signing in..." : "Sign In"}
           </Button>
+          <p className="text-center text-gray-400">
+            secured by <span className="font-crimson italic font-semibold">Gidswap</span>
+          </p>
         </form>
       </div>
     </ResuablePop>

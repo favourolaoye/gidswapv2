@@ -60,12 +60,6 @@ export default function Header() {
                   Dashboard
                 </Button>
               </Link>
-              <Button
-                onClick={logout}
-                className="futuristic-button bg-blue-300/20 text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20"
-              >
-                Logout
-              </Button>
             </>
           ) : (
             <>

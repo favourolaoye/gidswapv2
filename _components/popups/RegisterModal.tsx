@@ -31,7 +31,7 @@ export function RegistrationModal() {
   // This function is called by StepThree after successful registration
   const handleFinalRegistrationSuccess = (token: string) => {
     // Store token (24-hour expiry)
-    setCookie("token", token, { expires: 1 }) // 1 day = 24 hours
+    setCookie("token", token, { expires: 1 }) 
 
     // Store regstatus (long expiry, e.g., 10 years)
     setCookie("regstatus", "true", { expires: 365 * 10 })

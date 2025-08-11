@@ -1,10 +1,6 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-
-import "./globals.css";
+// import "./globals.css";
 import { ThemeProvider } from "next-themes";
-import Header from "@/_components/layout/header";
-
 import { Toaster } from "sonner";
 
 
@@ -19,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 
-export default function RootLayout({
+export default function DashboardLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
