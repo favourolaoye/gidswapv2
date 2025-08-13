@@ -3,7 +3,7 @@ import { Button } from "@/src/components/ui/button";
 import { AnimatedSection } from "@/src/components/ui/animate-section";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsContent, TabsList, TabsTrigger } from "@/src/components/ui/tabs";
 import { Tabs } from "@radix-ui/react-tabs";
 import {
   Dialog,
@@ -17,7 +17,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+} from "@/src/components/ui/dropdown-menu";
 import {
   Select,
   SelectContent,
@@ -26,7 +26,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/src/components/ui/select";
 
 export interface Currency {
   name: string;

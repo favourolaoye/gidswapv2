@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { AlertDialog, AlertDialogContent, AlertDialogHeader } from "@/src/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button" 
+import { Button } from "@/src/components/ui/button" 
 import { X } from "lucide-react"
 interface ResuablePopProps {
   open: boolean

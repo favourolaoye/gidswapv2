@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { currencies, Currency } from "./Hero";
 import { ArrowUpDown, ChevronDown } from "lucide-react";
-import { DropdownMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuItem } from "@/src/components/ui/dropdown-menu";
 
 const SwapForm: React.FC<{
   sendAmount: string;

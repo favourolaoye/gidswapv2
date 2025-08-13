@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { Button } from "@/src/components/ui/button";
 import Image from "next/image";
-import PolicyPrivacyPop from "./policy-privacy";
+import PolicyPrivacyPop from "../policy-privacy";
 import { ChevronDown } from "lucide-react";
 import { useAuthStore } from "@/store/Authstore";
 import Link from "next/link";
@@ -32,24 +32,35 @@ export default function Header() {
     <header className="sticky left-0 top-0 z-20 w-full bg-black/10 backdrop-blur transition-all dark:bg-neutral-900/95">
       <nav className="mx-auto container max-w-6xl flex items-center justify-between py-3 px-4 text-neutral-900 dark:text-white">
         {/* Logo & dropdown */}
-        <div className="relative flex items-center gap-2 flex-shrink-0 group">
-          <Image
-            src="/images/giddyimg.png"
-            alt="Logo"
-            width={100}
-            height={80}
-            className="block sm:hidden"
-          />
-          <Image
-            src="/images/gidsfull.png"
-            alt="Logo"
-            width={80}
-            height={80}
-            className="hidden sm:block"
-          />
-          <ChevronDown className="hidden sm:inline size-5 text-gray-400 dark:text-white/50 transition-transform duration-200 group-hover:rotate-180" />
-          <PolicyPrivacyPop />
+        <div className="relative flex-shrink-0 group">
+          {/* Trigger (logo + chevron) */}
+          <div className="flex items-center gap-2 cursor-pointer">
+            <Image
+              src="/images/giddyimg.png"
+              alt="Logo"
+              width={100}
+              height={80}
+              className="block sm:hidden"
+            />
+            <Image
+              src="/images/gidsfull.png"
+              alt="Logo"
+              width={80}
+              height={80}
+              className="hidden sm:block"
+            />
+            <ChevronDown className="hidden sm:inline size-5 text-gray-400 dark:text-white/50 transition-transform duration-200 group-hover:rotate-180" />
+          </div>
+
+          {/* Popup - stays inside same group */}
+          <div className="absolute top-full left-0 mt-2 flex-col gap-3 w-[9rem] text-gray-800 text-sm 
+                  bg-white/90 dark:bg-transparent backdrop-blur-sm p-3 rounded-sm shadow-md 
+                  dark:text-gray-200 z-50 hidden group-hover:flex">
+            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
+            <Link href="/policy" className="hover:underline">Terms</Link>
+          </div>
         </div>
+
 
         {/* CTA */}
         <div className="flex items-center gap-2">
@@ -83,7 +94,7 @@ export default function Header() {
         </div>
       </nav>
 
-     
+
     </header>
   );
 }
