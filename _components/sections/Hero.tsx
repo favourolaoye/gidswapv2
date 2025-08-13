@@ -11,7 +11,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/src/components/ui/dialog";
 import TextType from "@/src/components/ui/textType";
 import {
   DropdownMenu,

@@ -1,68 +1,90 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import axios from "axios";
-import { toast } from "sonner";
-import useAuthStore from "@/store/Authstore";
-import { setCookie } from "@/lib/cookieHelpers";
+import type React from "react"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { useAuthStore } from "@/store/Authstore"
+import { loginUser } from "@/lib/api"
+import { setCookie } from "@/lib/cookies"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/src/components/ui/input"
+import ResuablePop from "./resuablepop"
 
-export default function LoginModal({open,onClose,}: { open: boolean; onClose: () => void;}) {
-  if (!open) return null;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+export function LoginModal() {
+  const router = useRouter()
+  const { isLoginModalOpen, setLoginModalOpen, setAuthStatus, setToken } = useAuthStore()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false) // ⬅️ loading state
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError(null)
+    setLoading(true) // ⬅️ start loading
+
     try {
-      setLoading(true);
-      const res = await axios.post(
-        "https://gidswap-server.onrender.com/api/auth/login",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await loginUser({ email, password })
+      const { token } = response
 
-      const token = res.data.token;
-      const user = res.data.user;
-      toast.success(`${res.data.message}`);
+      // Store token (3-day expiry)
+      setCookie("token", token, { expires: 3 })
 
-      // Save login token for 3 days (72 hours)
-      setCookie("token", token, 72);
-      setCookie("user", JSON.stringify(user), 72);
+      // Ensure regstatus is true on successful login
+      setCookie("regstatus", "true", { expires: 365 * 10 })
 
-      onClose();
-    } catch (err: any) {
-      toast.error(`Login failed: ${err.response?.data?.message}`);
+      setToken(token)
+      setAuthStatus(true)
+      setLoginModalOpen(false)
+      router.push("/dashboard")
+    } catch (err) {
+      setError("Login failed. Please check your credentials.")
+      console.error(err)
     } finally {
-      setLoading(false);
+      setLoading(false) // ⬅️ stop loading regardless of success/failure
     }
-  };
+  }
 
   return (
-    <div>
-      <h2 className="text-lg font-bold mb-4">Login</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full mb-2 p-2 border rounded"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="w-full mb-4 p-2 border rounded"
-      />
-      <button
-        onClick={handleLogin}
-        disabled={loading || !email || !password}
-        className="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-50"
-      >
-        {loading ? "Logging in..." : "Login"}
-      </button>
-    </div>
-  );
+    <ResuablePop open={isLoginModalOpen} onClose={() => setLoginModalOpen(false)}>
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold text-center">Sign In</h2>
+        
+        <form onSubmit={handleLogin} className="space-y-7">
+          <div className="space-y-2">
+            <Input
+              id="email"
+              type="email"
+              placeholder="me@example.com"
+              required
+              value={email}
+              className="p-2 md:p-5"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="space-y-5">
+            <Input
+              id="password"
+              type="password"
+              required
+              value={password}
+              className="p-2 md:p-5"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <Button
+            type="submit"
+            disabled={loading}
+            className="futuristic-button dark:bg-blue-700 dark:text-blue-50 w-full"
+          >
+            {loading ? "Signing in..." : "Sign In"}
+          </Button>
+          <p className="text-center text-gray-400">
+            secured by <span className="font-crimson italic font-semibold">Gidswap</span>
+          </p>
+        </form>
+      </div>
+    </ResuablePop>
+  )
 }
