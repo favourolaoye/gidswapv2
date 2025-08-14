@@ -9,24 +9,26 @@ import { useAuthStore } from "@/store/Authstore";
 import Link from "next/link";
 
 export default function Header() {
-
-  const { isAuthenticated, regStatus, setRegisterModalOpen, setLoginModalOpen, initializeAuth, logout } = useAuthStore()
+  const {
+    isAuthenticated,
+    regStatus,
+    setRegisterModalOpen,
+    setLoginModalOpen,
+    initializeAuth,
+    logout,
+  } = useAuthStore();
 
   useEffect(() => {
-    initializeAuth()
-  }, [initializeAuth])
+    initializeAuth();
+  }, [initializeAuth]);
 
   const handleRegisterClick = () => {
-    setRegisterModalOpen(true)
-  }
+    setRegisterModalOpen(true);
+  };
 
   const handleSignInClick = () => {
-    setLoginModalOpen(true)
-  }
-
-
-
-
+    setLoginModalOpen(true);
+  };
 
   return (
     <header className="sticky left-0 top-0 z-20 w-full bg-black/10 backdrop-blur transition-all dark:bg-neutral-900/95">
@@ -53,14 +55,19 @@ export default function Header() {
           </div>
 
           {/* Popup - stays inside same group */}
-          <div className="absolute top-full left-0 mt-2 flex-col gap-3 w-[9rem] text-gray-800 text-sm 
+          <div
+            className="absolute top-full left-0 mt-2 flex-col gap-3 w-[9rem] text-gray-800 text-sm 
                   bg-white/90 dark:bg-transparent backdrop-blur-sm p-3 rounded-sm shadow-md 
-                  dark:text-gray-200 z-50 hidden group-hover:flex">
-            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
-            <Link href="/policy" className="hover:underline">Terms</Link>
+                  dark:text-gray-200 z-50 hidden group-hover:flex"
+          >
+            <Link href="/privacy" className="hover:underline">
+              Privacy Policy
+            </Link>
+            <Link href="/policy" className="hover:underline">
+              Terms
+            </Link>
           </div>
         </div>
-
 
         {/* CTA */}
         <div className="flex items-center gap-2">
@@ -93,8 +100,6 @@ export default function Header() {
           )}
         </div>
       </nav>
-
-
     </header>
   );
 }
