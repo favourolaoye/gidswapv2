@@ -8,7 +8,7 @@ import Sidebar from "@/_components/layout/dashboard/sidebar";
 import { useState, useEffect } from "react";
 import { Bell, Menu, Settings } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
-
+import {QueryClientProvider, QueryClient} from "@tanstack/react-query"
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -30,7 +30,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const queryClient = new QueryClient();
   useEffect(() => {
     const handleResize = () => {
       if (typeof window !== "undefined" && window.innerWidth >= 1024) {
@@ -92,7 +92,7 @@ export default function DashboardLayout({
                     </Button>
                     <div>
                       <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                        Dashboard
+                        {/* Dashboard */}
                       </h1>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         Welcome back! Here's your trading overview.
@@ -113,7 +113,9 @@ export default function DashboardLayout({
 
               {/* Page Content */}
               <main className="flex-1 px-4 md:px-6 py-4 space-y-4 relative z-10 overflow-y-auto">
-                {children}
+                <QueryClientProvider client={queryClient}>
+                     {children}
+                </QueryClientProvider>
               </main>
             </div>
           </div>

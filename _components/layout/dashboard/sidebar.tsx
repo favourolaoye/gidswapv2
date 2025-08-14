@@ -102,8 +102,8 @@ export default function Sidebar({
           {/* User Profile */}
           <div className="p-4 border-t border-gray-200/50 dark:border-white/10">
             <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-white/5">
-              <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center">
-                <User className="w-5 h-5 text-white" />
+              <div className="w-[8rem] h-[2.5rem] bg-gradient-to-r from-green-400 to-blue-500 rounded-[50%] flex items-center justify-center">
+                <User className="w-fit text-white" />
               </div>
               <div className="flex-1">
                 <p className="font-medium text-gray-900 dark:text-white">

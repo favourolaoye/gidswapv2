@@ -35,7 +35,6 @@ export function RegistrationModal() {
 
     // Store regstatus (long expiry, e.g., 10 years)
     setCookie("regstatus", "true", { expires: 365 * 10 })
-
     setToken(token)
     setAuthStatus(true)
     setRegStatus(true)

@@ -1,8 +1,8 @@
 'use client';
 import axios from 'axios';
 import { useState } from 'react';
-import { Toaster, toast } from 'sonner'
-
+import  {toast } from 'sonner'
+import { setCookie } from '@/lib/cookies';
 
 export default function StepThree({ data, onChange, onBack, onNext }: any) {
   const [submitting, setSubmitting] = useState(false);
@@ -20,15 +20,11 @@ export default function StepThree({ data, onChange, onBack, onNext }: any) {
 
     const msg = res.data.message;
     const token = res.data.token;
-    const user = res.data.user;
-
+    // const user = res.data.user;
+    console.log(token)
     toast.success(`${msg}`);
-
-  
-
-
     if (msg) {
-      onNext();
+      onNext(token);
     } else {
       toast.error(res.data.message || 'Registration failed.');
     }
