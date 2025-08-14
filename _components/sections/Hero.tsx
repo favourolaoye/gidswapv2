@@ -1,12 +1,10 @@
-import { ArrowUpDown, ChevronDown } from "lucide-react";
-import { Button } from "@/src/components/ui/button";
+import { ChevronDown } from "lucide-react";
 import { AnimatedSection } from "@/src/components/ui/animate-section";
 import { useEffect, useState } from "react";
 import TextType from "@/src/components/ui/textType";
-import { Currency } from "@/lib/types";
 import { currencies } from "@/lib/constants";
-import HeroSwapForm from "./HeroSwapForm";
 import SwapForm from "../backup/swapform";
+import HeroSwapForm from "./HeroSwapForm";
 
 export default function Hero() {
   const [sendAmount, setSendAmount] = useState("0");
@@ -63,7 +61,7 @@ export default function Hero() {
         <AnimatedSection delay={0.2}>
           <div className="px-5">
             <div className="mx-auto max-w-md bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md rounded-2xl px-4 py-8 shadow-lg border border-[#0d6fde]/20 dark:border-blue-400/20">
-              <SwapForm
+              <HeroSwapForm
                 sendAmount={sendAmount}
                 setSendAmount={setSendAmount}
                 sendCurrency={sendCurrency}

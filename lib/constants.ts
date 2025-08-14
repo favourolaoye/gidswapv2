@@ -102,3 +102,57 @@ export const currencies: Currency[] = [
     type: "fiat",
   },
 ];
+
+// Mock data
+export const portfolioValue = 12847.32;
+export const portfolioChange = 5.67;
+export const recentTransactions = [
+  {
+    id: 1,
+    type: "buy",
+    amount: "0.5 BTC",
+    value: "$22,500",
+    status: "completed",
+    time: "2 hours ago",
+  },
+  {
+    id: 2,
+    type: "sell",
+    amount: "100 USDC",
+    value: "$100",
+    status: "pending",
+    time: "5 hours ago",
+  },
+  {
+    id: 3,
+    type: "swap",
+    amount: "2 ETH → 5000 USDC",
+    value: "$5,000",
+    status: "completed",
+    time: "1 day ago",
+  },
+];
+
+export const cryptoHoldings = [
+  {
+    name: "Bitcoin",
+    symbol: "BTC",
+    amount: "0.5",
+    value: "$22,500",
+    change: "+2.5%",
+  },
+  {
+    name: "Ethereum",
+    symbol: "ETH",
+    amount: "3.2",
+    value: "$8,960",
+    change: "-1.2%",
+  },
+  {
+    name: "USDC",
+    symbol: "USDC",
+    amount: "1,500",
+    value: "$1,500",
+    change: "0%",
+  },
+];

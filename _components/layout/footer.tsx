@@ -7,12 +7,15 @@ import { MdOutlineEmail } from "react-icons/md";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Newsletter from "../sections/Newsletter";
+import { usePathname } from "next/navigation";
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="flex h-11 items-center justify-between gap-2 rounded-full bg-blue-900/20 backdrop-blur-md border border-blue-400/20 p-1 transition-all w-full max-w-[200px]">
+    <div
+      className={`flex h-11 items-center justify-between gap-2 rounded-full bg-blue-900/20 backdrop-blur-md border border-blue-400/20 p-1 transition-all w-full max-w-[200px] `}
+    >
       <button
         onClick={() => setTheme("system")}
         className={`flex cursor-pointer items-center justify-center rounded-full transition-all duration-300 h-9 px-4 ${
@@ -52,6 +55,8 @@ function ThemeToggle() {
 
 export default function Footer() {
   const date = new Date().getFullYear();
+  const path = usePathname();
+  const hideFooter = path?.startsWith("/dashboard");
 
   const socialLinks = [
     {
@@ -81,7 +86,9 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative overflow-hidden">
+    <footer
+      className={`${hideFooter ? "hidden" : "block"} relative overflow-hidden`}
+    >
       {/* Futuristic Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
         {/* Animated Grid Pattern */}

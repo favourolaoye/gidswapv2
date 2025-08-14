@@ -184,9 +184,13 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="md:col-span-2 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-white/10">
               <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle className="text-lg font-semibold">
+                <div className="w-full">
+                  <CardTitle className="w-full flex items-center justify-between text-lg font-semibold">
                     Portfolio Value
+                    <Button variant="outline" size="sm">
+                      <RefreshCw className="w-4 h-4 mr-1" />
+                      Refresh
+                    </Button>
                   </CardTitle>
                   <div className="flex items-center gap-2 mt-2">
                     <span className="text-3xl font-bold">
@@ -206,27 +210,7 @@ export default function Dashboard() {
                       )}
                     </Button>
                   </div>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Badge
-                      variant={portfolioChange > 0 ? "default" : "destructive"}
-                      className="flex items-center gap-1"
-                    >
-                      {portfolioChange > 0 ? (
-                        <TrendingUp className="w-3 h-3" />
-                      ) : (
-                        <TrendingDown className="w-3 h-3" />
-                      )}
-                      {Math.abs(portfolioChange)}%
-                    </Badge>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      24h change
-                    </span>
-                  </div>
                 </div>
-                <Button variant="outline" size="sm">
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Refresh
-                </Button>
               </CardHeader>
             </Card>
 
@@ -269,7 +253,7 @@ export default function Dashboard() {
                   Trade Crypto
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-2">
                 <Tabs
                   value={selectedTab}
                   onValueChange={setSelectedTab}

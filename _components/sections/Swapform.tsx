@@ -3,7 +3,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-} from "@/components/ui/select";
+} from "@/src/components/ui/select";
 import { currencies } from "@/lib/constants";
 import { Currency } from "@/lib/types";
 import { Button } from "@/src/components/ui/button";

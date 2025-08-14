@@ -12,6 +12,7 @@ import {
   PieChart,
 } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
+import Link from "next/link";
 
 export default function Sidebar({
   sidebarOpen,
@@ -20,6 +21,7 @@ export default function Sidebar({
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
 }) {
+  const [activePage, setActivePage] = React.useState("Swap");
   return (
     <div>
       <motion.aside
@@ -66,25 +68,33 @@ export default function Sidebar({
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-2">
             {[
-              { icon: ArrowUpDown, label: "Swap", active: true },
-              { icon: Wallet, label: "Portfolio" },
-              { icon: History, label: "History" },
-              { icon: BarChart3, label: "Markets" },
-              { icon: PieChart, label: "Analytics" },
-              { icon: Settings, label: "Settings" },
+              {
+                icon: ArrowUpDown,
+                href: "/dashboard",
+                label: "Swap",
+                active: true,
+              },
+              { icon: History, href: "/dashboard/history", label: "History" },
+              { icon: BarChart3, href: "/dashboard/markets", label: "Markets" },
             ].map((item, index) => (
               <motion.button
                 key={item.label}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                  item.active
+                onClick={() => setActivePage(item.label)}
+                className={`w-full rounded-xl transition-all duration-300 ${
+                  activePage === item.label
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25"
                     : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5"
                 }`}
               >
-                <item.icon className="w-5 h-5" />
-                <span className="font-medium">{item.label}</span>
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-3 px-4 py-3"
+                >
+                  <item.icon className="w-5 h-5" />
+                  <span className="font-medium">{item.label}</span>
+                </Link>
               </motion.button>
             ))}
           </nav>

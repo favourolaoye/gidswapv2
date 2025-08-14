@@ -7,6 +7,7 @@ import PolicyPrivacyPop from "../policy-privacy";
 import { ChevronDown } from "lucide-react";
 import { useAuthStore } from "@/store/Authstore";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const {
@@ -30,8 +31,15 @@ export default function Header() {
     setLoginModalOpen(true);
   };
 
+  const path = usePathname();
+  const hideHeader = path?.startsWith("/dashboard");
+
   return (
-    <header className="sticky left-0 top-0 z-20 w-full bg-black/10 backdrop-blur transition-all dark:bg-neutral-900/95">
+    <header
+      className={`sticky left-0 top-0 z-20 w-full bg-black/10 backdrop-blur transition-all dark:bg-neutral-900/95 ${
+        hideHeader ? "hidden" : "block"
+      }`}
+    >
       <nav className="mx-auto container max-w-6xl flex items-center justify-between py-3 px-4 text-neutral-900 dark:text-white">
         {/* Logo & dropdown */}
         <div className="relative flex-shrink-0 group">
