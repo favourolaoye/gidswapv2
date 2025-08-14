@@ -1,25 +1,36 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { toast } from "sonner";
+import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
-  toast.info(`token: ${token}`)
-  const { pathname, searchParams } = request.nextUrl;
+ 
+// 1. Specify protected and public routes
+const protectedRoutes = ['/dashboard', '/dashboard:path*']
+const publicRoutes = ['/login', '/signup', '/']
+ 
+export default async function middleware(request: NextRequest) {
+  // 2. Check if the current route is protected or public
+  const path = request.nextUrl.pathname
+  const isProtectedRoute = protectedRoutes.includes(path)
+  const isPublicRoute = publicRoutes.includes(path)
+    const token = request.cookies.get('token')?.value;
+    console.log(token)
 
-  // Protect anything under /dashboard
-  if (pathname.startsWith("/dashboard")) {
-    if (!token) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/";
-      url.searchParams.set("auth", "required"); 
-      return NextResponse.redirect(url);
-    }
+  // 4. Redirect to /login if the user is not authenticated
+  if (isProtectedRoute && !token) {
+    return NextResponse.redirect(new URL('/login', request.nextUrl))
   }
-
-  return NextResponse.next();
+ 
+  // 5. Redirect to /dashboard if the user is authenticated
+  if (
+    isPublicRoute &&
+    token &&
+    !request.nextUrl.pathname.startsWith('/dashboard')
+  ) {
+    return NextResponse.redirect(new URL('/dashboard', request.nextUrl))
+  }
+ 
+  return NextResponse.next()
 }
-
+ 
+// Routes Middleware should not run on
 export const config = {
-  matcher: ["/dashboard/:path*"], 
-};
+  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+}
