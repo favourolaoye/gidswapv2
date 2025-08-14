@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -26,8 +25,6 @@ import {
   RefreshCw,
   Plus,
   Minus,
-  BarChart3,
-  PieChart,
   Activity,
   Bitcoin,
   Zap,
@@ -36,6 +33,7 @@ import { currencies } from "@/lib/constants";
 import SwapForm from "@/_components/backup/swapform";
 import Image from "next/image";
 import Sidebar from "@/_components/layout/dashboard/sidebar";
+import { Button } from "@/src/components/ui/button";
 
 export default function Dashboard() {
   const [sendAmount, setSendAmount] = useState("0");
@@ -138,7 +136,6 @@ export default function Dashboard() {
           onClick={() => setSidebarOpen(false)}
         />
       )}
-
       {/* Sidebar */}
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 

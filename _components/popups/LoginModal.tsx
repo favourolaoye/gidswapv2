@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { useAuthStore } from "@/store/Authstore"
 import { loginUser } from "@/lib/api"
 import { setCookie } from "@/lib/cookies"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/src/components/ui/button"
 import { Input } from "@/src/components/ui/input"
 import ResuablePop from "./resuablepop"
 

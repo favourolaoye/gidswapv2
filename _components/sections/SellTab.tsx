@@ -2,7 +2,10 @@ import { Button } from "@/src/components/ui/button";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ArrowUpDown, ChevronDown } from "lucide-react";
-import { DropdownMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuItem,
+} from "@/src/components/ui/dropdown-menu";
 import { Currency } from "@/lib/types";
 import { currencies } from "@/lib/constants";
 

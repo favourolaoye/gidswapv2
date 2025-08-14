@@ -11,7 +11,8 @@ import {
   BarChart3,
   PieChart,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/src/components/ui/button";
+// import { Button } from "@/components/ui/button";
 
 export default function Sidebar({
   sidebarOpen,
