@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-} from "@/components/ui/select";
+} from "@/src/components/ui/select";
 import { currencies } from "@/lib/constants";
 import { Currency } from "@/lib/types";
+import { Button } from "@/src/components/ui/button";
 import { useAuthStore } from "@/store/Authstore";
 import { ArrowUpDown } from "lucide-react";
 import Image from "next/image";
