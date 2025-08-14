@@ -7,8 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/src/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/src/components/ui/tabs";
 import {
   ArrowUpDown,
   TrendingUp,
@@ -34,6 +38,7 @@ import SwapForm from "@/_components/backup/swapform";
 import Image from "next/image";
 import Sidebar from "@/_components/layout/dashboard/sidebar";
 import { Button } from "@/src/components/ui/button";
+import { Badge } from "@/src/components/ui/badge";
 
 export default function Dashboard() {
   const [sendAmount, setSendAmount] = useState("0");
