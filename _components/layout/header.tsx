@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { Button } from "@/src/components/ui/button";
 import Image from "next/image";
 import PolicyPrivacyPop from "./policy-privacy";
@@ -9,24 +9,26 @@ import { useAuthStore } from "@/store/Authstore";
 import Link from "next/link";
 
 export default function Header() {
-
-  const { isAuthenticated, regStatus, setRegisterModalOpen, setLoginModalOpen, initializeAuth, logout } = useAuthStore()
+  const {
+    isAuthenticated,
+    regStatus,
+    setRegisterModalOpen,
+    setLoginModalOpen,
+    initializeAuth,
+    logout,
+  } = useAuthStore();
 
   useEffect(() => {
-    initializeAuth()
-  }, [initializeAuth])
+    initializeAuth();
+  }, [initializeAuth]);
 
   const handleRegisterClick = () => {
-    setRegisterModalOpen(true)
-  }
+    setRegisterModalOpen(true);
+  };
 
   const handleSignInClick = () => {
-    setLoginModalOpen(true)
-  }
-
-
-
-
+    setLoginModalOpen(true);
+  };
 
   return (
     <header className="sticky left-0 top-0 z-20 w-full bg-black/10 backdrop-blur transition-all dark:bg-neutral-900/95">
@@ -82,8 +84,6 @@ export default function Header() {
           )}
         </div>
       </nav>
-
-     
     </header>
   );
 }

@@ -1,12 +1,12 @@
 import { ArrowUpDown, ChevronDown } from "lucide-react";
-import { Button } from "@/src/components/ui/button";
 import { AnimatedSection } from "@/src/components/ui/animate-section";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs } from "@radix-ui/react-tabs";
 import TextType from "@/src/components/ui/textType";
-import { Currency } from "@/lib/types";
 import { currencies } from "@/lib/constants";
-import HeroSwapForm from "./HeroSwapForm";
-import SwapForm from "../backup/swapform";
+import SwapForm from "./swapform";
 
 export default function Hero() {
   const [sendAmount, setSendAmount] = useState("0");
@@ -62,19 +62,40 @@ export default function Hero() {
 
         <AnimatedSection delay={0.2}>
           <div className="px-5">
-            <div className="mx-auto max-w-md bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md rounded-2xl px-4 py-8 shadow-lg border border-[#0d6fde]/20 dark:border-blue-400/20">
-              <SwapForm
-                sendAmount={sendAmount}
-                setSendAmount={setSendAmount}
-                sendCurrency={sendCurrency}
-                setSendCurrency={setSendCurrency}
-                receiveAmount={receiveAmount}
-                setReceiveAmount={setReceiveAmount}
-                receiveCurrency={receiveCurrency}
-                setReceiveCurrency={setReceiveCurrency}
-                setShowModal={setShowModal}
-                tab={selectedTab}
-              />
+            <div className="mx-auto max-w-md bg-white/50 dark:bg-neutral-900/50 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-[#0d6fde]/20 dark:border-blue-400/20">
+              <Tabs
+                value={selectedTab}
+                onValueChange={setSelectedTab}
+                className="w-full space-y-3"
+              >
+                <TabsList className="grid grid-cols-3 w-full bg-gray-100/50 dark:bg-neutral-800/50 rounded-full p-0.5">
+                  {["buy", "sell", "convert"].map((tab) => (
+                    <TabsTrigger
+                      key={tab}
+                      value={tab}
+                      className="futuristic-button relative z-10 rounded-full py-1.5 text-sm font-medium text-gray-700 dark:text-white/80 data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#0d6fde] data-[state=active]:to-[#3b82f6] data-[state=active]:text-white hover:bg-[#0d6fde]/10 dark:hover:bg-blue-400/10 hover:shadow-[0_0_6px_rgba(13,111,222,0.3)] dark:hover:shadow-[0_0_6px_rgba(59,130,246,0.2)] transition-all duration-300"
+                    >
+                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+                {["buy", "sell", "convert"].map((tab) => (
+                  <TabsContent key={tab} value={tab} className="w-full mt-0">
+                    <SwapForm
+                      sendAmount={sendAmount}
+                      setSendAmount={setSendAmount}
+                      sendCurrency={sendCurrency}
+                      setSendCurrency={setSendCurrency}
+                      receiveAmount={receiveAmount}
+                      setReceiveAmount={setReceiveAmount}
+                      receiveCurrency={receiveCurrency}
+                      setReceiveCurrency={setReceiveCurrency}
+                      setShowModal={setShowModal}
+                      tab={tab}
+                    />
+                  </TabsContent>
+                ))}
+              </Tabs>
             </div>
           </div>
         </AnimatedSection>

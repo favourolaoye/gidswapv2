@@ -1,9 +1,10 @@
 import { Button } from "@/src/components/ui/button";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { currencies, Currency } from "./Hero";
 import { ArrowUpDown, ChevronDown } from "lucide-react";
 import { DropdownMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Currency } from "@/lib/types";
+import { currencies } from "@/lib/constants";
 
 const SwapForm: React.FC<{
   sendAmount: string;

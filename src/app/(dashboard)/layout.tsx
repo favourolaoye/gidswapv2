@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-
-import "./globals.css";
+import "../globals.css";
 import { ThemeProvider } from "next-themes";
-import Header from "@/_components/layout/header";
-import Footer from "@/_components/layout/footer";
-import { Toaster } from "sonner";
-import { RegistrationModal } from "@/_components/popups/RegisterModal";
-import { LoginModal } from "@/_components/popups/LoginModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,11 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gidswap",
-  description: "Your crypto paddy",
+  title: "Gidswap Dashboard",
+  description: "Your crypto trading dashboard",
 };
 
-export default function RootLayout({
+export default function DashboardGroupLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -40,12 +34,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <main>{children}</main>
-          <Footer />
-          <RegistrationModal />
-          <LoginModal />
-          <Toaster />
+          {children}
         </ThemeProvider>
       </body>
     </html>
