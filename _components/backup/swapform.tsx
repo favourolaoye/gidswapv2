@@ -161,27 +161,16 @@ const SwapForm: React.FC<{
           <div className="flex flex-col space-y-2 rounded-xl bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm px-3 py-2 shadow-sm border border-gray-200/30 dark:border-white/10">
             <label
               htmlFor={`amount-received-${tab}`}
-              className="text-gray-500 dark:text-white/50 text-xs font-medium"
+              className="text-gray-500 dark:text-white/50 text-xs font-medium flex items-center justify-between"
             >
               {tab === "buy" ? "Receive" : "Get"}
-            </label>
-            <div className="flex items-center justify-between gap-2">
-              <input
-                id={`amount-received-${tab}`}
-                inputMode="decimal"
-                className="w-full rounded-lg border-b border-transparent bg-transparent py-1 text-2xl outline-none placeholder:text-gray-400 text-neutral-900 dark:text-white/80 cursor-not-allowed font-semibold"
-                value={receiveAmount}
-                readOnly
-                placeholder="0.00"
-                title="Estimated amount to receive"
-              />
               <Select
                 onValueChange={(value: string) =>
                   setReceiveCurrency(currencies.find((c) => c.name === value)!)
                 }
                 defaultValue={receiveCurrency.name}
               >
-                <SelectTrigger className="min-w-[150px] w-fit flex h-9 items-center gap-2 rounded-full p-2 border-2 border-purple-500/20 text-purple-600 dark:text-purple-400 hover:bg-purple-500/10 dark:hover:bg-purple-400/10 hover:shadow-[0_0_6px_rgba(147,51,234,0.3)] transition-all duration-300 bg-white/50 dark:bg-neutral-800/50 backdrop-blur-sm">
+                <SelectTrigger className="w-fit flex h-9 items-center gap-2 rounded-full p-2 border-2 border-purple-500/20 text-purple-600 dark:text-purple-400 hover:bg-purple-500/10 dark:hover:bg-purple-400/10 hover:shadow-[0_0_6px_rgba(147,51,234,0.3)] transition-all duration-300 bg-white/50 dark:bg-neutral-800/50 backdrop-blur-sm">
                   <Image
                     src={
                       receiveCurrency.logo ||
@@ -220,6 +209,17 @@ const SwapForm: React.FC<{
                   ))}
                 </SelectContent>
               </Select>
+            </label>
+            <div className="flex items-center justify-between gap-2">
+              <input
+                id={`amount-received-${tab}`}
+                inputMode="decimal"
+                className="w-full rounded-lg border-b border-transparent bg-transparent py-1 text-2xl outline-none placeholder:text-gray-400 text-neutral-900 dark:text-white/80 cursor-not-allowed font-semibold"
+                value={receiveAmount}
+                readOnly
+                placeholder="0.00"
+                title="Estimated amount to receive"
+              />
             </div>
           </div>
         </div>

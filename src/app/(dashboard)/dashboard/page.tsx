@@ -35,7 +35,6 @@ import {
 } from "lucide-react";
 import { currencies } from "@/lib/constants";
 import SwapForm from "@/_components/backup/swapform";
-import Image from "next/image";
 import Sidebar from "@/_components/layout/dashboard/sidebar";
 import { Button } from "@/src/components/ui/button";
 import { Badge } from "@/src/components/ui/badge";
@@ -148,7 +147,7 @@ export default function Dashboard() {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
         <header className="sticky top-0 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-white/10">
-          <div className="flex items-center justify-between px-6 py-3">
+          <div className="flex items-center justify-between px-4 md:px-6 py-3">
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
@@ -180,7 +179,7 @@ export default function Dashboard() {
         </header>
 
         {/* Dashboard Content */}
-        <main className="flex-1 px-6 py-4 space-y-4 relative z-10 overflow-y-auto">
+        <main className="flex-1 px-4 md:px-6 py-4 space-y-4 relative z-10 overflow-y-auto">
           {/* Portfolio Overview */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="md:col-span-2 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-white/10">
