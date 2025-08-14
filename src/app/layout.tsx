@@ -1,6 +1,7 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-
+// import { usePathname } from "next/navigation";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Header from "@/_components/layout/header";
@@ -24,11 +25,9 @@ export const metadata: Metadata = {
   description: "Your crypto paddy",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) {
+  // const pathname = usePathname();
+  // const hideLayout = pathname.startsWith("/dashboard");
   return (
     <html lang="en" suppressHydrationWarning>
       <body
