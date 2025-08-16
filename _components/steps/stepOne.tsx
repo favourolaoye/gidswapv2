@@ -22,18 +22,15 @@ export default function StepOne({ data, onNext, onChange }: any) {
 
   const handleNext = async () => {
     if (!validate()) return
-
     try {
-      setSending(true)
-
-      // Using the mock API route for sending OTP
+      setSending(true);
       const res = await axios.post("/api/send-otp", {
         email: data.email,
       })
 
       if (res.data.success) {
         toast.success("OTP sent successfully!")
-        onNext() // Advance to the next step
+        onNext() 
       } else {
         throw new Error(res.data.error || "OTP send failed")
       }

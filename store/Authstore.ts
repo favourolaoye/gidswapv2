@@ -35,8 +35,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const token = getCookie("token")
     const regStatus = getCookie("regstatus") === "true"
 
-    // For simplicity, we'll assume token presence means authenticated for client-side UI.
-    // In a real app, you'd validate the token's expiry here or via a server call.
     set({
       token: token || null,
       isAuthenticated: !!token,
