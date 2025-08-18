@@ -6,7 +6,6 @@ import {
   History,
   BarChart3,
   ChevronDown,
-  Info,
   MessageCircle,
   Sun,
   Moon,
@@ -14,19 +13,24 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/src/components/ui/button";
-import Image from "next/image";
+
+import { currencies } from "@/lib/constants";
+import type { Currency } from "@/lib/types";
+import SwapForm from "@/_components/backup/swapform"; // Your reusable form
 
 export default function Dashboard2() {
-  const [sellAmount, setSellAmount] = useState("0.0025");
-  const [receiveAmount, setReceiveAmount] = useState("431,715.63");
-  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+  const [sendAmount, setSendAmount] = useState("0");
+  const [receiveAmount, setReceiveAmount] = useState("0");
+  const [sendCurrency, setSendCurrency] = useState<Currency>(currencies[0]); // BTC
+  const [receiveCurrency, setReceiveCurrency] = useState<Currency>({
+    name: "NGN",
+    logo: "/images/naira.svg", // Add your NGN logo path
+    rate: 1400, // Example: 1 USD = 1400 NGN
+  });
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("sell"); // buy/sell/swap
   const { theme, setTheme } = useTheme();
   const [activeLink, setActiveLink] = useState("Swap");
-
-  const handleSwap = () => {
-    // Swap logic here
-    console.log("Swap initiated");
-  };
 
   const navLinks = [
     { name: "Swap", icon: <ArrowUpDown className="w-5 h-5" /> },
@@ -42,7 +46,7 @@ export default function Dashboard2() {
         <div className="flex items-center gap-8">
           {/* Logo */}
           <div className="relative flex items-center gap-2 flex-shrink-0 group">
-            <Image
+            <img
               src="/images/gidsfull.png"
               alt="Logo"
               width={100}
@@ -99,12 +103,7 @@ export default function Dashboard2() {
       {/* Mobile Navigation */}
       <nav className="md:hidden sticky top-0 z-50 bg-white dark:bg-[#1a1d29] flex items-center justify-between px-4 py-3 border-b border-gray-800">
         <div className="relative flex items-center gap-2 flex-shrink-0 group">
-          <Image
-            src="/images/gidsfull.png"
-            alt="Logo"
-            width={100}
-            height={80}
-          />
+          <img src="/images/gidsfull.png" alt="Logo" width={100} height={80} />
         </div>
 
         <div className="flex items-center gap-2">
@@ -139,120 +138,25 @@ export default function Dashboard2() {
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-2 mb-2">
               <h1 className="text-3xl md:text-4xl font-bold">Swap</h1>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-yellow-400 hover:text-yellow-300"
-              >
-                <Info className="w-5 h-5" />
-              </Button>
             </div>
             <p className="text-gray-400 text-sm md:text-base">
               Exchange your crypto for fiat in an instant
             </p>
           </div>
 
-          {/* Swap Interface */}
-          <div className="bg-[#2a2d3a] rounded-2xl p-6 mb-6">
-            {/* Sell Section */}
-            <div className="mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-gray-400 text-sm">Sell</span>
-                <Button className="bg-[#3a3d4a] hover:bg-[#4a4d5a] text-white rounded-full px-4 py-2 flex items-center gap-2">
-                  <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-bold text-white">₿</span>
-                  </div>
-                  <span className="text-sm">BTC</span>
-                  <ChevronDown className="w-4 h-4" />
-                </Button>
-              </div>
-              <div className="text-2xl md:text-3xl font-bold mb-2">
-                {sellAmount}
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-yellow-400 rounded-full flex items-center justify-center">
-                  <span className="text-xs font-bold text-black">$</span>
-                </div>
-                <span className="text-yellow-400 font-semibold">$283.81</span>
-              </div>
-            </div>
-
-            {/* Swap Button */}
-            <div className="flex justify-center my-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="bg-[#3a3d4a] hover:bg-[#4a4d5a] rounded-full p-2"
-              >
-                <ArrowUpDown className="w-5 h-5 text-gray-400" />
-              </Button>
-            </div>
-
-            {/* Receive Section */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-gray-400 text-sm">Receive</span>
-                <Button className="bg-[#3a3d4a] hover:bg-[#4a4d5a] text-white rounded-full px-4 py-2 flex items-center gap-2">
-                  <div className="w-5 h-5 bg-green-600 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-bold text-white">₦</span>
-                  </div>
-                  <span className="text-sm">NGN</span>
-                  <ChevronDown className="w-4 h-4" />
-                </Button>
-              </div>
-              <div className="text-2xl md:text-3xl font-bold">
-                {receiveAmount}
-              </div>
-            </div>
-          </div>
-
-          {/* Zap Now Button */}
-          <Button
-            onClick={handleSwap}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-full py-4 text-lg font-semibold mb-6"
-          >
-            Zap now
-          </Button>
-
-          {/* Rate Information */}
-          <div className="bg-[#2a2d3a] rounded-xl p-4 mb-4">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-gray-400 text-sm">Rate</span>
-              <div className="flex items-center gap-2 text-yellow-400 text-sm">
-                <ArrowUpDown className="w-4 h-4" />
-                <span>1 BTC ≈ 172,686,253.43 ₦</span>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-gray-400 text-sm">LP Fee</span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-gray-400 hover:text-white p-0"
-                >
-                  <Info className="w-4 h-4" />
-                </Button>
-              </div>
-              <span className="text-white text-sm">5,785.42 ₦</span>
-            </div>
-          </div>
-
-          {/* Additional Information */}
-          <div className="text-center">
-            <Button
-              variant="ghost"
-              onClick={() => setShowAdditionalInfo(!showAdditionalInfo)}
-              className="text-gray-400 hover:text-white flex items-center gap-2 mx-auto"
-            >
-              <span>Additional Information</span>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform ${
-                  showAdditionalInfo ? "rotate-180" : ""
-                }`}
-              />
-            </Button>
-          </div>
+          {/* SwapForm Integration */}
+          <SwapForm
+            sendAmount={sendAmount}
+            setSendAmount={setSendAmount}
+            sendCurrency={sendCurrency}
+            setSendCurrency={setSendCurrency}
+            receiveAmount={receiveAmount}
+            setReceiveAmount={setReceiveAmount}
+            receiveCurrency={receiveCurrency}
+            setReceiveCurrency={setReceiveCurrency}
+            setShowModal={setShowModal}
+            tab={selectedTab}
+          />
         </div>
       </main>
 

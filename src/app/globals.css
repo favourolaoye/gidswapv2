@@ -193,11 +193,11 @@ body {
   }
 
   .mygradient {
-    background-image: linear-gradient(135deg, #2563eb, rgba(30, 58, 138, 0.45));
+    background-image: linear-gradient(135deg, #2563eb, rgba(30, 58, 138, 0.5));
   }
 
   [data-state="active"].mygradient-active {
-    background-image: linear-gradient(135deg, #2563eb, rgba(30, 58, 138, 0.45));
+    background-image: linear-gradient(135deg, #2563eb, rgba(30, 58, 138, 0.5));
   }
 
   @keyframes fadeOut {
