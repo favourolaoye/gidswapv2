@@ -8,10 +8,8 @@ export default async function ProtectedLayout({children,}: {children: React.Reac
         redirect("/")
     }
   return (
-    <html lang="en">
-      <body>
-        <main>{children}</main>
-      </body>
-    </html>
+    <main>
+      {children}
+    </main>
   )
 }
