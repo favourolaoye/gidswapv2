@@ -89,7 +89,7 @@ export const useSwapStore = create<SwapState>((set, get) => ({
 
   // API Actions
   fetchCurrencies: async () => {
-    const api = process.env.NEXT_PUBLIC_PROD_API
+    const api = process.env.PROD_API
     const token = Cookies.get("token")
 
     if (!api || !token) {
@@ -129,7 +129,7 @@ export const useSwapStore = create<SwapState>((set, get) => ({
 
   fetchQuote: async () => {
     const { sellCurrency, receiveCurrency, sellAmount } = get()
-    const api = process.env.NEXT_PUBLIC_PROD_API
+    const api = process.env.PROD_API
     const token = Cookies.get("token")
 
     if (!api || !token || !sellCurrency || !receiveCurrency || !sellAmount) return
@@ -186,7 +186,7 @@ export const useSwapStore = create<SwapState>((set, get) => ({
     set({ isSwapping: true, error: null })
 
     try {
-      const api = process.env.NEXT_PUBLIC_PROD_API
+      const api = process.env.PROD_API
       const token = Cookies.get("token")
       const response = await axios.post(
         `${api}/api/fixfloat/trade/create-order`,
