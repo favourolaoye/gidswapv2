@@ -12,7 +12,7 @@ export function SwapHeader({ title, description }: SwapHeaderProps) {
     <div className="text-center mb-8">
       <div className="flex items-center justify-center gap-2 mb-2">
         <h1 className="text-3xl md:text-4xl font-bold">{title}</h1>
-        <Button variant="ghost" size="sm" className="text-yellow-400 hover:text-yellow-300">
+        <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300">
           <Info className="w-5 h-5" />
         </Button>
       </div>
