@@ -44,7 +44,7 @@ export default function RootLayout({
           <Footer />
           <RegistrationModal />
           <LoginModal />
-          <Toaster />
+          <Toaster position="top-right" richColors/>
         </ThemeProvider>
       </body>
     </html>

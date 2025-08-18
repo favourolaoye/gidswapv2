@@ -1,25 +1,27 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { useAuthStore } from "@/store/Authstore"
-import { setCookie } from "@/lib/cookies"
-import ResuablePop from "./resuablepop"
-import StepOne from "../steps/stepOne"
-import StepTwo from "../steps/stepTwo"
-import StepThree from "../steps/stepThree"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/Authstore";
+import { setCookie } from "@/lib/cookies";
+import ResuablePop from "./resuablepop";
+import StepOne from "../steps/stepOne";
+import StepTwo from "../steps/stepTwo";
+import StepThree from "../steps/stepThree";
 
 
 export function RegistrationModal() {
+
   const router = useRouter()
   const { isRegisterModalOpen, setRegisterModalOpen, setAuthStatus, setRegStatus, setToken } = useAuthStore()
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(1);
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     code: "", 
     password: "",
-  })
+  });
 
   const handleFormChange = (newData: Partial<typeof formData>) => {
     setFormData((prev) => ({ ...prev, ...newData }))
@@ -28,14 +30,13 @@ export function RegistrationModal() {
   const handleNextStep = () => setStep((prev) => prev + 1)
   const handlePreviousStep = () => setStep((prev) => prev - 1)
 
-  // This function is called by StepThree after successful registration
+  
   const handleFinalRegistrationSuccess = (token: string) => {
     // Store token (24-hour expiry)
-    setCookie("token", token, { expires: 1 }) 
+    setCookie("token", token, { expires: 1, path: "/" }) 
 
     // Store regstatus (long expiry, e.g., 10 years)
-    setCookie("regstatus", "true", { expires: 365 * 10 })
-
+    setCookie("regstatus", "true", { expires: 365 * 10, path: "/" })
     setToken(token)
     setAuthStatus(true)
     setRegStatus(true)
