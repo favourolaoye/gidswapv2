@@ -8,7 +8,7 @@ interface ChatWidgetProps {
 
 export function ChatWidget({ onClick }: ChatWidgetProps) {
   return (
-    <div className="fixed bottom-[14rem] right-6 md:bottom-8 md:right-8">
+    <div className="fixed bottom-[8rem] right-6 md:bottom-8 md:right-8">
       <Button
         className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-full w-12 h-12 md:w-14 md:h-14 shadow-lg"
         onClick={onClick}

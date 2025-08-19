@@ -17,8 +17,6 @@ interface SwapState {
   // UI State
   sellAmount: string
   receiveAmount: string
-  sellUsdAmount: string
-  receiveUsdAmount: string
   showAdditionalInfo: boolean
   activeLink: string
   swapStep: "swap" | "quote" | "pending" | "wallet"
@@ -41,8 +39,6 @@ interface SwapState {
   // Actions
   setSellAmount: (amount: string) => void
   setReceiveAmount: (amount: string) => void
-  setSellUsdAmount: (amount: string) => void
-  setReceiveUsdAmount: (amount: string) => void
   setShowAdditionalInfo: (show: boolean) => void
   setActiveLink: (link: string) => void
   setSwapStep: (step: "swap" | "quote" | "pending" | "wallet") => void
@@ -65,8 +61,6 @@ export const useSwapStore = create<SwapState>((set, get) => ({
   // Initial State
   sellAmount: "0.0025",
   receiveAmount: "",
-  sellUsdAmount: "",
-  receiveUsdAmount: "",
   showAdditionalInfo: false,
   activeLink: "Swap",
   swapStep: "swap",
@@ -84,32 +78,6 @@ export const useSwapStore = create<SwapState>((set, get) => ({
   // Basic Setters
   setSellAmount: (amount) => set({ sellAmount: amount }),
   setReceiveAmount: (amount) => set({ receiveAmount: amount }),
-  setSellUsdAmount: (usdAmount) => {
-    const { quote, sellCurrency } = get()
-    set({ sellUsdAmount: usdAmount })
-
-    // Convert USD to currency amount if quote is available
-    if (quote && sellCurrency && usdAmount) {
-      const usdValue = Number.parseFloat(usdAmount)
-      if (!isNaN(usdValue) && quote.from.usd > 0) {
-        const currencyAmount = ((usdValue / quote.from.usd) * Number.parseFloat(quote.from.amount)).toFixed(8)
-        set({ sellAmount: currencyAmount })
-      }
-    }
-  },
-  setReceiveUsdAmount: (usdAmount) => {
-    const { quote, receiveCurrency } = get()
-    set({ receiveUsdAmount: usdAmount })
-
-    // Convert USD to currency amount if quote is available
-    if (quote && receiveCurrency && usdAmount) {
-      const usdValue = Number.parseFloat(usdAmount)
-      if (!isNaN(usdValue) && quote.to.usd > 0) {
-        const currencyAmount = ((usdValue / quote.to.usd) * Number.parseFloat(quote.to.amount)).toFixed(8)
-        set({ receiveAmount: currencyAmount })
-      }
-    }
-  },
   setShowAdditionalInfo: (show) => set({ showAdditionalInfo: show }),
   setActiveLink: (link) => set({ activeLink: link }),
   setSwapStep: (step) => set({ swapStep: step }),
@@ -160,19 +128,11 @@ export const useSwapStore = create<SwapState>((set, get) => ({
   },
 
   fetchQuote: async () => {
-    const { sellCurrency, receiveCurrency, sellAmount, sellUsdAmount } = get()
+    const { sellCurrency, receiveCurrency, sellAmount } = get()
     const api = process.env.NEXT_PUBLIC_PROD_API
     const token = Cookies.get("token")
 
-    if (!api || !token || !sellCurrency || !receiveCurrency) return
-
-    let amountToUse = sellAmount
-    if (sellUsdAmount && Number.parseFloat(sellUsdAmount) > 0) {
-      // If we have a USD amount, use the converted currency amount
-      amountToUse = sellAmount
-    }
-
-    if (!amountToUse || Number.parseFloat(amountToUse) <= 0) return
+    if (!api || !token || !sellCurrency || !receiveCurrency || !sellAmount) return
 
     set({ isLoadingQuote: true })
 
@@ -182,7 +142,7 @@ export const useSwapStore = create<SwapState>((set, get) => ({
         {
           fromCcy: sellCurrency.code,
           toCcy: receiveCurrency.code,
-          amount: Number.parseFloat(amountToUse),
+          amount: Number.parseFloat(sellAmount),
           direction: "from",
           type: "float",
         },
@@ -190,18 +150,10 @@ export const useSwapStore = create<SwapState>((set, get) => ({
       )
 
       if (response.data.code === 0) {
-        const quoteData = response.data.data
         set({
-          quote: quoteData,
-          receiveAmount: quoteData.to.amount.toString(),
-          receiveUsdAmount: quoteData.to.usd.toFixed(2),
+          quote: response.data.data,
+          receiveAmount: response.data.data.to.amount.toString(),
         })
-
-        // Update sell USD amount if it wasn't set by user
-        const { sellUsdAmount: currentSellUsd } = get()
-        if (!currentSellUsd || Number.parseFloat(currentSellUsd) === 0) {
-          set({ sellUsdAmount: quoteData.from.usd.toFixed(2) })
-        }
       }
     } catch (error) {
       console.error("Failed to fetch quote:", error)
@@ -234,8 +186,9 @@ export const useSwapStore = create<SwapState>((set, get) => ({
     set({ isSwapping: true, error: null })
 
     try {
-      const token = Cookies.get("token");
       const api = process.env.NEXT_PUBLIC_PROD_API
+
+      const token = Cookies.get("token")
       const response = await axios.post(
         `${api}/api/fixfloat/trade/create-order`,
         {

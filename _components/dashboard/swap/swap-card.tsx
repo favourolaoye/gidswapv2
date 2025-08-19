@@ -124,21 +124,21 @@ function CurrencyDropdown({
 
 function SwapSection({
   type,
-  usdAmount,
-  currencyAmount,
+  amount,
   currency,
   currencies,
-  onUsdAmountChange,
+  usdValue,
+  onAmountChange,
   onCurrencySelect,
   dropdownOpen,
   onDropdownToggle,
 }: {
   type: "sell" | "receive"
-  usdAmount: string
-  currencyAmount?: string
+  amount: string
   currency: Currency | null
   currencies: Currency[]
-  onUsdAmountChange?: (value: string) => void
+  usdValue?: string
+  onAmountChange?: (value: string) => void
   onCurrencySelect?: (currency: Currency) => void
   dropdownOpen: boolean
   onDropdownToggle: () => void
@@ -155,26 +155,20 @@ function SwapSection({
           onToggle={onDropdownToggle}
         />
       </div>
-      <div className="relative w-full">
-        <input
-          type="text"
-          value={usdAmount ?? ""}
-          onChange={(e) => onUsdAmountChange?.(e.target.value)}
-          readOnly={type === "receive"}
-          placeholder="0.00"
-          className="w-full bg-transparent text-2xl md:text-3xl font-bold mb-2 text-white placeholder-gray-500 border-none outline-none pr-12"
-        />
-        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 font-medium text-lg">
-          USD
-        </span>
-      </div>
-
-      {currencyAmount && currency && (
+      <input
+        type="text"
+        value={amount ?? ""}
+        onChange={(e) => onAmountChange?.(e.target.value)}
+        readOnly={type === "receive"}
+        placeholder="0.00"
+        className="w-full bg-transparent text-2xl md:text-3xl font-bold mb-2 text-white placeholder-gray-500 border-none outline-none"
+      />
+      {usdValue && (
         <div className="flex items-center gap-2">
-          <img src={currency.logo || "/placeholder.svg"} alt={currency.coin} className="w-4 h-4 rounded-full" />
-          <span className="text-gray-400 font-semibold">
-            {Number.parseFloat(currencyAmount).toFixed(8)} {currency.coin}
-          </span>
+          <div className="w-4 h-4 bg-blue-400 rounded-full flex items-center justify-center">
+            <span className="text-xs font-bold text-black">$</span>
+          </div>
+          <span className="text-blue-400 font-semibold">{usdValue}</span>
         </div>
       )}
     </div>
@@ -185,8 +179,6 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
   const {
     sellAmount,
     receiveAmount,
-    sellUsdAmount,
-    receiveUsdAmount,
     currencies,
     sellCurrency,
     receiveCurrency,
@@ -194,8 +186,6 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
     isLoadingCurrencies,
     setSellAmount,
     setReceiveAmount,
-    setSellUsdAmount,
-    setReceiveUsdAmount,
     setSellCurrency,
     setReceiveCurrency,
     fetchQuote,
@@ -205,18 +195,17 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
   const [sellDropdownOpen, setSellDropdownOpen] = useState(false)
   const [receiveDropdownOpen, setReceiveDropdownOpen] = useState(false)
 
-  const sellUsdAmountNum = Number.parseFloat(sellUsdAmount)
   const sellAmountNum = Number.parseFloat(sellAmount)
   const isAmountTooLow = quote && sellAmount && sellAmountNum < quote.from.min
   const isAmountTooHigh = quote && sellAmount && sellAmountNum > quote.from.max
   const hasValidationError = isAmountTooLow || isAmountTooHigh
 
   const isFormValid =
-    !!sellUsdAmount && sellUsdAmountNum > 0 && !!sellCurrency && !!receiveCurrency && !!quote && !hasValidationError
+    !!sellAmount && sellAmountNum > 0 && !!sellCurrency && !!receiveCurrency && !!quote && !hasValidationError
 
   useEffect(() => {
     fetchQuote()
-  }, [sellUsdAmount, sellCurrency, receiveCurrency, fetchQuote])
+  }, [sellAmount, sellCurrency, receiveCurrency, fetchQuote])
 
   const handleSellCurrencySelect = (currency: Currency) => {
     setSellCurrency(currency)
@@ -267,11 +256,11 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
         <div className="mb-4">
           <SwapSection
             type="sell"
-            usdAmount={sellUsdAmount}
-            currencyAmount={sellAmount}
+            amount={sellAmount}
             currency={sellCurrency}
             currencies={currencies}
-            onUsdAmountChange={setSellUsdAmount}
+            usdValue={quote ? `$${quote.from.usd.toFixed(2)}` : undefined}
+            onAmountChange={setSellAmount}
             onCurrencySelect={handleSellCurrencySelect}
             dropdownOpen={sellDropdownOpen}
             onDropdownToggle={() => {
@@ -304,11 +293,11 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
         <div>
           <SwapSection
             type="receive"
-            usdAmount={receiveUsdAmount}
-            currencyAmount={receiveAmount}
+            amount={receiveAmount}
             currency={receiveCurrency}
             currencies={currencies}
-            onUsdAmountChange={setReceiveUsdAmount}
+            usdValue={quote ? `$${quote.to.usd.toFixed(2)}` : undefined}
+            onAmountChange={setReceiveAmount}
             onCurrencySelect={handleReceiveCurrencySelect}
             dropdownOpen={receiveDropdownOpen}
             onDropdownToggle={() => {
@@ -343,14 +332,7 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
               1 {quote.from.coin} ≈ {quote.from.rate.toFixed(2)} {quote.to.coin}
             </span>
           </div>
-          <div className="flex justify-between">
-            <div className="flex items-center">
-              <span className="text-sm font-semibold text-blue-700/90">LP Fee</span>
-              <Button variant="ghost" size="sm" className="text-blue-700/90 hover:text-blue-900/90 p-0">
-                <Info className="w-4 h-4" />
-              </Button>
-            </div>
-            <span className="text-white text-sm">{quote.fee}</span>
+          <div className="flex justify-between"> 
           </div>
         </div>
       )}
