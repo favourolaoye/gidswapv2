@@ -333,13 +333,6 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
             </span>
           </div>
           <div className="flex justify-between">
-            <div className="flex items-center">
-              <span className="text-sm font-semibold text-blue-700/90">LP Fee</span>
-              <Button variant="ghost" size="sm" className="text-blue-700/90 hover:text-blue-900/90 p-0">
-                <Info className="w-4 h-4" />
-              </Button>
-            </div>
-            <span className="text-white text-sm">{quote.fee}</span>
           </div>
         </div>
       )}
