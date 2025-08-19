@@ -1,6 +1,6 @@
 "use client"
 import { Button } from "@/src/components/ui/button"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 import { ArrowUpDown, ChevronDown, Info } from "lucide-react"
 import { useState } from "react"
@@ -35,8 +35,36 @@ function CurrencyDropdown({
   isOpen: boolean
   onToggle: () => void
 }) {
+  const [searchTerm, setSearchTerm] = useState("")
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        if (isOpen) {
+          onToggle()
+        }
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [isOpen, onToggle])
+
+  const filteredCurrencies = currencies.filter(
+    (curr) =>
+      curr.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      curr.coin.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      curr.code.toLowerCase().includes(searchTerm.toLowerCase()),
+  )
+
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <Button
         className="bg-[#3a3d4a] hover:bg-[#4a4d5a] text-white rounded-full px-4 py-2 flex items-center gap-2"
         onClick={onToggle}
@@ -53,23 +81,41 @@ function CurrencyDropdown({
       </Button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-64 bg-[#2a2d3a] rounded-xl border border-[#3a3d4a] shadow-lg z-50 max-h-60 overflow-y-auto">
-          {currencies.map((curr) => (
-            <button
-              key={curr.code}
-              className="w-full px-4 py-3 flex items-center gap-3 hover:bg-[#3a3d4a] text-left first:rounded-t-xl last:rounded-b-xl"
-              onClick={() => {
-                onSelect?.(curr)
-                onToggle()
-              }}
-            >
-              <img src={curr.logo || "/placeholder.svg"} alt={curr.coin} className="w-6 h-6 rounded-full" />
-              <div className="flex-1">
-                <div className="text-white font-medium">{curr.coin}</div>
-                <div className="text-gray-400 text-sm">{curr.name}</div>
-              </div>
-            </button>
-          ))}
+        <div className="absolute top-full right-0 mt-2 w-72 sm:w-64 max-w-[calc(100vw-2rem)] bg-[#2a2d3a] rounded-xl border border-[#3a3d4a] shadow-lg z-50 max-h-60 overflow-hidden">
+          <div className="p-3 border-b border-[#3a3d4a]">
+            <input
+              type="text"
+              placeholder="Search currencies..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-[#3a3d4a] text-white placeholder-gray-400 rounded-lg px-3 py-2 text-sm border-none outline-none focus:ring-2 focus:ring-blue-500"
+              autoFocus
+            />
+          </div>
+
+          <div className="max-h-48 overflow-y-auto">
+            {filteredCurrencies.length > 0 ? (
+              filteredCurrencies.map((curr) => (
+                <button
+                  key={curr.code}
+                  className="w-full px-4 py-3 flex items-center gap-3 hover:bg-[#3a3d4a] text-left"
+                  onClick={() => {
+                    onSelect?.(curr)
+                    onToggle()
+                    setSearchTerm("") // Clear search when currency is selected
+                  }}
+                >
+                  <img src={curr.logo || "/placeholder.svg"} alt={curr.coin} className="w-6 h-6 rounded-full" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-white font-medium truncate">{curr.coin}</div>
+                    <div className="text-gray-400 text-sm truncate">{curr.name}</div>
+                  </div>
+                </button>
+              ))
+            ) : (
+              <div className="px-4 py-6 text-center text-gray-400 text-sm">No currencies found for "{searchTerm}"</div>
+            )}
+          </div>
         </div>
       )}
     </div>
@@ -286,7 +332,15 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
               1 {quote.from.coin} ≈ {quote.from.rate.toFixed(2)} {quote.to.coin}
             </span>
           </div>
-          
+          <div className="flex justify-between">
+            <div className="flex items-center">
+              <span className="text-sm font-semibold text-blue-700/90">LP Fee</span>
+              <Button variant="ghost" size="sm" className="text-blue-700/90 hover:text-blue-900/90 p-0">
+                <Info className="w-4 h-4" />
+              </Button>
+            </div>
+            <span className="text-white text-sm">{quote.fee}</span>
+          </div>
         </div>
       )}
 

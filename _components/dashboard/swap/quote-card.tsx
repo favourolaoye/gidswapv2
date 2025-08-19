@@ -97,7 +97,7 @@ export function QuoteCard() {
           </div>
           <div className="flex justify-between">
             <span className="text-gray-400">Processing Time</span>
-            <span className="text-white">~10-30 minutes</span>
+            <span className="text-white">~ 1-10 minutes</span>
           </div>
         </div>
 
