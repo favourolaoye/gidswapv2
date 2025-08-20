@@ -18,7 +18,7 @@ export function CryptoSwapFlow() {
     <div className="w-full max-w-md">
       {swapStep === "swap" ? (
         <>
-          <SwapHeader title="Crypto Swap" description="Exchange cryptocurrencies instantly" />
+          <SwapHeader title="Swap" description="Exchange cryptocurrencies instantly" />
           <SwapCard isLoading={isSwapping} onSwap={function (swapData: any): void {
                       throw new Error("Function not implemented.")
             }} />
