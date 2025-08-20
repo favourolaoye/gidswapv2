@@ -1,0 +1,38 @@
+"use client";
+
+import { DesktopNav } from "@/_components/dashboard/navigation/desktop-nav";
+import { MobileNav } from "@/_components/dashboard/navigation/mobile-nav";
+import { navLinks } from "./page";
+import { useState } from "react";
+import { MobileBottomNav } from "@/_components/dashboard/navigation/mobile-bottom-nav";
+import { ChatWidget } from "@/_components/dashboard/ui/chat-widget";
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [activeLink, setActiveLink] = useState("Swap");
+
+  return (
+    <div className="min-h-screen dark:bg-[#1a1d29] text-white">
+      {/* Navigation */}
+      <DesktopNav
+        navLinks={navLinks}
+        activeLink={activeLink}
+        onLinkClick={setActiveLink}
+      />
+      <MobileNav />
+      <main className="py-8">{children}</main>
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav
+        navLinks={navLinks}
+        activeLink={activeLink}
+        onLinkClick={setActiveLink}
+      />
+
+      {/* Chat Widget */}
+      <ChatWidget />
+    </div>
+  );
+}

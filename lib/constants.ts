@@ -1,4 +1,5 @@
 import { Currency } from "./types";
+import { ArrowUpDown, BarChart3, History, Home } from "lucide-react";
 
 export const useCaseNoExp = [
   {
@@ -45,10 +46,11 @@ const faqs = [
   },
 ];
 
-// export const currencies: Currency[] = [
-//   { name: "USDC", logo: "/images/usdc-logo.svg", rate: 0.00002 },
-//   { name: "ETH", logo: "/images/usdc-logo.svg", rate: 0.09 },
-//   { name: "BTC", logo: "/images/usdc-logo.svg", rate: 1 },
+// export const navLinks = [
+//   { name: "Swap", icon: ArrowUpDown },
+//   { name: "Account", icon: Home },
+//   { name: "History", icon: History },
+//   { name: "Markets", icon: BarChart3 },
 // ];
 
 export const currencies: Currency[] = [
