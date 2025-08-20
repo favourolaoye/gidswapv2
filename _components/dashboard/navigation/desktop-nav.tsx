@@ -31,12 +31,21 @@ export function DesktopNav({
       <div className="flex items-center gap-8">
         {/* Logo */}
         <div className="relative flex items-center gap-2 flex-shrink-0 group">
-          <Image
-            src="/images/gidsfull.png"
-            alt="Logo"
-            width={100}
-            height={80}
-          />
+          {theme === "dark" ? (
+            <Image
+              src="/images/gidsfull.png"
+              alt="Logo"
+              width={100}
+              height={80}
+            />
+          ) : (
+            <Image
+              src="/images/Gidswaplogo.png"
+              alt="Logo"
+              width={100}
+              height={80}
+            />
+          )}
         </div>
 
         {/* Navigation Items */}
@@ -69,12 +78,12 @@ export function DesktopNav({
           className="text-gray-400 hover:text-white"
         >
           {theme === "dark" ? (
-            <Sun className="w-5 h-5" />
+            <Sun className="w-5 h-5 text-gray-100" />
           ) : (
-            <Moon className="w-5 h-5" />
+            <Moon className="w-5 h-5 text-gray-800" />
           )}
         </Button>
-        <Button className="mygradient futuristic-button text-white rounded-full px-6 py-2 hover:opacity-90">
+        {/* <Button className="mygradient futuristic-button text-white rounded-full px-6 py-2 hover:opacity-90">
           Get Started
         </Button>
         <Button
@@ -82,7 +91,7 @@ export function DesktopNav({
           className="border-gray-600 text-blue-800 dark:text-white hover:bg-gray-800 rounded-full px-6 py-2 bg-transparent"
         >
           Login
-        </Button>
+        </Button> */}
       </div>
     </nav>
   );

@@ -17,7 +17,7 @@ export default async function middleware(request: NextRequest) {
 
   // 4. Redirect to /login if the user is not authenticated
   if (isProtectedRoute && !token) {
-    return NextResponse.redirect(new URL('/login', request.nextUrl))
+    return NextResponse.redirect(new URL('/', request.nextUrl))
   }
  
   // 5. Redirect to /dashboard if the user is authenticated

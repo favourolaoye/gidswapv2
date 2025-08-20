@@ -47,7 +47,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     // removeCookie("regstatus") //Remove regstatus on explicit logout
     set({
       isAuthenticated: false,
-      regStatus: false,
+      // regStatus: false,
       token: null,
     })
   },
