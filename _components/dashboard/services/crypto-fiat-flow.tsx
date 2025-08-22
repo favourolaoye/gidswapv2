@@ -28,7 +28,7 @@ function CryptoFiatFlow() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-2 sm:p-4">
+    <div className="min-h-screen  p-2 sm:p-4">
       <div className="w-full max-w-lg sm:max-w-md mx-auto mb-6">
         {currentStep !== "swap" && (
           <Button variant="ghost" onClick={handleBack} className="mb-4 text-gray-400 hover:text-white p-0">
