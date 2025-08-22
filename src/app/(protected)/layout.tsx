@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/_components/theme-provider";
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
 
@@ -9,8 +10,16 @@ export default async function ProtectedLayout({children,}: {children: React.Reac
         redirect("/")
     }
   return (
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
     <main>
       {children}
     </main>
+    </ThemeProvider>
+
   )
 }

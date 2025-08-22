@@ -5,7 +5,7 @@ import { SwapCard } from "@/_components/dashboard/swap/swap-card"
 import { QuoteCard } from "@/_components/dashboard/swap/quote-card"
 import { PendingDepositCard } from "@/_components/dashboard/swap/pending-card"
 import { WalletAddressCard } from "@/_components/dashboard/swap/wallet-card"
-import { useSwapStore } from "@/lib/store"
+import { useSwapStore } from "@/lib/swap-store"
 
 export function CryptoSwapFlow() {
   const { swapStep, swapData, isSwapping, backToSwap, proceedWithWallet, fetchCurrencies } = useSwapStore()

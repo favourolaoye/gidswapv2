@@ -1,7 +1,7 @@
 "use client"
 import { Button } from "@/src/components/ui/button"
 import Image from "next/image"
-import { Sun, Moon } from "lucide-react"
+import { Sun, Moon, User2 } from "lucide-react"
 import { useTheme } from "next-themes"
 
 export function MobileNav() {
@@ -20,7 +20,7 @@ export function MobileNav() {
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           className="text-gray-400 hover:text-white"
         >
-          {theme === "dark" ? <Sun className="w-5 h-5 text-white" /> : <Moon className="w-5 h-5 text-gray-600" />}
+          {theme === "dark" ? <User2 className="w-5 h-5 text-white" /> : <User2 className="w-5 h-5 text-gray-600" />}
         </Button>
         {/* <Button className="mygradient futuristic-button text-white rounded-full px-4 py-2 text-sm hover:opacity-90">
           Get Started

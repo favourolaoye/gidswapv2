@@ -2,7 +2,7 @@
 import { Button } from "@/src/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import { useState } from "react"
-import { useSwapStore } from "@/lib/store"
+import { useSwapStore } from "@/lib/swap-store"
 
 export function QuoteCard() {
   const { swapData, walletAddress, isSwapping, error, setWalletAddress, initiateSwap, backToSwap, setError } =
