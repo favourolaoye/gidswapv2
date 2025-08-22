@@ -99,7 +99,7 @@ export default function MarketsPage() {
     const isPositive = change > 0;
     return (
       <span
-        className={`flex items-center gap-1 ${
+        className={`flex items-center justify-end gap-1 ${
           isPositive ? "text-green-400" : "text-red-400"
         }`}
       >
@@ -114,7 +114,7 @@ export default function MarketsPage() {
   };
 
   return (
-    <div className="p-4 md:p-6 max-w-5xl w-full mx-auto">
+    <div className="p-4 md:p-6 w-full mx-auto">
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl md:text-3xl font-bold mb-6">Markets</h1>
@@ -178,7 +178,7 @@ export default function MarketsPage() {
               <Input
                 placeholder="Search tokens..."
                 value={searchQuery}
-                onChange={(e: any) => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-[#2a2d3a] border-gray-600 text-white placeholder-gray-400 rounded-lg w-64"
               />
             </div>
@@ -188,47 +188,57 @@ export default function MarketsPage() {
 
       {/* Content */}
       {activeTab === "Tokens" && hasData && filteredTokens.length > 0 ? (
-        <div className="bg-[#2a2d3a] rounded-xl overflow-hidden">
-          {/* Table Header */}
-          <div className="grid grid-cols-6 gap-4 p-4 border-b border-gray-700 text-gray-400 text-sm font-medium">
-            <div>#</div>
-            <div>Token</div>
-            <div className="text-right">Price</div>
-            <div className="text-right">1H</div>
-            <div className="text-right">24H</div>
-            <div className="text-right">FDV</div>
-          </div>
+        <div className="bg-[#2a2d3a] rounded-xl overflow-hidden overflow-x-auto">
+          <table className="w-full table-auto">
+            {/* Table Header */}
+            <thead className="text-gray-400 text-sm font-medium border-b border-gray-700">
+              <tr>
+                <th className="text-left p-4">#</th>
+                <th className="text-left p-4">Token</th>
+                <th className="text-right p-4">Price</th>
+                <th className="text-right p-4">1H</th>
+                <th className="text-right p-4">24H</th>
+                <th className="text-right p-4">FDV</th>
+              </tr>
+            </thead>
 
-          {/* Table Body */}
-          <div className="divide-y divide-gray-700">
-            {filteredTokens.map((token) => (
-              <div
-                key={token.id}
-                className="grid grid-cols-6 gap-4 p-4 hover:bg-gray-800/50 transition-colors"
-              >
-                <div className="text-gray-400">{token.id}</div>
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`w-8 h-8 ${token.iconColor} rounded-full flex items-center justify-center text-white font-bold`}
-                  >
-                    {token.icon}
-                  </div>
-                  <div>
-                    <div className="font-medium">{token.symbol}</div>
-                    <div className="text-sm text-gray-400">{token.name}</div>
-                  </div>
-                </div>
-                <div className="text-right font-medium">
-                  {formatPrice(token.price)}
-                </div>
-                <div className="text-right">{formatChange(token.change1h)}</div>
-                <div className="text-right">
-                  {formatChange(token.change24h)}
-                </div>
-                <div className="text-right text-gray-400">${token.fdv}</div>
-              </div>
-            ))}
-          </div>
+            {/* Table Body */}
+            <tbody>
+              {filteredTokens.map((token) => (
+                <tr
+                  key={token.id}
+                  className="hover:bg-gray-800/50 transition-colors border-b border-gray-700 last:border-b-0"
+                >
+                  <td className="p-4 text-gray-400">{token.id}</td>
+                  <td className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-8 h-8 ${token.iconColor} rounded-full flex items-center justify-center text-white font-bold`}
+                      >
+                        {token.icon}
+                      </div>
+                      <div>
+                        <div className="font-medium">{token.symbol}</div>
+                        <div className="text-sm text-gray-400">
+                          {token.name}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="p-4 text-right font-medium">
+                    {formatPrice(token.price)}
+                  </td>
+                  <td className="p-4 text-right">
+                    {formatChange(token.change1h)}
+                  </td>
+                  <td className="p-4 text-right">
+                    {formatChange(token.change24h)}
+                  </td>
+                  <td className="p-4 text-right text-gray-400">${token.fdv}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
         /* Empty State */
