@@ -1,19 +1,67 @@
 "use client"
-import { SwapHeader } from "@/_components/dashboard/swap/swap-header"
-import { Card, CardContent } from "@/src/components/ui/card"
+import { useState } from "react"
+import { BankVerificationCard } from "./crypto-fiat/bank-verification-card"
+import { CryptoFiatSwapCard } from "./crypto-fiat/crypto-to-fiat-card"
+import { Button } from "@/src/components/ui/button"
+import { ArrowLeft } from "lucide-react"
 
-export function CryptoFiatFlow() {
+type FlowStep = "swap" | "verification" | "payment"
+
+function CryptoFiatFlow() {
+  const [currentStep, setCurrentStep] = useState<FlowStep>("swap")
+
+  const handleSwapComplete = () => {
+    setCurrentStep("verification")
+  }
+
+  const handleVerificationComplete = () => {
+    setCurrentStep("payment")
+    console.log("Proceeding to payment...")
+  }
+
+  const handleBack = () => {
+    if (currentStep === "verification") {
+      setCurrentStep("swap")
+    } else if (currentStep === "payment") {
+      setCurrentStep("verification")
+    }
+  }
+
   return (
-    <div className="w-full max-w-md">
-      <SwapHeader title="Crypto to Fiat" description="Convert cryptocurrency to traditional currency" />
-      <Card className="bg-[#2a2d3a] border-[#3a3d4a]">
-        <CardContent className="p-6 text-center">
-          <p className="text-gray-400 mb-4">Crypto to Fiat exchange coming soon!</p>
-          <p className="text-gray-500 text-sm">
-            This feature will allow you to convert your cryptocurrencies to fiat currencies like USD, EUR, etc.
-          </p>
-        </CardContent>
-      </Card>
+    <div className="min-h-screen  p-4">
+      <div className="max-w-md mx-auto mb-6">
+        {currentStep !== "swap" && (
+          <Button variant="ghost" onClick={handleBack} className="mb-4 text-gray-400 hover:text-white p-0">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back
+          </Button>
+        )}
+
+        <h1 className="text-2xl font-bold text-white text-center mb-2">
+          {currentStep === "swap" && "Crypto to Fiat"}
+          {currentStep === "verification" && "Verify Account"}
+          {currentStep === "payment" && "Complete Payment"}
+        </h1>
+        <p className="text-gray-400 text-center text-sm">
+          {currentStep === "swap" && "Convert your cryptocurrency to cash instantly"}
+          {currentStep === "verification" && "Verify your bank account details"}
+          {currentStep === "payment" && "Complete your transaction"}
+        </p>
+      </div>
+
+      {currentStep === "swap" && <CryptoFiatSwapCard onSwapComplete={handleSwapComplete} />}
+
+      {currentStep === "verification" && <BankVerificationCard onProceed={handleVerificationComplete} />}
+
+      {currentStep === "payment" && (
+        <div className="max-w-md mx-auto bg-[#2a2d3a] rounded-2xl p-6 text-center">
+          <h3 className="text-xl font-bold text-white mb-4">Payment Processing</h3>
+          <p className="text-gray-400">Your transaction is being processed...</p>
+        </div>
+      )}
     </div>
   )
 }
+
+export { CryptoFiatFlow }
+export default CryptoFiatFlow

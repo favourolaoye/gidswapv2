@@ -25,14 +25,14 @@ export function LoginModal() {
 
     try {
       const response = await loginUser({ email, password })
-      const { token } = response
+      const { token, user } = response
 
       // Store token (3-day expiry)
       setCookie("token", token, { expires: 3 })
 
       // Ensure regstatus is true on successful login
       setCookie("regstatus", "true", { expires: 365 * 10 })
-
+      setCookie("user", JSON.stringify(user), {expires: 3})
       setToken(token)
       setAuthStatus(true)
       setLoginModalOpen(false)

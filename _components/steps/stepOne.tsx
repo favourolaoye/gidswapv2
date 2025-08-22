@@ -6,10 +6,13 @@ import { toast } from "sonner"
 import { Input } from "@/src/components/ui/input"
 import { Label } from "@/src/components/ui/label"
 import { Button } from "@/src/components/ui/button"
+import { useAuthStore } from "@/store/Authstore"
+import { setCookie } from "@/lib/cookies"
 
 export default function StepOne({ data, onNext, onChange }: any) {
   const [errors, setErrors] = useState({ fullName: "", email: "" })
   const [sending, setSending] = useState(false)
+  const {setRegStatus} = useAuthStore()
 
   const validate = () => {
     const errs = {
@@ -19,28 +22,45 @@ export default function StepOne({ data, onNext, onChange }: any) {
     setErrors(errs)
     return !errs.fullName && !errs.email
   }
+  
+const handleNext = async () => {
+  if (!validate()) return
 
-  const handleNext = async () => {
-    if (!validate()) return
-    try {
-      setSending(true);
-      const res = await axios.post("/api/send-otp", {
-        email: data.email,
-      })
-
-      if (res.data.success) {
-        toast.success("OTP sent successfully!")
-        onNext() 
-      } else {
-        throw new Error(res.data.error || "OTP send failed")
-      }
-    } catch (err: any) {
-      toast.error(`Failed to send OTP: ${err.message || err.response?.data?.message || "Unknown error"}`)
-      console.error("Failed to send OTP:", err)
-    } finally {
-      setSending(false)
+  setSending(true)
+  try {
+    //  Check if user exists
+    const url = process.env.NEXT_PUBLIC_PROD_API
+    const checkRes = await axios.post(`${url}/api/auth/check-email`, {
+      email: data.email,
+    })
+    if (checkRes.data.exists) {
+      setCookie("regstatus", "true", {expires: 365 * 10, path: '/'})
+      toast.error("User already exists. Reloading...")
+      setTimeout(() => {
+        window.location.reload()
+      }, 1500) 
+      return
     }
+
+    //Send OTP if user doesn't exist
+    const otpRes = await axios.post("/api/send-otp", {
+      email: data.email,
+    })
+
+    if (otpRes.data.success) {
+      toast.success("OTP sent successfully!")
+      onNext()
+    } else {
+      throw new Error(otpRes.data.error || "OTP send failed")
+    }
+  } catch (err: any) {
+    toast.error(`Failed: ${err.message || err.response?.data?.message || "Unknown error"}`)
+    console.error("Error in handleNext:", err)
+  } finally {
+    setSending(false)
   }
+}
+
 
   return (
     <div className="space-y-4">

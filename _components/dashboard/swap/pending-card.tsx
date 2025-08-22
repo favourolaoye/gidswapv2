@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Copy, CheckCircle, Clock, ArrowLeft } from "lucide-react"
 import { Button } from "@/src/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/card"
-import { useSwapStore } from "@/lib/store"
+import { useSwapStore } from "@/lib/swap-store"
 
 interface PendingDepositCardProps {
   swapData?: any
