@@ -1,6 +1,4 @@
 "use client";
-import { Button } from "@/src/components/ui/button";
-import { Info } from "lucide-react";
 
 interface SwapHeaderProps {
   title: string;

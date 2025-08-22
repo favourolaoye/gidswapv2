@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import { ArrowUpDown, ChevronDown, Info } from "lucide-react";
 import { useState } from "react";
 import { useSwapStore } from "@/lib/store";
+import Swapfooter from "./swap-footer";
 
 interface Currency {
   code: string;
@@ -376,7 +377,9 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
               1 {quote.from.coin} ≈ {quote.from.rate.toFixed(2)} {quote.to.coin}
             </span>
           </div>
-          <div className="flex justify-between"></div>
+          <div className="pt-3 mt-3">
+            <Swapfooter />
+          </div>
         </div>
       )}
 
