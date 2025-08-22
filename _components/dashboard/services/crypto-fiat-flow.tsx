@@ -54,7 +54,7 @@ function CryptoFiatFlow() {
       {currentStep === "verification" && <BankVerificationCard onProceed={handleVerificationComplete} />}
 
       {currentStep === "payment" && (
-        <div className="w-full max-w-lg sm:max-w-md mx-auto bg-[#2a2d3a] rounded-2xl p-6 text-center">
+        <div className="w-full max-w-lg sm:max-w-md mx-auto rounded-2xl p-6 text-center">
           <h3 className="text-xl font-bold text-white mb-4">Payment Processing</h3>
           <p className="text-gray-400">Your transaction is being processed...</p>
         </div>
