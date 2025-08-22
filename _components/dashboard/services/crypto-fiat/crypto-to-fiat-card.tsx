@@ -56,7 +56,7 @@ function TokenDropdown({ token, tokens, onSelect, isOpen, onToggle }: TokenDropd
       </Button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-80 sm:w-72 max-w-[calc(100vw-2rem)] bg-[#2a2d3a] rounded-xl border border-[#3a3d4a] shadow-lg z-50">
+        <div className="absolute top-full right-0 mt-2 w-70 sm:w-72 max-w-[calc(100vw-2rem)] bg-[#2a2d3a] rounded-xl border border-[#3a3d4a] shadow-lg z-50">
           <div className="p-3 border-b border-[#3a3d4a]">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -157,7 +157,7 @@ function CurrencyDropdown({ currency, currencies, onSelect, isOpen, onToggle }: 
       </Button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-80 sm:w-72 max-w-[calc(100vw-2rem)] bg-[#2a2d3a] rounded-xl border border-[#3a3d4a] shadow-lg z-50">
+        <div className="absolute top-full right-0 mt-2 w-70 sm:w-72 max-w-[calc(100vw-2rem)] bg-[#2a2d3a] rounded-xl border border-[#3a3d4a] shadow-lg z-50">
           <div className="p-3 border-b border-[#3a3d4a]">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />

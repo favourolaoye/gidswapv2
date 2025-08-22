@@ -31,8 +31,8 @@ export function BankVerificationCard({ onProceed }: BankVerificationCardProps) {
   }, [fetchBanks, reset])
 
   return (
-    <div className="max-w-md mx-auto mt-6">
-      <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+    <div className="">
+      <div className="bg-gray-900 rounded-2xl p-2 border border-gray-800">
         <div className="mb-6">
           <h3 className="text-sm font-bold text-white mb-2">Verify Your Account</h3>
           {/* <p className="text-gray-400 text-sm">
