@@ -260,7 +260,7 @@ export function CryptoFiatSwapCard({ onSwapComplete }: CryptoFiatSwapCardProps) 
   }
 
   return (
-    <div className="w-full max-w-md mx-auto px-4 sm:px-0">
+    <div className="w-full max-w-lg sm:max-w-md mx-auto px-2 sm:px-0">
       <div className="bg-[#2a2d3a] rounded-2xl p-4 sm:p-6 mb-4">
         <div className="mb-4">
           <div className="flex items-center justify-between mb-3">

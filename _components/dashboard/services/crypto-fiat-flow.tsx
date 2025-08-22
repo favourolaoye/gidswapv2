@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
-import { BankVerificationCard } from "./crypto-fiat/bank-verification-card"
 import { CryptoFiatSwapCard } from "./crypto-fiat/crypto-to-fiat-card"
+import { BankVerificationCard } from "./crypto-fiat/bank-verification-card"
 import { Button } from "@/src/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 
@@ -28,8 +28,8 @@ function CryptoFiatFlow() {
   }
 
   return (
-    <div className="min-h-screen  p-4">
-      <div className="max-w-md mx-auto mb-6">
+    <div className="min-h-screen bg-background p-2 sm:p-4">
+      <div className="w-full max-w-lg sm:max-w-md mx-auto mb-6">
         {currentStep !== "swap" && (
           <Button variant="ghost" onClick={handleBack} className="mb-4 text-gray-400 hover:text-white p-0">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -54,7 +54,7 @@ function CryptoFiatFlow() {
       {currentStep === "verification" && <BankVerificationCard onProceed={handleVerificationComplete} />}
 
       {currentStep === "payment" && (
-        <div className="max-w-md mx-auto bg-[#2a2d3a] rounded-2xl p-6 text-center">
+        <div className="w-full max-w-lg sm:max-w-md mx-auto bg-[#2a2d3a] rounded-2xl p-6 text-center">
           <h3 className="text-xl font-bold text-white mb-4">Payment Processing</h3>
           <p className="text-gray-400">Your transaction is being processed...</p>
         </div>
