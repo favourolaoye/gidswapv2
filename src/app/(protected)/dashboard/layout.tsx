@@ -5,7 +5,8 @@ import { MobileNav } from "@/_components/dashboard/navigation/mobile-nav";
 import { useState } from "react";
 import { MobileBottomNav } from "@/_components/dashboard/navigation/mobile-bottom-nav";
 import { ChatWidget } from "@/_components/dashboard/ui/chat-widget";
-import { navLinks } from "../../dashboardb/page";
+import { navLinks } from "@/lib/constants";
+// import { navLinks } from "../../dashboardb/page";
 
 export default function DashboardLayout({
   children,
@@ -15,7 +16,7 @@ export default function DashboardLayout({
   const [activeLink, setActiveLink] = useState("Swap");
 
   return (
-    <div className="min-h-screen dark:bg-[#1a1d29] text-white">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#1a1d29] text-white">
       {/* Navigation */}
       <DesktopNav
         navLinks={navLinks}
@@ -23,7 +24,7 @@ export default function DashboardLayout({
         onLinkClick={setActiveLink}
       />
       <MobileNav />
-      <main className="py-8">{children}</main>
+      <main className="py-8 pb-12">{children}</main>
       {/* Mobile Bottom Navigation */}
       <MobileBottomNav
         navLinks={navLinks}

@@ -46,13 +46,28 @@ const faqs = [
   },
 ];
 
-// export const navLinks = [
-//   { name: "Swap", icon: ArrowUpDown },
-//   { name: "Account", icon: Home },
-//   { name: "History", icon: History },
-//   { name: "Markets", icon: BarChart3 },
-// ];
-
+export const navLinks = [
+  {
+    name: "Swap",
+    icon: ArrowUpDown,
+    href: "/dashboard/",
+  },
+  {
+    name: "Account",
+    icon: Home,
+    href: "/dashboard/account",
+  },
+  {
+    name: "History",
+    icon: History,
+    href: "/dashboard/history",
+  },
+  {
+    name: "Markets",
+    icon: BarChart3,
+    href: "/dashboard/markets",
+  },
+];
 export const currencies: Currency[] = [
   {
     name: "USDC",

@@ -3,13 +3,17 @@ import { Button } from "@/src/components/ui/button";
 import type React from "react";
 
 import Image from "next/image";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, LucideProps } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
 
 interface NavLink {
   name: string;
-  icon: React.ReactNode;
+  // icon: React.ReactNode;
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
   href: string;
 }
 
@@ -61,7 +65,8 @@ export function DesktopNav({
                 } hover:bg-blue-400/10`}
                 onClick={() => onLinkClick(link.name)}
               >
-                {link.icon}
+                <link.icon className="w-5 h-5" />
+                {/* {link.icon} */}
                 <span className="hidden md:inline">{link.name}</span>
               </Button>
             </Link>

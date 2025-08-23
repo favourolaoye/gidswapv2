@@ -3,10 +3,15 @@
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
 import type React from "react";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { LucideProps } from "lucide-react";
 
 interface NavLink {
   name: string;
-  icon: React.ReactNode;
+  // icon: React.ReactNode;
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
   href: string;
 }
 
@@ -35,7 +40,8 @@ export function MobileBottomNav({
               } hover:bg-blue-400/10`}
               onClick={() => onLinkClick(link.name)}
             >
-              {link.icon}
+              <link.icon className="w-5 h-5" />
+              {/* {link.icon} */}
               <span className="text-xs">{link.name}</span>
             </Button>
           </Link>
