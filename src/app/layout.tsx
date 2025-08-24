@@ -26,8 +26,6 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // const pathname = usePathname();
-  // const hideLayout = pathname.startsWith("/dashboard");
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -44,7 +42,7 @@ export default function RootLayout({
           <Footer />
           <RegistrationModal />
           <LoginModal />
-          <Toaster position="top-right" richColors/>
+          <Toaster position="top-right" richColors />
         </ThemeProvider>
       </body>
     </html>

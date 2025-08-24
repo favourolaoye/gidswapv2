@@ -1,42 +1,55 @@
-"use client"
-import { Button } from "@/src/components/ui/button"
-import { useEffect, useRef, useState } from "react"
-import { ArrowUpDown, ChevronDown, Search } from "lucide-react"
-import { useCryptoFiatStore, type Token, type FiatCurrency } from "@/lib/crypto-fiat-store"
+"use client";
+import { Button } from "@/src/components/ui/button";
+import { useEffect, useRef, useState } from "react";
+import { ArrowUpDown, ChevronDown, Search } from "lucide-react";
+import {
+  useCryptoFiatStore,
+  type Token,
+  type FiatCurrency,
+} from "@/lib/crypto-fiat-store";
 
 interface TokenDropdownProps {
-  token: Token | null
-  tokens: Token[]
-  onSelect: (token: Token) => void
-  isOpen: boolean
-  onToggle: () => void
+  token: Token | null;
+  tokens: Token[];
+  onSelect: (token: Token) => void;
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
-function TokenDropdown({ token, tokens, onSelect, isOpen, onToggle }: TokenDropdownProps) {
-  const [searchTerm, setSearchTerm] = useState("")
-  const dropdownRef = useRef<HTMLDivElement>(null)
+function TokenDropdown({
+  token,
+  tokens,
+  onSelect,
+  isOpen,
+  onToggle,
+}: TokenDropdownProps) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        if (isOpen) onToggle()
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        if (isOpen) onToggle();
       }
-    }
+    };
 
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside)
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [isOpen, onToggle])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, onToggle]);
 
   const filteredTokens = tokens.filter(
     (t) =>
       t.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      t.baseCurrency.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+      t.baseCurrency.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -46,7 +59,11 @@ function TokenDropdown({ token, tokens, onSelect, isOpen, onToggle }: TokenDropd
       >
         {token ? (
           <>
-            <img src={token.logo || "/placeholder.svg"} alt={token.symbol} className="w-5 h-5 rounded-full" />
+            <img
+              src={token.logo || "/placeholder.svg"}
+              alt={token.symbol}
+              className="w-5 h-5 rounded-full"
+            />
             <span>{token.symbol}</span>
           </>
         ) : (
@@ -78,12 +95,16 @@ function TokenDropdown({ token, tokens, onSelect, isOpen, onToggle }: TokenDropd
                   key={t.symbol}
                   className="w-full px-4 py-3 flex items-center gap-3 hover:bg-[#3a3d4a] text-left transition-colors"
                   onClick={() => {
-                    onSelect(t)
-                    onToggle()
-                    setSearchTerm("")
+                    onSelect(t);
+                    onToggle();
+                    setSearchTerm("");
                   }}
                 >
-                  <img src={t.logo || "/placeholder.svg"} alt={t.symbol} className="w-6 h-6 rounded-full" />
+                  <img
+                    src={t.logo || "/placeholder.svg"}
+                    alt={t.symbol}
+                    className="w-6 h-6 rounded-full"
+                  />
                   <div className="flex-1 min-w-0">
                     <div className="text-white font-medium">{t.symbol}</div>
                     <div className="text-gray-400 text-sm truncate">
@@ -93,49 +114,60 @@ function TokenDropdown({ token, tokens, onSelect, isOpen, onToggle }: TokenDropd
                 </button>
               ))
             ) : (
-              <div className="px-4 py-6 text-center text-gray-400 text-sm">No tokens found for "{searchTerm}"</div>
+              <div className="px-4 py-6 text-center text-gray-400 text-sm">
+                No tokens found for "{searchTerm}"
+              </div>
             )}
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
 
 interface CurrencyDropdownProps {
-  currency: FiatCurrency | null
-  currencies: FiatCurrency[]
-  onSelect: (currency: FiatCurrency) => void
-  isOpen: boolean
-  onToggle: () => void
+  currency: FiatCurrency | null;
+  currencies: FiatCurrency[];
+  onSelect: (currency: FiatCurrency) => void;
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
-function CurrencyDropdown({ currency, currencies, onSelect, isOpen, onToggle }: CurrencyDropdownProps) {
-  const [searchTerm, setSearchTerm] = useState("")
-  const dropdownRef = useRef<HTMLDivElement>(null)
+function CurrencyDropdown({
+  currency,
+  currencies,
+  onSelect,
+  isOpen,
+  onToggle,
+}: CurrencyDropdownProps) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        if (isOpen) onToggle()
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        if (isOpen) onToggle();
       }
-    }
+    };
 
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside)
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [isOpen, onToggle])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, onToggle]);
 
   const filteredCurrencies = currencies.filter(
     (c) =>
       c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       c.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.shortName.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+      c.shortName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -179,9 +211,9 @@ function CurrencyDropdown({ currency, currencies, onSelect, isOpen, onToggle }: 
                   key={c.code}
                   className="w-full px-4 py-3 flex items-center gap-3 hover:bg-[#3a3d4a] text-left transition-colors"
                   onClick={() => {
-                    onSelect(c)
-                    onToggle()
-                    setSearchTerm("")
+                    onSelect(c);
+                    onToggle();
+                    setSearchTerm("");
                   }}
                 >
                   <div className="w-6 h-6 flex items-center justify-center text-xs font-bold bg-purple-500 rounded-sm text-white">
@@ -189,25 +221,31 @@ function CurrencyDropdown({ currency, currencies, onSelect, isOpen, onToggle }: 
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-white font-medium">{c.code}</div>
-                    <div className="text-gray-400 text-sm truncate">{c.name}</div>
+                    <div className="text-gray-400 text-sm truncate">
+                      {c.name}
+                    </div>
                   </div>
                 </button>
               ))
             ) : (
-              <div className="px-4 py-6 text-center text-gray-400 text-sm">No currencies found for "{searchTerm}"</div>
+              <div className="px-4 py-6 text-center text-gray-400 text-sm">
+                No currencies found for "{searchTerm}"
+              </div>
             )}
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
 
 interface CryptoFiatSwapCardProps {
-  onSwapComplete?: () => void
+  onSwapComplete?: () => void;
 }
 
-export function CryptoFiatSwapCard({ onSwapComplete }: CryptoFiatSwapCardProps) {
+export function CryptoFiatSwapCard({
+  onSwapComplete,
+}: CryptoFiatSwapCardProps) {
   const {
     tokens,
     currencies,
@@ -225,54 +263,70 @@ export function CryptoFiatSwapCard({ onSwapComplete }: CryptoFiatSwapCardProps) 
     setSelectedCurrency,
     setTokenAmount,
     fetchQuote, // Added fetchQuote to trigger rate fetching
-  } = useCryptoFiatStore()
+  } = useCryptoFiatStore();
 
-  const [tokenDropdownOpen, setTokenDropdownOpen] = useState(false)
-  const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false)
-
-  useEffect(() => {
-    fetchTokens()
-    fetchCurrencies()
-  }, [fetchTokens, fetchCurrencies])
+  const [tokenDropdownOpen, setTokenDropdownOpen] = useState(false);
+  const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
 
   useEffect(() => {
-    if (selectedToken && selectedCurrency && tokenAmount && Number.parseFloat(tokenAmount) > 0) {
-      fetchQuote(selectedToken.symbol, tokenAmount, selectedCurrency.code)
+    fetchTokens();
+    fetchCurrencies();
+  }, [fetchTokens, fetchCurrencies]);
+
+  useEffect(() => {
+    if (
+      selectedToken &&
+      selectedCurrency &&
+      tokenAmount &&
+      Number.parseFloat(tokenAmount) > 0
+    ) {
+      fetchQuote(selectedToken.symbol, tokenAmount, selectedCurrency.code);
     }
-  }, [selectedToken, selectedCurrency, tokenAmount, fetchQuote])
+  }, [selectedToken, selectedCurrency, tokenAmount, fetchQuote]);
 
-  const isFormValid = selectedToken && selectedCurrency && tokenAmount && Number.parseFloat(tokenAmount) > 0
+  const isFormValid =
+    selectedToken &&
+    selectedCurrency &&
+    tokenAmount &&
+    Number.parseFloat(tokenAmount) > 0;
 
   const handleSwap = () => {
-    if (!isFormValid) return
-    console.log("Swap initiated:", { selectedToken, selectedCurrency, tokenAmount, fiatAmount })
-    onSwapComplete?.()
-  }
+    if (!isFormValid) return;
+    console.log("Swap initiated:", {
+      selectedToken,
+      selectedCurrency,
+      tokenAmount,
+      fiatAmount,
+    });
+    onSwapComplete?.();
+  };
 
   if (isLoadingTokens || isLoadingCurrencies) {
     return (
-      <div className="w-full max-w-md mx-auto">
-        <div className="bg-[#2a2d3a] rounded-2xl p-6 text-center">
-          <span className="text-gray-400">Loading...</span>
+      <div className="w-full max-w-md mx-auto p-6">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 text-center shadow-sm">
+          <p className="text-gray-600 dark:text-gray-400">
+            Loading currencies...
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div className="w-full max-w-lg sm:max-w-md mx-auto px-2 sm:px-0">
-      <div className="bg-[#2a2d3a] rounded-2xl p-4 sm:p-6 mb-4">
-        <div className="mb-4">
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm rounded-2xl py-6 px-4 mb-4 relative flex flex-col gap-1">
+        <div className="bg-gray-100 dark:bg-black p-4 rounded-xl">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-gray-400 text-sm font-medium">Send</span>
+            <label className="text-gray-400 text-sm font-medium">Send</label>
             <TokenDropdown
               token={selectedToken}
               tokens={tokens}
               onSelect={setSelectedToken}
               isOpen={tokenDropdownOpen}
               onToggle={() => {
-                setTokenDropdownOpen(!tokenDropdownOpen)
-                setCurrencyDropdownOpen(false)
+                setTokenDropdownOpen(!tokenDropdownOpen);
+                setCurrencyDropdownOpen(false);
               }}
             />
           </div>
@@ -281,17 +335,23 @@ export function CryptoFiatSwapCard({ onSwapComplete }: CryptoFiatSwapCardProps) 
             value={tokenAmount}
             onChange={(e) => setTokenAmount(e.target.value)}
             placeholder="0"
-            className="w-full bg-transparent text-2xl sm:text-3xl font-bold text-white placeholder-gray-500 border-none outline-none"
+            className="w-full bg-transparent text-2xl sm:text-3xl font-bold text-black dark:text-white placeholder-gray-500 border-none outline-none"
           />
         </div>
 
-        <div className="flex justify-center my-4">
-          <Button variant="ghost" size="sm" className="bg-[#3a3d4a] hover:bg-[#4a4d5a] rounded-full p-2">
-            <ArrowUpDown className="w-5 h-5 text-gray-400" />
-          </Button>
-        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="bg-gray-100 dark:bg-black border-4 border-white dark:border-gray-800 hover:bg-[#4a4d5a] rounded-full p-2 
+    absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+    z-10 w-10 h-10 flex items-center justify-center
+    transition-transform duration-300 hover:scale-110"
+          aria-label="Swap currencies"
+        >
+          <ArrowUpDown className="w-5 h-5 text-black dark:text-white text-bold" />
+        </Button>
 
-        <div>
+        <div className="bg-gray-100 dark:bg-black p-4 rounded-xl">
           <div className="flex items-center justify-between mb-3">
             <span className="text-gray-400 text-sm font-medium">Receive</span>
             <CurrencyDropdown
@@ -300,8 +360,8 @@ export function CryptoFiatSwapCard({ onSwapComplete }: CryptoFiatSwapCardProps) 
               onSelect={setSelectedCurrency}
               isOpen={currencyDropdownOpen}
               onToggle={() => {
-                setCurrencyDropdownOpen(!currencyDropdownOpen)
-                setTokenDropdownOpen(false)
+                setCurrencyDropdownOpen(!currencyDropdownOpen);
+                setTokenDropdownOpen(false);
               }}
             />
           </div>
@@ -310,7 +370,7 @@ export function CryptoFiatSwapCard({ onSwapComplete }: CryptoFiatSwapCardProps) 
             value={fiatAmount}
             readOnly
             placeholder="0"
-            className="w-full bg-transparent text-2xl sm:text-3xl font-bold text-white placeholder-gray-500 border-none outline-none"
+            className="w-full bg-transparent text-2xl sm:text-3xl font-bold text-black dark:text-white placeholder-gray-500 border-none outline-none"
           />
         </div>
       </div>
@@ -342,5 +402,5 @@ export function CryptoFiatSwapCard({ onSwapComplete }: CryptoFiatSwapCardProps) 
         {isLoadingQuote ? "Getting quote..." : "Swap"}
       </Button>
     </div>
-  )
+  );
 }
