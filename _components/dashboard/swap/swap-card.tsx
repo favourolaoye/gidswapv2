@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
+import { Input } from "@/src/components/ui/input";
 
 interface Currency {
   code: string;
@@ -30,6 +31,73 @@ interface SwapCardProps {
   isLoading?: boolean;
 }
 
+// function CurrencyDropdown({
+//   currency,
+//   currencies,
+//   onSelect,
+// }: {
+//   currency: Currency | null;
+//   currencies: Currency[];
+//   onSelect?: (currency: Currency) => void;
+// }) {
+//   const handleChange = (value: string) => {
+//     const selected = currencies.find((c) => c.code === value);
+//     if (selected && onSelect) {
+//       onSelect(selected);
+//     }
+//   };
+
+//   return (
+//     <Select onValueChange={handleChange} defaultValue={currency?.code}>
+//       <SelectTrigger
+//         className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-full px-4 py-2 flex items-center gap-2 shadow-sm hover:shadow focus:ring-2 focus:ring-blue-500/30"
+//         aria-label={`Select ${currency?.coin || "currency"} to ${
+//           currency ? "change" : "select"
+//         }`}
+//       >
+//         {currency ? (
+//           <>
+//             <img
+//               src={currency.logo || "/placeholder.svg"}
+//               alt={currency.coin}
+//               className="w-5 h-5 rounded-full"
+//             />
+//             <span className="text-sm font-medium">{currency.coin}</span>
+//           </>
+//         ) : (
+//           <span className="text-sm text-gray-500 dark:text-gray-400">
+//             Select
+//           </span>
+//         )}
+//       </SelectTrigger>
+//       <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg rounded-xl max-h-60 overflow-y-auto z-50">
+//         {currencies.map((curr) => (
+//           <SelectItem
+//             key={curr.code}
+//             value={curr.code}
+//             // className="flex items-center gap-3 p-2 hover:bg-[#3a3d4a]"
+//             className="flex items-center gap-3 p-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+//           >
+//             <img
+//               src={curr.logo || "/placeholder.svg"}
+//               alt={curr.coin}
+//               className="w-6 h-6 rounded-full flex-shrink-0"
+//             />
+//             <div className="flex-1 min-w-0">
+//               <div className="text-gray-900 dark:text-white font-medium truncate">
+//                 {curr.coin}
+//               </div>
+//               <div className="text-gray-500 dark:text-gray-400 text-sm truncate">
+//                 {curr.name}
+//               </div>
+//             </div>
+//           </SelectItem>
+//         ))}
+//       </SelectContent>
+//     </Select>
+//   );
+// }
+
 function CurrencyDropdown({
   currency,
   currencies,
@@ -39,12 +107,22 @@ function CurrencyDropdown({
   currencies: Currency[];
   onSelect?: (currency: Currency) => void;
 }) {
+  const [searchQuery, setSearchQuery] = useState("");
+
   const handleChange = (value: string) => {
     const selected = currencies.find((c) => c.code === value);
     if (selected && onSelect) {
       onSelect(selected);
+      setSearchQuery(""); // Reset search query on selection
     }
   };
+
+  // Filter currencies based on search query
+  const filteredCurrencies = currencies.filter(
+    (curr) =>
+      curr.coin.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      curr.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <Select onValueChange={handleChange} defaultValue={currency?.code}>
@@ -70,28 +148,45 @@ function CurrencyDropdown({
         )}
       </SelectTrigger>
       <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg rounded-xl max-h-60 overflow-y-auto z-50">
-        {currencies.map((curr) => (
-          <SelectItem
-            key={curr.code}
-            value={curr.code}
-            // className="flex items-center gap-3 p-2 hover:bg-[#3a3d4a]"
-            className="flex items-center gap-3 p-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-          >
-            <img
-              src={curr.logo || "/placeholder.svg"}
-              alt={curr.coin}
-              className="w-6 h-6 rounded-full flex-shrink-0"
-            />
-            <div className="flex-1 min-w-0">
-              <div className="text-gray-900 dark:text-white font-medium truncate">
-                {curr.coin}
+        {/* Search Input */}
+        <div className="sticky top-0 bg-white dark:bg-gray-800 p-2 border-b border-gray-200 dark:border-gray-700 z-50">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search currencies..."
+            className="w-full px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/30 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+            aria-label="Search currencies"
+          />
+        </div>
+        {/* Currency List */}
+        {filteredCurrencies.length > 0 ? (
+          filteredCurrencies.map((curr) => (
+            <SelectItem
+              key={curr.code}
+              value={curr.code}
+              className="flex items-center gap-3 p-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              <img
+                src={curr.logo || "/placeholder.svg"}
+                alt={curr.coin}
+                className="w-6 h-6 rounded-full flex-shrink-0"
+              />
+              <div className="flex-1 min-w-0">
+                <div className="text-gray-900 dark:text-white font-medium truncate">
+                  {curr.coin}
+                </div>
+                <div className="text-gray-500 dark:text-gray-400 text-sm truncate">
+                  {curr.name}
+                </div>
               </div>
-              <div className="text-gray-500 dark:text-gray-400 text-sm truncate">
-                {curr.name}
-              </div>
-            </div>
-          </SelectItem>
-        ))}
+            </SelectItem>
+          ))
+        ) : (
+          <div className="p-3 text-gray-500 dark:text-gray-400 text-sm text-center">
+            No currencies found
+          </div>
+        )}
       </SelectContent>
     </Select>
   );
