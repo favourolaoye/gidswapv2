@@ -4,7 +4,7 @@ import { Button } from "@/src/components/ui/button";
 import { useEffect } from "react";
 import { ArrowUpDown } from "lucide-react";
 import { useState } from "react";
-import { useSwapStore } from "@/lib/store";
+import { useSwapStore } from "@/lib/swap-store";
 import Swapfooter from "./swap-footer";
 import {
   Select,

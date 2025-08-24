@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 import { ArrowUpDown, ChevronDown, Info } from "lucide-react";
 import { useState } from "react";
-import { useSwapStore } from "@/lib/store";
+import { useSwapStore } from "./lib/swap-store";
 
 interface Currency {
   code: string;
