@@ -31,7 +31,7 @@ export function DesktopNav({
   const { theme, setTheme } = useTheme();
 
   return (
-    <nav className="hidden sticky top-0 z-50 bg-white dark:bg-[#1a1d29] md:flex items-center justify-between px-6 py-4 border-b border-gray-800">
+    <nav className="hidden sticky top-0 z-50 bg-white dark:bg-[#1a1d29] md:flex items-center justify-between px-6 py-4 border-b border-gray-300">
       <div className="flex items-center gap-8">
         {/* Logo */}
         <div className="relative flex items-center gap-2 flex-shrink-0 group">

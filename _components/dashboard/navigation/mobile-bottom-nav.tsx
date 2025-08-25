@@ -27,7 +27,7 @@ export function MobileBottomNav({
   onLinkClick,
 }: MobileBottomNavProps) {
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-[#2a2d3a] border-t border-gray-800">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-[#2a2d3a] border-t border-gray-500">
       <div className="flex items-center justify-around py-3">
         {navLinks.map((link) => (
           <Link key={link.name} href={link.href}>
