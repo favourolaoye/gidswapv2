@@ -34,7 +34,7 @@ export default function Header() {
 
   const path = usePathname();
   const hideHeader = path?.startsWith("/dashboard");
-  const {theme} = useTheme()
+  const { theme } = useTheme();
   return (
     <header
       className={`sticky left-0 top-0 z-20 w-full bg-transparent backdrop-blur transition-all dark:bg-transparent ${
@@ -46,7 +46,7 @@ export default function Header() {
         <div className="relative flex-shrink-0 group">
           {/* Trigger (logo + chevron) */}
           <div className="flex items-center gap-2 cursor-pointer">
-            {theme === "dark" ? <Image src="/images/gidsfull.png" alt="Logo" width={100} height={80} /> : <Image src="/images/Gidswaplogo.png" alt="Logo" width={100} height={80} />}
+            {theme === "dark" || theme === "system" ? <Image src="/images/gidsfull.png" alt="Logo" width={100} height={80} /> : <Image src="/images/Gidswaplogo.png" alt="Logo" width={100} height={80} />}
             <ChevronDown className="hidden sm:inline size-5 text-gray-400 dark:text-white/50 transition-transform duration-200 group-hover:rotate-180" />
           </div>
 

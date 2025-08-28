@@ -41,14 +41,14 @@ export const useBankVerificationStore = create<BankVerificationState>((set, get)
     try {
       const authtoken = Cookies.get("token")
       const api_url = process.env.NEXT_PUBLIC_PROD_API
-      const response = await axios.get(`${api_url}/api/payCrest/trade/supportedBanks/NGN`, {
-        headers: { Authorization: `Bearer ${authtoken}`},
-      })
+      const response = await axios.get(
+        `${api_url}/api/payCrest/trade/supportedBanks/NGN`,
+        { headers: { Authorization: `Bearer ${authtoken}` } }
+      )
 
       if (response.data && response.data.data) {
         set({ banks: response.data.data, isLoadingBanks: false })
       } else {
-        // Fallback mock data
         set({
           banks: [
             { name: "Access Bank", code: "ABNGNGLA", slug: "access-bank" },
@@ -62,7 +62,6 @@ export const useBankVerificationStore = create<BankVerificationState>((set, get)
       }
     } catch (error) {
       console.error("Error fetching banks:", error)
-      // Use fallback data on error
       set({
         banks: [
           { name: "Access Bank", code: "ABNGNGLA", slug: "access-bank" },
@@ -82,11 +81,9 @@ export const useBankVerificationStore = create<BankVerificationState>((set, get)
   },
 
   setAccountNumber: (number) => {
-    // Only allow digits and limit to 10 characters
     const cleanNumber = number.replace(/\D/g, "").slice(0, 10)
     set({ accountNumber: cleanNumber, accountName: null, isVerified: false, error: null })
 
-    // Auto-verify when 10 digits are entered
     if (cleanNumber.length === 10 && get().selectedBank) {
       get().verifyAccount()
     }
@@ -98,7 +95,7 @@ export const useBankVerificationStore = create<BankVerificationState>((set, get)
 
     set({ isVerifying: true, error: null })
     try {
-      const auttoken = Cookies.get("token");
+      const authtoken = Cookies.get("token")
       const api_url = process.env.NEXT_PUBLIC_PROD_API
       const response = await axios.post(
         `${api_url}/api/payCrest/trade/verifyAccount`,
@@ -106,12 +103,20 @@ export const useBankVerificationStore = create<BankVerificationState>((set, get)
           institution: selectedBank.code,
           accountIdentifier: accountNumber,
         },
-        {
-          headers: {Authorization: `Bearer ${auttoken}`},
-        },
+        { headers: { Authorization: `Bearer ${authtoken}` } }
       )
 
       if (response.data && response.data.status === "success") {
+        const accountData = {
+          bankName: selectedBank.name,
+          bankCode: selectedBank.code,
+          accountNumber,
+          accountName: response.data.data,
+        }
+
+        // Save to cookie (10 mins lifetime)
+        Cookies.set("verifiedBank", JSON.stringify(accountData), { expires: 1 / 144 })
+
         set({
           accountName: response.data.data,
           isVerified: true,

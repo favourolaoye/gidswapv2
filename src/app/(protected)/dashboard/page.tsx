@@ -131,7 +131,7 @@ export default function Dashboard() {
             aria-label="Go back to service selection"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
+            Home
           </button>
           {renderServiceFlow()}
         </div>

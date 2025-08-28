@@ -29,3 +29,4 @@ export const loginUser = async (credentials: any) => {
     throw error
   }
 }
+

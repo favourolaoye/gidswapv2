@@ -34,7 +34,7 @@ export function BankVerificationCard({ onProceed }: BankVerificationCardProps) {
     <div className="">
       <div className="bg-gray-900 rounded-2xl p-2 border border-gray-800">
         <div className="mb-6">
-          <h3 className="text-sm font-bold text-white mb-2">Verify Your Account</h3>
+          {/* <h3 className="text-sm font-bold text-white mb-2">Verify Your Account</h3> */}
           {/* <p className="text-gray-400 text-sm">
             Select your bank and enter your account number to verify your identity
           </p> */}
@@ -110,12 +110,12 @@ export function BankVerificationCard({ onProceed }: BankVerificationCardProps) {
 
         {/* Account Name Display */}
         {accountName && (
-          <div className="mb-4 p-3 bg-green-900/20 border border-green-800 rounded-xl">
+          <div className="mb-4 p-2 bg-green-900/20 border border-green-800 rounded-xl">
             <div className="flex items-center gap-2">
               <Check className="h-4 w-4 text-green-500" />
               <span className="text-sm font-medium text-green-400">Account Verified</span>
             </div>
-            <div className="text-white font-medium mt-1">{accountName}</div>
+            <div className="text-white font-medium mt-1 text-sm">{accountName}</div>
           </div>
         )}
 
