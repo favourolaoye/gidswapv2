@@ -69,12 +69,15 @@ export function PendingPaymentCard({ paymentData, onTimeout }: PendingPaymentCar
     <div className="w-full max-w-lg mx-auto">
       <Card className="bg-[#2a2d3a] border-gray-700">
         <CardHeader className="text-center pb-4">
-          <CardTitle className="text-white text-xl mb-2">Payment Pending</CardTitle>
+            <div className="flex items-center justify-between">
+        <CardTitle className="text-yellow-500 text-md">Pending</CardTitle>
           <div className="flex items-center justify-center gap-2 text-orange-400">
-            <Clock className="w-5 h-5" />
-            <span className="text-lg font-bold">{timeLeft > 0 ? `${timeLeft} minutes remaining` : "Expired"}</span>
+            <Clock className="w-4 h-4" />
+            <span className="text-sm font-bold">{timeLeft > 0 ? `${timeLeft} mins left` : "Expired"}</span>
           </div>
-          <p className="text-gray-400 text-sm mt-2">
+            </div>
+
+          <p className="text-gray-400 text-sm mt-5">
             Send exactly {paymentData.amount} {paymentData.token} to complete your order
           </p>
         </CardHeader>
