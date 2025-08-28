@@ -172,12 +172,12 @@ function CurrencyDropdown({
   return (
     <div className="relative" ref={dropdownRef}>
       <Button
-        className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-4 py-2 flex items-center gap-2 text-sm font-medium"
+        className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-4 py-2 flex items-center gap-2 text-sm font-medium"
         onClick={onToggle}
       >
         {currency ? (
           <>
-            <span className="w-5 h-5 flex items-center justify-center text-xs font-bold bg-purple-500 rounded-sm">
+            <span className="w-5 h-5 flex items-center justify-center text-xs font-bold bg-blue-500 rounded-sm">
               {currency.symbol}
             </span>
             <span>{currency.code}</span>
@@ -198,7 +198,7 @@ function CurrencyDropdown({
                 placeholder="Search currencies..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[#3a3d4a] text-white placeholder-gray-400 rounded-lg pl-10 pr-3 py-2 text-sm border-none outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full bg-[#3a3d4a] text-white placeholder-gray-400 rounded-lg pl-10 pr-3 py-2 text-sm border-none outline-none focus:ring-2 focus:ring-blue-500"
                 autoFocus
               />
             </div>
@@ -216,7 +216,7 @@ function CurrencyDropdown({
                     setSearchTerm("");
                   }}
                 >
-                  <div className="w-6 h-6 flex items-center justify-center text-xs font-bold bg-purple-500 rounded-sm text-white">
+                  <div className="w-6 h-6 flex items-center justify-center text-xs font-bold bg-blue-500 rounded-sm text-white">
                     {c.symbol}
                   </div>
                   <div className="flex-1 min-w-0">

@@ -87,7 +87,7 @@ export function PendingPaymentCard({ paymentData, onTimeout }: PendingPaymentCar
           <div className="bg-[#1e2028] rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-green-400" />
+                <DollarSign className="w-5 h-5 text-blue-400" />
                 <span className="text-gray-400">Amount</span>
               </div>
               <span className="text-white font-bold text-lg">
@@ -119,13 +119,13 @@ export function PendingPaymentCard({ paymentData, onTimeout }: PendingPaymentCar
                 <Copy className="w-4 h-4" />
               </Button>
             </div>
-            {copied === "address" && <p className="text-green-400 text-xs mt-1">Address copied!</p>}
+            {copied === "address" && <p className="text-blue-400 text-xs mt-1">Address copied!</p>}
           </div>
 
           {/* Reference */}
           <div className="bg-[#1e2028] rounded-lg p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Hash className="w-5 h-5 text-purple-400" />
+              <Hash className="w-5 h-5 text-blue-400" />
               <span className="text-gray-400">Reference</span>
             </div>
             <div className="flex items-center gap-2">
@@ -134,12 +134,12 @@ export function PendingPaymentCard({ paymentData, onTimeout }: PendingPaymentCar
                 variant="ghost"
                 size="sm"
                 onClick={() => copyToClipboard(paymentData.reference, "reference")}
-                className="text-purple-400 hover:text-purple-300"
+                className="text-blue-400 hover:text-blue-300"
               >
                 <Copy className="w-4 h-4" />
               </Button>
             </div>
-            {copied === "reference" && <p className="text-green-400 text-xs mt-1">Reference copied!</p>}
+            {copied === "reference" && <p className="text-blue-400 text-xs mt-1">Reference copied!</p>}
           </div>
 
           {/* Fees */}
