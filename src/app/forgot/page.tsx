@@ -13,6 +13,7 @@ import {
   EyeOff,
   CheckCircle,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function ForgotPasswordFlow() {
   const {
@@ -61,9 +62,9 @@ export default function ForgotPasswordFlow() {
       setTimeout(() => verifyOtp(), 500);
     }
   };
-
+  const router = useRouter();
   const handleStartOver = () => {
-    resetState();
+    router.push("/");
   };
 
   if (passwordReset) {
