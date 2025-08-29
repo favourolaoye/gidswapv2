@@ -87,7 +87,7 @@ export function PendingPaymentCard({ paymentData, onTimeout }: PendingPaymentCar
           <div className="bg-[#1e2028] rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-blue-400" />
+                {/* <DollarSign className="w-5 h-5 text-blue-400" /> */}
                 <span className="text-gray-400">Amount</span>
               </div>
               <span className="text-white font-bold text-lg">

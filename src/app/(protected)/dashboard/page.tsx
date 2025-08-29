@@ -34,13 +34,6 @@ const services = [
     color: "from-green-500 to-emerald-600",
   },
   {
-    id: "fiat-crypto" as ServiceType,
-    title: "Cash to Crypto",
-    description: "Buy cryptocurrency using your bank account or credit card",
-    icon: "🏦",
-    color: "from-orange-500 to-red-600",
-  },
-  {
     id: "cex-transfer" as ServiceType,
     title: "Exchange Transfer",
     description:

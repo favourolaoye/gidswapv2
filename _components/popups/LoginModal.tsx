@@ -21,7 +21,7 @@ export function LoginModal() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
-    setLoading(true) // ⬅️ start loading
+    setLoading(true) // start loading
 
     try {
       const response = await loginUser({ email, password })
@@ -41,7 +41,7 @@ export function LoginModal() {
       setError("Login failed. Please check your credentials.")
       console.error(err)
     } finally {
-      setLoading(false) // ⬅️ stop loading regardless of success/failure
+      setLoading(false);
     }
   }
 

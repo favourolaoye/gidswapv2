@@ -1,9 +1,3 @@
-// export interface Currency {
-//   name: string;
-//   logo: string;
-//   rate: number;
-// }
-
 export interface Currency {
   name: string;
   logo: string;
