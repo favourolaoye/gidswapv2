@@ -5,6 +5,7 @@ import { usePasswordResetStore } from "@/lib/forgot-password"
 import { Button } from "@/src/components/ui/button"
 import { Input } from "@/src/components/ui/input"
 import { ArrowLeft, Mail, Shield, Lock, Eye, EyeOff, CheckCircle } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function ForgotPasswordFlow() {
   const {
@@ -53,9 +54,9 @@ export default function ForgotPasswordFlow() {
       setTimeout(() => verifyOtp(), 500)
     }
   }
-
+  const router = useRouter()
   const handleStartOver = () => {
-    resetState()
+    router.push("/")
   }
 
   if (passwordReset) {
