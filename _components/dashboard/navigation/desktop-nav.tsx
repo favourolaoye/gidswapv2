@@ -7,7 +7,8 @@ import { Sun, Moon, LucideProps } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
-
+import { useAuthStore } from "@/store/Authstore";
+import { useRouter } from "next/navigation";
 interface NavLink {
   name: string;
   // icon: React.ReactNode;
@@ -29,6 +30,12 @@ export function DesktopNav({
   onLinkClick,
 }: DesktopNavProps) {
   const { theme, setTheme } = useTheme();
+  const router = useRouter()
+  const {logout} = useAuthStore();
+  const handleLogout  = () => {
+    logout()
+    router.push("/")
+  }
 
   return (
     <nav className="hidden sticky top-0 z-50 bg-white dark:bg-[#1a1d29] md:flex items-center justify-between px-6 py-4 border-b border-gray-300">
@@ -88,15 +95,13 @@ export function DesktopNav({
             <Moon className="w-5 h-5 text-gray-800" />
           )}
         </Button>
-        {/* <Button className="mygradient futuristic-button text-white rounded-full px-6 py-2 hover:opacity-90">
-          Get Started
-        </Button>
         <Button
           variant="outline"
-          className="border-gray-600 text-blue-800 dark:text-white hover:bg-gray-800 rounded-full px-6 py-2 bg-transparent"
+          onClick={handleLogout}
+          className="text-red-700 hover:text-red-600 dark:text-red-600 dark:bg-transparent dark:border-none hover:bg-red-200  px-6 py-2 bg-transparent"
         >
-          Login
-        </Button> */}
+          Logout
+        </Button>
       </div>
     </nav>
   );
