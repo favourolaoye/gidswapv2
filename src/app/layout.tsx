@@ -5,7 +5,7 @@ import { ThemeProvider } from "next-themes";
 import Header from "@/_components/layout/header";
 import Footer from "@/_components/layout/footer";
 import { Toaster } from "sonner";
-import { RegistrationModal } from "@/_components/popups/RegisterModal";
+import { RegistrationModal } from "@/_components/popups/NewRegisterModal";
 import { LoginModal } from "@/_components/popups/LoginModal";
 
 const geistSans = Geist({

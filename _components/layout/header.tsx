@@ -46,7 +46,21 @@ export default function Header() {
         <div className="relative flex-shrink-0 group">
           {/* Trigger (logo + chevron) */}
           <div className="flex items-center gap-2 cursor-pointer">
-            {theme === "dark" || theme === "system" ? <Image src="/images/gidsfull.png" alt="Logo" width={100} height={80} /> : <Image src="/images/Gidswaplogo.png" alt="Logo" width={100} height={80} />}
+            {theme === "light" ? (
+              <Image
+                src="/images/Gidswaplogo.png"
+                alt="Logo"
+                width={100}
+                height={80}
+              />
+            ) : (
+              <Image
+                src="/images/gidsfull.png"
+                alt="Logo"
+                width={100}
+                height={80}
+              />
+            )}
             <ChevronDown className="hidden sm:inline size-5 text-gray-400 dark:text-white/50 transition-transform duration-200 group-hover:rotate-180" />
           </div>
 
@@ -70,7 +84,7 @@ export default function Header() {
           {isAuthenticated ? (
             <>
               <Link href="/dashboard" passHref>
-                <Button className="futuristic-button bg-transparent text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20">
+                <Button className="futuristic-button bg-black/20 dark:bg-white/20 backdrop-blur-sm text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20">
                   Dashboard
                 </Button>
               </Link>
@@ -80,14 +94,14 @@ export default function Header() {
               {regStatus ? (
                 <Button
                   onClick={handleSignInClick}
-                  className="futuristic-button bg-transparent text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20"
+                  className="futuristic-button bg-black/20 dark:bg-white/20 backdrop-blur-md text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20"
                 >
                   Sign in
                 </Button>
               ) : (
                 <Button
                   onClick={handleRegisterClick}
-                  className="futuristic-button bg-transparent text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20"
+                  className="futuristic-button bg-black/20 dark:bg-white/20 backdrop-blur-md text-blue-600/90 font-semibold text-sm hover:bg-blue-300/20"
                 >
                   Register
                 </Button>

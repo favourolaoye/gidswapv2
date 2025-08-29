@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
+import { Button } from "@/src/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 export default function StepTwo({ data, onNext, onBack, onChange }: any) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -81,31 +83,39 @@ export default function StepTwo({ data, onNext, onBack, onChange }: any) {
   return (
     <div>
       <h2 className="text-lg font-bold mb-4">Verify Email</h2>
-      <p className="mb-2 text-sm text-gray-600 dark:text-gray-300">
-        A verification code was sent to <strong>{data.email}</strong>
+      <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
+        A verification code was sent to <br />
+        <span className="font-medium text-gray-900 dark:text-white">
+          {data.email}
+        </span>
       </p>
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Verification Code
+        </label>
 
-      <div className="flex justify-around gap-1 mb-4">
-        {[...Array(6)].map((_, index) => (
-          <input
-            aria-label="inputs"
-            key={index}
-            type="text"
-            maxLength={1}
-            inputMode="numeric"
-            pattern="[0-9]*"
-            value={data.code[index] || ""}
-            onChange={(e) => handleOtpChange(index, e.target.value)}
-            onKeyDown={(e) => handleKeyDown(index, e)}
-            ref={(el) => {
-              inputRefs.current[index] = el as HTMLInputElement | null;
-            }}
-            className={`w-12 h-12 text-center text-xl border rounded-[8px] focus-visible:outline-blue-500
+        <div className="flex justify-around gap-1 mb-4">
+          {[...Array(6)].map((_, index) => (
+            <input
+              aria-label="inputs"
+              key={index}
+              type="text"
+              maxLength={1}
+              inputMode="numeric"
+              pattern="[0-9]*"
+              value={data.code[index] || ""}
+              onChange={(e) => handleOtpChange(index, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(index, e)}
+              ref={(el) => {
+                inputRefs.current[index] = el as HTMLInputElement | null;
+              }}
+              className={`w-12 h-12 text-center text-xl border rounded-[8px] focus-visible:outline-blue-500
               ${isValid === true ? "border-green-500" : ""}
               ${isValid === false ? "border-red-500 animate-shake" : ""}
               dark:bg-neutral-800 dark:border-neutral-700 dark:text-white`}
-          />
-        ))}
+            />
+          ))}
+        </div>
       </div>
 
       <div className="mb-3 text-sm text-center">
@@ -114,7 +124,7 @@ export default function StepTwo({ data, onNext, onBack, onChange }: any) {
         ) : (
           <button
             onClick={handleResend}
-            className="text-blue-600 hover:underline disabled:opacity-50"
+            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
             disabled={isSending}
           >
             {isSending ? "Sending..." : "Resend Code"}
@@ -122,17 +132,21 @@ export default function StepTwo({ data, onNext, onBack, onChange }: any) {
         )}
       </div>
 
-      <div className="flex  justify-end">
-        {/* <button onClick={onBack} className="w-full bg-gray-300 text-black py-2 rounded">
-                    Back
-                </button> */}
-        <button
-          disabled={data.code.length < 6 || verifying || isValid !== true}
-          className="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-50"
-          onClick={onNext}
+      <div className="flex gap-3">
+        <Button
+          variant="outline"
+          onClick={onBack}
+          className="flex-1 h-12 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 bg-transparent"
         >
-          {verifying ? "Verifying..." : "Next"}
-        </button>
+          Back
+        </Button>
+        <Button
+          onClick={onNext}
+          disabled={data.code.length < 6 || verifying || isValid !== true}
+          className="futuristic-button flex-1 h-12 bg-blue-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl"
+        >
+          {verifying ? <Loader2 className="w-4 h-4 animate-spin" /> : "Verify"}
+        </Button>
       </div>
     </div>
   );
