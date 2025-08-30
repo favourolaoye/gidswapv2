@@ -44,6 +44,7 @@ export default function ForgotPasswordFlow() {
     }
   }, [currentStep])
 
+  
   const handleOtpChange = (value: string) => {
     // Only allow numbers and limit to 6 digits
     const numericValue = value.replace(/\D/g, "").slice(0, 6)
