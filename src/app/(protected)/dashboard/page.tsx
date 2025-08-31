@@ -6,7 +6,7 @@ import { useSwapStore } from "@/lib/swap-store";
 
 import { CryptoSwapFlow } from "@/_components/dashboard/services/crypto-swap-flow";
 import CryptoFiatFlow from "@/_components/dashboard/services/crypto-fiat-flow";
-import { CexTransferFlow } from "@/_components/dashboard/services/cex-transfer-flow";
+import CexTransferFlow from "@/_components/dashboard/services/cex-transfer-flow";
 import { FiatCryptoFlow } from "@/_components/dashboard/services/fiat-crypto-flow";
 
 type ServiceType =
@@ -33,6 +33,7 @@ const services = [
     icon: "💰",
     color: "from-green-500 to-emerald-600",
   },
+
   {
     id: "cex-transfer" as ServiceType,
     title: "Exchange Transfer",

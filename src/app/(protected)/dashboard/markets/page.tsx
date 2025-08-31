@@ -1,102 +1,56 @@
 "use client";
 
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Search, TrendingUp, TrendingDown, BarChart3 } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 
-const mockTokens = [
-  {
-    id: 1,
-    name: "Bitcoin",
-    symbol: "BTC",
-    price: 117003.7029,
-    change1h: 0.24,
-    change24h: -0.92,
-    fdv: "2,329,344,819.161B",
-    icon: "₿",
-    iconColor: "bg-orange-500",
-  },
-  {
-    id: 2,
-    name: "Ethereum",
-    symbol: "ETH",
-    price: 4372.625,
-    change1h: 0.57,
-    change24h: -3.45,
-    fdv: "514,953,319.280B",
-    icon: "Ξ",
-    iconColor: "bg-blue-500",
-  },
-  {
-    id: 3,
-    name: "Tether",
-    symbol: "USDT",
-    price: 1.0019,
-    change1h: -0.01,
-    change24h: 0.05,
-    fdv: "149,181,413.465B",
-    icon: "₮",
-    iconColor: "bg-green-500",
-  },
-  {
-    id: 4,
-    name: "BNB",
-    symbol: "BNB",
-    price: 857.5365,
-    change1h: 1.02,
-    change24h: -0.1,
-    fdv: "127,713,112.999B",
-    icon: "B",
-    iconColor: "bg-yellow-500",
-  },
-  {
-    id: 5,
-    name: "Solana",
-    symbol: "SOL",
-    price: 184.8614,
-    change1h: 0.79,
-    change24h: -4.19,
-    fdv: "99,838,035.059B",
-    icon: "◎",
-    iconColor: "bg-purple-500",
-  },
-  {
-    id: 6,
-    name: "USD Coin",
-    symbol: "USDC",
-    price: 1.0025,
-    change1h: -0.06,
-    change24h: 0.27,
-    fdv: "68,558,975.194B",
-    icon: "$",
-    iconColor: "bg-blue-600",
-  },
-];
+interface Token {
+  id: string;
+  name: string;
+  symbol: string;
+  image: string;
+  current_price: number;
+  price_change_percentage_1h_in_currency?: number;
+  price_change_percentage_24h?: number;
+  fully_diluted_valuation?: number;
+}
 
 export default function MarketsPage() {
   const [activeTab, setActiveTab] = useState("Tokens");
   const [activeFilter, setActiveFilter] = useState("All");
-  const [activeCurrency, setActiveCurrency] = useState("USD");
+  const [activeCurrency, setActiveCurrency] = useState<"USD" | "NGN">("USD");
   const [searchQuery, setSearchQuery] = useState("");
-  const [hasData] = useState(true);
 
-  const filteredTokens = mockTokens.filter(
+  // Fetch market data from CoinGecko
+  const { data: tokens = [], isLoading } = useQuery<Token[]>({
+    queryKey: ["markets", activeCurrency],
+    queryFn: async () => {
+      const res = await fetch(
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${activeCurrency.toLowerCase()}&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=1h,24h`
+      );
+      return res.json();
+    },
+    refetchInterval: 120000, // refresh every 2 min
+  });
+
+  const filteredTokens = tokens.filter(
     (token) =>
       token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       token.symbol.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatPrice = (price: number) =>
+    new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD",
+      currency: activeCurrency,
       minimumFractionDigits: 2,
       maximumFractionDigits: 4,
     }).format(price);
-  };
 
-  const formatChange = (change: number) => {
+  const formatChange = (change?: number) => {
+    if (change === undefined || change === null) return <span>-</span>;
     const isPositive = change > 0;
     return (
       <span
@@ -104,9 +58,6 @@ export default function MarketsPage() {
           isPositive
             ? "text-green-500 dark:text-green-400"
             : "text-red-500 dark:text-red-400"
-        }`}
-        aria-label={`${Math.abs(change).toFixed(2)}% ${
-          isPositive ? "increase" : "decrease"
         }`}
       >
         {isPositive ? (
@@ -146,7 +97,7 @@ export default function MarketsPage() {
           ))}
         </div>
 
-        {/* Filters and Search */}
+        {/* Filters + Search */}
         <div className="flex flex-col sm:flex-row gap-4 items-start justify-between">
           <div className="flex flex-wrap gap-2">
             {["All", "Top gainers", "Top losers"].map((filter) => (
@@ -172,7 +123,7 @@ export default function MarketsPage() {
               {["USD", "NGN"].map((currency) => (
                 <Button
                   key={currency}
-                  onClick={() => setActiveCurrency(currency)}
+                  onClick={() => setActiveCurrency(currency as "USD" | "NGN")}
                   aria-pressed={activeCurrency === currency}
                   className={`text-sm px-4 py-2 rounded-full transition-colors
                     ${
@@ -201,7 +152,7 @@ export default function MarketsPage() {
       </div>
 
       {/* Content */}
-      {activeTab === "Tokens" && hasData && filteredTokens.length > 0 ? (
+      {activeTab === "Tokens" && !isLoading && filteredTokens.length > 0 ? (
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden overflow-x-auto shadow-sm">
           <table className="w-full table-auto">
             <thead className="text-gray-600 dark:text-gray-400 text-sm font-medium border-b border-gray-200 dark:border-gray-700">
@@ -215,25 +166,24 @@ export default function MarketsPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredTokens.map((token) => (
+              {filteredTokens.map((token, index) => (
                 <tr
                   key={token.id}
                   className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0"
                 >
                   <td className="p-4 text-gray-500 dark:text-gray-400">
-                    {token.id}
+                    {index + 1}
                   </td>
                   <td className="p-4">
                     <div className="flex items-center gap-3">
-                      <div
-                        className={`w-8 h-8 ${token.iconColor} rounded-full flex items-center justify-center text-white font-bold`}
-                        aria-label={`${token.symbol} icon`}
-                      >
-                        {token.icon}
-                      </div>
+                      <img
+                        src={token.image}
+                        alt={token.name}
+                        className="w-8 h-8 rounded-full"
+                      />
                       <div>
                         <div className="font-medium text-gray-900 dark:text-white truncate max-w-[80px] sm:max-w-none">
-                          {token.symbol}
+                          {token.symbol.toUpperCase()}
                         </div>
                         <div className="text-sm text-gray-500 dark:text-gray-400 truncate max-w-[100px] sm:max-w-none">
                           {token.name}
@@ -242,16 +192,18 @@ export default function MarketsPage() {
                     </div>
                   </td>
                   <td className="p-4 text-right font-medium text-gray-900 dark:text-white">
-                    {formatPrice(token.price)}
+                    {formatPrice(token.current_price)}
                   </td>
                   <td className="p-4 text-right">
-                    {formatChange(token.change1h)}
+                    {formatChange(token.price_change_percentage_1h_in_currency)}
                   </td>
                   <td className="p-4 text-right">
-                    {formatChange(token.change24h)}
+                    {formatChange(token.price_change_percentage_24h)}
                   </td>
                   <td className="p-4 text-right text-gray-500 dark:text-gray-400">
-                    ${token.fdv}
+                    {token.fully_diluted_valuation
+                      ? formatPrice(token.fully_diluted_valuation)
+                      : "-"}
                   </td>
                 </tr>
               ))}

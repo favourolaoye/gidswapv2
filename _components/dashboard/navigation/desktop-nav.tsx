@@ -9,6 +9,7 @@ import Link from "next/link";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 import { useAuthStore } from "@/store/Authstore";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 interface NavLink {
   name: string;
   // icon: React.ReactNode;
@@ -35,6 +36,7 @@ export function DesktopNav({
   const handleLogout  = () => {
     logout()
     router.push("/")
+    toast.info("Logged out")
   }
 
   return (

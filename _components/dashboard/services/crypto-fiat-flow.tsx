@@ -54,7 +54,7 @@ function CryptoFiatFlow() {
           </Button>
         )}
 
-        <h1 className="text-2xl font-bold text-white text-center mb-2">
+        <h1 className="text-2xl font-bold text-center text-gray-700 dark:text-gray-100 center mb-2">
           {currentStep === "swap" && "Crypto to Fiat"}
           {currentStep === "verification" && "Verify Account"}
           {currentStep === "order" && "Initialize Order"}

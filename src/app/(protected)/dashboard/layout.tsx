@@ -7,7 +7,7 @@ import { MobileBottomNav } from "@/_components/dashboard/navigation/mobile-botto
 import { ChatWidget } from "@/_components/dashboard/ui/chat-widget";
 import { navLinks } from "@/lib/constants";
 // import { navLinks } from "../../dashboardb/page";
-
+import { QueryClientProvider, } from "@tanstack/react-query";
 export default function DashboardLayout({
   children,
 }: {
