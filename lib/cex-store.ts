@@ -79,7 +79,7 @@ export const useCEXStore = create<CEXState>()(
           await navigator.clipboard.writeText(uid)
 
           // Create WhatsApp message
-          const message = `Hi, I would like to exchange funds.`
+          const message = `Hi, I would like to exchange funds with Gidswap.`
           const encodedMessage = encodeURIComponent(message)
           const whatsappURL = `https://wa.me/+2349038958941?text=${encodedMessage}`
 
