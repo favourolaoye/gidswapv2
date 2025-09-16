@@ -95,10 +95,10 @@ export function QuoteCard() {
             <span className="text-gray-400">Network</span>
             <span className="text-white">{swapData.quote?.to.network}</span>
           </div>
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <span className="text-gray-400">Processing Time</span>
             <span className="text-white">~ 1-10 minutes</span>
-          </div>
+          </div> */}
         </div>
 
         {/* Wallet Address Input */}

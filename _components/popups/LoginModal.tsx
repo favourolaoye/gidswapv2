@@ -67,14 +67,14 @@ export function LoginModal() {
     >
       <div className="space-y-6">
         {/* Header */}
-        <div className="text-center">
+        {/* <div className="text-center">
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
             Sign In to Gidswap
           </h3>
           <p className="text-gray-600 dark:text-gray-400">
             Access your crypto trading dashboard
           </p>
-        </div>
+        </div> */}
 
         {/* Form */}
         <form onSubmit={handleLogin} className="space-y-4">

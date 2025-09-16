@@ -39,11 +39,6 @@ const faqs = [
     answer:
       "Gidswap connects users with liquidity providers through smart contracts to facilitate fast and secure currency exchanges.",
   },
-  {
-    question: "Who is a provider?",
-    answer:
-      "Liquidity providers are individuals or institutions who supply funds to facilitate exchanges and earn fees for their services.",
-  },
 ];
 
 export const navLinks = [

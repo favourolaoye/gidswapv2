@@ -2,6 +2,7 @@ import { create } from "zustand"
 import axios from "axios"
 import Cookies from "js-cookie"
 
+
 interface Currency {
   code: string
   coin: string
@@ -84,31 +85,32 @@ export const useSwapStore = create<SwapState>((set, get) => ({
   // Basic Setters
   setSellAmount: (amount) => set({ sellAmount: amount }),
   setReceiveAmount: (amount) => set({ receiveAmount: amount }),
-
   setSellUsdAmount: (usdAmount) => {
     const { quote, sellCurrency } = get()
     set({ sellUsdAmount: usdAmount })
 
-    // Only calculate if it's a valid number (skip empty string or invalid)
-    const usdValue = Number.parseFloat(usdAmount)
-    if (quote && sellCurrency && usdAmount !== "" && !isNaN(usdValue) && quote.from.usd > 0) {
-      const currencyAmount = ((usdValue / quote.from.usd) * Number.parseFloat(quote.from.amount)).toFixed(8)
-      set({ sellAmount: currencyAmount })
+    // Convert USD to currency amount if quote is available
+    if (quote && sellCurrency && usdAmount) {
+      const usdValue = Number.parseFloat(usdAmount)
+      if (!isNaN(usdValue) && quote.from.usd > 0) {
+        const currencyAmount = ((usdValue / quote.from.usd) * Number.parseFloat(quote.from.amount)).toFixed(8)
+        set({ sellAmount: currencyAmount })
+      }
     }
   },
-
   setReceiveUsdAmount: (usdAmount) => {
     const { quote, receiveCurrency } = get()
     set({ receiveUsdAmount: usdAmount })
 
-    // Only calculate if it's a valid number (skip empty string or invalid)
-    const usdValue = Number.parseFloat(usdAmount)
-    if (quote && receiveCurrency && usdAmount !== "" && !isNaN(usdValue) && quote.to.usd > 0) {
-      const currencyAmount = ((usdValue / quote.to.usd) * Number.parseFloat(quote.to.amount)).toFixed(8)
-      set({ receiveAmount: currencyAmount })
+    // Convert USD to currency amount if quote is available
+    if (quote && receiveCurrency && usdAmount) {
+      const usdValue = Number.parseFloat(usdAmount)
+      if (!isNaN(usdValue) && quote.to.usd > 0) {
+        const currencyAmount = ((usdValue / quote.to.usd) * Number.parseFloat(quote.to.amount)).toFixed(8)
+        set({ receiveAmount: currencyAmount })
+      }
     }
   },
-
   setShowAdditionalInfo: (show) => set({ showAdditionalInfo: show }),
   setActiveLink: (link) => set({ activeLink: link }),
   setSwapStep: (step) => set({ swapStep: step }),
@@ -139,6 +141,7 @@ export const useSwapStore = create<SwapState>((set, get) => ({
         const currencies = response.data.data as Currency[]
         set({ currencies })
 
+        // Set default currencies
         if (currencies.length > 1) {
           const btc = currencies.find((c) => c.coin === "BTC")
           const eth = currencies.find((c) => c.coin === "ETH")
@@ -146,9 +149,7 @@ export const useSwapStore = create<SwapState>((set, get) => ({
           set({
             sellCurrency: btc || currencies[0],
             receiveCurrency:
-              eth ||
-              currencies.find((c) => c.coin !== (btc?.coin || currencies[0].coin)) ||
-              currencies[1],
+              eth || currencies.find((c) => c.coin !== (btc?.coin || currencies[0].coin)) || currencies[1],
           })
         }
       }
@@ -168,6 +169,7 @@ export const useSwapStore = create<SwapState>((set, get) => ({
 
     let amountToUse = sellAmount
     if (sellUsdAmount && Number.parseFloat(sellUsdAmount) > 0) {
+      // If we have a USD amount, use the converted currency amount
       amountToUse = sellAmount
     }
 
@@ -196,9 +198,9 @@ export const useSwapStore = create<SwapState>((set, get) => ({
           receiveUsdAmount: quoteData.to.usd.toFixed(2),
         })
 
-        // Only initialize sellUsdAmount if it's never been set
+        // Update sell USD amount if it wasn't set by user
         const { sellUsdAmount: currentSellUsd } = get()
-        if (currentSellUsd === undefined || currentSellUsd === null) {
+        if (!currentSellUsd || Number.parseFloat(currentSellUsd) === 0) {
           set({ sellUsdAmount: quoteData.from.usd.toFixed(2) })
         }
       }
@@ -234,7 +236,6 @@ export const useSwapStore = create<SwapState>((set, get) => ({
     try {
       const api = process.env.NEXT_PUBLIC_PROD_API
       const token = Cookies.get("token")
-
       const response = await axios.post(
         `${api}/api/fixfloat/trade/create-order`,
         {
@@ -242,19 +243,32 @@ export const useSwapStore = create<SwapState>((set, get) => ({
           toAddress: walletAddress,
         },
         {
-          headers: {
+          headers: { 
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+              Authorization: `Bearer ${token}`
+           },
         },
       )
 
       const swapResponseData = response.data
 
       if (swapResponseData.code === 0) {
-        Cookies.set("swapResponseData", JSON.stringify(swapResponseData), {
-          expires: 1 / 24,
-        })
+        // Store the complete response data including data.id in cookies
+        Cookies.set("swapResponseData", JSON.stringify(swapResponseData), { expires: 1 / 24 })
+
+        const { sellCurrency, receiveCurrency, sellAmount, receiveAmount } = get()
+        // if (sellCurrency && receiveCurrency) {
+        //   useTransactionHistoryStore.getState().addTransaction({
+        //     type: "crypto-to-crypto",
+        //     fromCurrency: sellCurrency.coin,
+        //     toCurrency: receiveCurrency.coin,
+        //     fromAmount: Number.parseFloat(sellAmount),
+        //     toAmount: Number.parseFloat(receiveAmount),
+        //     status: "pending",
+        //     reference: swapResponseData.data?.id || `swap_${Date.now()}`,
+        //     walletAddress: walletAddress,
+        //   })
+        // }
 
         set({
           swapData: swapResponseData,
@@ -262,13 +276,13 @@ export const useSwapStore = create<SwapState>((set, get) => ({
           error: null,
         })
       } else {
-        set({
-          error: swapResponseData.msg || "Invalid wallet address or swap parameters",
-        })
+        const errorMessage = swapResponseData.msg || "Invalid wallet address or swap parameters"
+        set({ error: errorMessage })
+        console.error("Swap API error:", swapResponseData)
       }
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Swap failed. Please try again."
+      console.error("Swap failed:", error)
+      const errorMessage = error instanceof Error ? error.message : "Swap failed. Please try again."
       set({ error: errorMessage })
     } finally {
       set({ isSwapping: false })
@@ -286,11 +300,12 @@ export const useSwapStore = create<SwapState>((set, get) => ({
   },
 
   proceedWithWallet: async (walletAddress) => {
+    console.log("Proceeding with wallet address:", walletAddress)
     set({ walletAddress })
   },
 }))
 
-// Restore from cookie
+// Initialize store with saved data
 if (typeof window !== "undefined") {
   const savedSwapData = Cookies.get("swapResponseData")
   if (savedSwapData) {
@@ -304,7 +319,7 @@ if (typeof window !== "undefined") {
       } else {
         Cookies.remove("swapResponseData")
       }
-    } catch {
+    } catch (error) {
       Cookies.remove("swapResponseData")
     }
   }

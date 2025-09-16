@@ -122,7 +122,7 @@ export function OrderInitializationCard({ onBack, onNext, onOrderComplete }: Ord
         {/* Memo Input */}
         <div className="space-y-2">
           <Label htmlFor="memo" className="text-sm font-medium text-gray-300">
-            Payment Memo *
+            Remarks *
           </Label>
           <Input
             id="memo"
@@ -149,7 +149,7 @@ export function OrderInitializationCard({ onBack, onNext, onOrderComplete }: Ord
             className="bg-gray-800 border-gray-700 text-white placeholder-gray-500 font-mono text-sm"
           />
           {errors.returnAddress && <p className="text-sm text-red-400">{errors.returnAddress}</p>}
-          <p className="text-xs text-gray-500">Address where funds will be returned if the transaction fails</p>
+          <p className="text-xs text-gray-500">Address where funds will be returned if the transaction in case of issues</p>
         </div>
 
         {/* Initialize Order Button */}

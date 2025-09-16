@@ -73,7 +73,7 @@ export function BankVerificationCard({ onProceed }: BankVerificationCardProps) {
                     className="w-full px-4 py-3 text-left text-white hover:bg-gray-700 transition-colors border-b border-gray-700 last:border-b-0"
                   >
                     <div className="font-medium">{bank.name}</div>
-                    <div className="text-xs text-gray-400">{bank.code}</div>
+                    {/* <div className="text-xs text-gray-400">{bank.code}</div> */}
                   </button>
                 ))}
               </div>

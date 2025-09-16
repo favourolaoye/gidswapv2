@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, TrendingUp, TrendingDown, BarChart3 } from "lucide-react";
+import { Search, BarChart3 } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
+import TokenTable from "@/_components/markets/token-table"; // <-- new component
 
 interface Token {
   id: string;
@@ -48,27 +49,6 @@ export default function MarketsPage() {
       minimumFractionDigits: 2,
       maximumFractionDigits: 4,
     }).format(price);
-
-  const formatChange = (change?: number) => {
-    if (change === undefined || change === null) return <span>-</span>;
-    const isPositive = change > 0;
-    return (
-      <span
-        className={`flex items-center justify-end gap-1 ${
-          isPositive
-            ? "text-green-500 dark:text-green-400"
-            : "text-red-500 dark:text-red-400"
-        }`}
-      >
-        {isPositive ? (
-          <TrendingUp className="w-3 h-3" />
-        ) : (
-          <TrendingDown className="w-3 h-3" />
-        )}
-        {Math.abs(change).toFixed(2)}%
-      </span>
-    );
-  };
 
   return (
     <main className="p-4 md:p-6 w-full pb-10 max-w-6xl mx-auto">
@@ -153,63 +133,7 @@ export default function MarketsPage() {
 
       {/* Content */}
       {activeTab === "Tokens" && !isLoading && filteredTokens.length > 0 ? (
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden overflow-x-auto shadow-sm">
-          <table className="w-full table-auto">
-            <thead className="text-gray-600 dark:text-gray-400 text-sm font-medium border-b border-gray-200 dark:border-gray-700">
-              <tr>
-                <th className="text-left p-4">#</th>
-                <th className="text-left p-4">Token</th>
-                <th className="text-right p-4">Price</th>
-                <th className="text-right p-4">1H</th>
-                <th className="text-right p-4">24H</th>
-                <th className="text-right p-4">FDV</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredTokens.map((token, index) => (
-                <tr
-                  key={token.id}
-                  className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0"
-                >
-                  <td className="p-4 text-gray-500 dark:text-gray-400">
-                    {index + 1}
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={token.image}
-                        alt={token.name}
-                        className="w-8 h-8 rounded-full"
-                      />
-                      <div>
-                        <div className="font-medium text-gray-900 dark:text-white truncate max-w-[80px] sm:max-w-none">
-                          {token.symbol.toUpperCase()}
-                        </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400 truncate max-w-[100px] sm:max-w-none">
-                          {token.name}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="p-4 text-right font-medium text-gray-900 dark:text-white">
-                    {formatPrice(token.current_price)}
-                  </td>
-                  <td className="p-4 text-right">
-                    {formatChange(token.price_change_percentage_1h_in_currency)}
-                  </td>
-                  <td className="p-4 text-right">
-                    {formatChange(token.price_change_percentage_24h)}
-                  </td>
-                  <td className="p-4 text-right text-gray-500 dark:text-gray-400">
-                    {token.fully_diluted_valuation
-                      ? formatPrice(token.fully_diluted_valuation)
-                      : "-"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <TokenTable tokens={filteredTokens} formatPrice={formatPrice} />
       ) : (
         /* Empty State */
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-12 text-center shadow-sm">
