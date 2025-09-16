@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import axios from "axios"
 import Cookies from "js-cookie"
+import { toast } from "sonner"
 
 interface Bank {
   name: string
@@ -49,30 +50,13 @@ export const useBankVerificationStore = create<BankVerificationState>((set, get)
       if (response.data && response.data.data) {
         set({ banks: response.data.data, isLoadingBanks: false })
       } else {
-        set({
-          banks: [
-            { name: "Access Bank", code: "ABNGNGLA", slug: "access-bank" },
-            { name: "GTBank", code: "GTBINGLA", slug: "gtbank" },
-            { name: "First Bank", code: "FBNINGLA", slug: "first-bank" },
-            { name: "UBA", code: "UBANGLA", slug: "uba" },
-            { name: "Zenith Bank", code: "ZENIGLA", slug: "zenith-bank" },
-          ],
-          isLoadingBanks: false,
-        })
+        set({isLoadingBanks: false})
+        toast.error("Failed to fetch data")
       }
     } catch (error) {
       console.error("Error fetching banks:", error)
-      set({
-        banks: [
-          { name: "Access Bank", code: "ABNGNGLA", slug: "access-bank" },
-          { name: "GTBank", code: "GTBINGLA", slug: "gtbank" },
-          { name: "First Bank", code: "FBNINGLA", slug: "first-bank" },
-          { name: "UBA", code: "UBANGLA", slug: "uba" },
-          { name: "Zenith Bank", code: "ZENIGLA", slug: "zenith-bank" },
-        ],
-        isLoadingBanks: false,
-        error: "Failed to fetch banks, using fallback data",
-      })
+      set({isLoadingBanks: false,error: "Failed to fetch banks, using fallback data"})
+      toast.error("Failed to fetch data")
     }
   },
 

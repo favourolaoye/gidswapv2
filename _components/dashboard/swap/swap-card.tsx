@@ -132,7 +132,7 @@ function SwapSection({
   dropdownOpen,
   onDropdownToggle,
 }: {
-  type: "sell" | "receive"
+  type: "from" | "to"
   usdAmount: string
   currencyAmount?: string
   currency: Currency | null
@@ -145,7 +145,7 @@ function SwapSection({
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <span className="text-gray-500 dark:text-gray-400 text-sm capitalize">{type}</span>
+        <span className="text-gray-500 dark:text-gray-400 text-base font-medium capitalize">{type}</span>
         <CurrencyDropdown
           currency={currency}
           currencies={currencies}
@@ -160,7 +160,7 @@ function SwapSection({
           type="text"
           value={usdAmount ?? ""}
           onChange={(e) => onUsdAmountChange?.(sanitizeNumericInput(e.target.value))}
-          readOnly={type === "receive"}
+          readOnly={type === "to"}
           placeholder="0.00"
           className="w-full bg-transparent text-2xl md:text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 border-none outline-none pl-6"
         />
@@ -262,7 +262,7 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
       <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 mb-6">
         <div className="mb-4">
           <SwapSection
-            type="sell"
+            type="from"
             usdAmount={sellUsdAmount}
             currencyAmount={sellAmount}
             currency={sellCurrency}
@@ -303,7 +303,7 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
 
         <div>
           <SwapSection
-            type="receive"
+            type="to"
             usdAmount={receiveUsdAmount}
             currencyAmount={receiveAmount}
             currency={receiveCurrency}

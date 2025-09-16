@@ -262,7 +262,7 @@ export function CryptoFiatSwapCard({
     setSelectedToken,
     setSelectedCurrency,
     setTokenAmount,
-    fetchQuote, // Added fetchQuote to trigger rate fetching
+    fetchQuote,
   } = useCryptoFiatStore();
 
   const [tokenDropdownOpen, setTokenDropdownOpen] = useState(false);
@@ -272,6 +272,13 @@ export function CryptoFiatSwapCard({
     fetchTokens();
     fetchCurrencies();
   }, [fetchTokens, fetchCurrencies]);
+
+  // Auto-select the single available currency if only one
+  useEffect(() => {
+    if (currencies.length === 1 && !selectedCurrency) {
+      setSelectedCurrency(currencies[0]);
+    }
+  }, [currencies, selectedCurrency, setSelectedCurrency]);
 
   useEffect(() => {
     if (
@@ -316,6 +323,7 @@ export function CryptoFiatSwapCard({
   return (
     <div className="w-full max-w-lg sm:max-w-md mx-auto px-2 sm:px-0">
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm rounded-2xl py-6 px-4 mb-4 relative flex flex-col gap-1">
+        {/* Send Section */}
         <div className="bg-gray-100 dark:bg-black p-4 rounded-xl">
           <div className="flex items-center justify-between mb-3">
             <label className="text-gray-400 text-sm font-medium">Send</label>
@@ -339,6 +347,7 @@ export function CryptoFiatSwapCard({
           />
         </div>
 
+        {/* Swap Button */}
         <Button
           variant="ghost"
           size="sm"
@@ -351,19 +360,30 @@ export function CryptoFiatSwapCard({
           <ArrowUpDown className="w-5 h-5 text-black dark:text-white text-bold" />
         </Button>
 
+        {/* Receive Section */}
         <div className="bg-gray-100 dark:bg-black p-4 rounded-xl">
           <div className="flex items-center justify-between mb-3">
             <span className="text-gray-400 text-sm font-medium">Receive</span>
-            <CurrencyDropdown
-              currency={selectedCurrency}
-              currencies={currencies}
-              onSelect={setSelectedCurrency}
-              isOpen={currencyDropdownOpen}
-              onToggle={() => {
-                setCurrencyDropdownOpen(!currencyDropdownOpen);
-                setTokenDropdownOpen(false);
-              }}
-            />
+
+            {currencies.length === 1 ? (
+              <div className="flex items-center gap-2 bg-blue-600 text-white rounded-full px-4 py-2 text-sm font-medium">
+                <span className="w-5 h-5 flex items-center justify-center text-xs font-bold bg-blue-500 rounded-sm">
+                  {currencies[0].symbol}
+                </span>
+                <span>{currencies[0].code}</span>
+              </div>
+            ) : (
+              <CurrencyDropdown
+                currency={selectedCurrency}
+                currencies={currencies}
+                onSelect={setSelectedCurrency}
+                isOpen={currencyDropdownOpen}
+                onToggle={() => {
+                  setCurrencyDropdownOpen(!currencyDropdownOpen);
+                  setTokenDropdownOpen(false);
+                }}
+              />
+            )}
           </div>
           <input
             type="text"
@@ -375,6 +395,7 @@ export function CryptoFiatSwapCard({
         </div>
       </div>
 
+      {/* Quote Section */}
       {quote && (
         <div className="bg-[#2a2d3a] rounded-xl p-4 mb-4 text-sm">
           <div className="flex justify-between items-center mb-2">
@@ -394,6 +415,7 @@ export function CryptoFiatSwapCard({
         </div>
       )}
 
+      {/* Swap Button */}
       <Button
         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
         onClick={handleSwap}
