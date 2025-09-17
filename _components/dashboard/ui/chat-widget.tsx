@@ -38,18 +38,18 @@ export function ChatWidget() {
             </p>
 
             <div className="space-y-4 text-sm ">
-              <div className="flex items-center gap-3">
+              <a href="mailto:support@gidswap.com" className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-gray-900 dark:text-gray-50" />
                 <a href="mailto:support@gidswap.com" className="text-white hover:underline">
                   support@gidswap.com
                 </a>
-              </div>
-              <div className="flex items-center gap-3">
+              </a>
+              <a href="tel:+2349038958941" className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-gray-900 dark:text-gray-50" />
                 <a href="tel:+2349038958941" className="text-white hover:underline ">
                   +234 903 895 8941
                 </a>
-              </div>
+              </a>
 
             </div>
 

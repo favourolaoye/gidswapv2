@@ -64,6 +64,7 @@ export default function Header() {
             <ChevronDown className="hidden sm:inline size-5 text-gray-400 dark:text-white/50 transition-transform duration-200 group-hover:rotate-180" />
           </div>
 
+
           {/* Popup - stays inside same group */}
           <div
             className="absolute top-full left-0 mt-2 flex-col gap-3 w-[9rem] text-gray-800 text-sm 

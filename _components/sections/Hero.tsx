@@ -1,9 +1,8 @@
 import { ChevronDown } from "lucide-react";
 import { AnimatedSection } from "@/src/components/ui/animate-section";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TextType from "@/src/components/ui/textType";
 import { currencies } from "@/lib/constants";
-import SwapForm from "../backup/swapform";
 import HeroSwapForm from "./HeroSwapForm";
 
 export default function Hero() {
@@ -17,15 +16,13 @@ export default function Hero() {
     rate: 1,
   });
   const [showModal, setShowModal] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Placeholder for auth check
-  const [currentAction, setCurrentAction] = useState("Buy");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const actions = ["Buy", "Sell", "Swap"];
 
   const handleSwap = () => {
     if (!isLoggedIn) {
       setShowModal(true);
     } else {
-      // Implement swap logic here
       console.log("Swap initiated:", {
         sendAmount,
         sendCurrency,
@@ -34,25 +31,39 @@ export default function Hero() {
       });
     }
   };
+
   return (
     <div
       id="hero"
-      className="flex min-h-screen w-full flex-col items-center justify-center overflow-y-auto py-20"
+      className="relative bg-grid flex min-h-screen w-full flex-col items-center justify-center overflow-y-auto py-20"
     >
-      <div className="flex h-full flex-col justify-center">
+      {/* Background Glow Effects */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Top Left Glow */}
+        <div className="absolute top-[-200px] left-[-200px] h-[500px] w-[500px] rounded-full bg-blue-500/30 blur-[160px] animate-glow" />
+
+        {/* Bottom Right Glow */}
+        <div className="absolute bottom-[-200px] right-[-200px] h-[500px] w-[500px] rounded-full bg-blue-500/30 blur-[160px] animate-glow" />
+
+        {/* Center Glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 h-[400px] w-[400px] rounded-full bg-indigo-400/20 blur-[200px] animate-glow" />
+      </div>
+
+      {/* Hero Content */}
+      <div className="flex h-full flex-col justify-center relative z-10">
         <AnimatedSection className="w-full">
           <section className="w-full px-5 mb-12">
-            <h1 className="flex flex-col items-center gap-1 text-center font-semibold">
+            <h1 className="flex flex-col items-center gap-1 text-center font-semibold font-poppins tracking-wider">
               <TextType
-                className="text-3xl sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] transition-all duration-500 ease-out opacity-100"
+                className="text-4xl sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] transition-all duration-500 ease-out opacity-100"
                 text={actions.map((text) => text)}
                 typingSpeed={500}
                 pauseDuration={1500}
                 showCursor={true}
-                cursorCharacter="|"
+                cursorCharacter="<"
               />
-              <span className="text-[2rem] sm:text-[2.5rem] font-bold md:text-[3.25rem] lg:text-[4rem] font-crimson italic">
-                crypto for cash in seconds.
+              <span className="text-[2.5rem] sm:text-[2.5rem] font-bold md:text-[3.25rem] lg:text-[5.5rem] font-playfair italic tracking-wide">
+                crypto in seconds.
               </span>
             </h1>
           </section>

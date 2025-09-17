@@ -12,6 +12,7 @@ import { ResponsiveModal } from "./responsive-modal";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
+import { FcGoogle } from "react-icons/fc";
 
 export function LoginModal() {
   const router = useRouter();
@@ -59,6 +60,11 @@ export function LoginModal() {
     setRegisterModalOpen(true);
   };
 
+  const handleGoogleLogin = () => {
+    // Redirect to your backend Google OAuth endpoint
+    window.location.href = `${process.env.NEXT_PUBLIC_PROD_API}/api/auth/google`;
+  };
+
   return (
     <ResponsiveModal
       open={isLoginModalOpen}
@@ -66,16 +72,6 @@ export function LoginModal() {
       title="Welcome Back"
     >
       <div className="space-y-6">
-        {/* Header */}
-        {/* <div className="text-center">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Sign In to Gidswap
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400">
-            Access your crypto trading dashboard
-          </p>
-        </div> */}
-
         {/* Form */}
         <form onSubmit={handleLogin} className="space-y-4">
           {/* Email Field */}
@@ -171,7 +167,29 @@ export function LoginModal() {
           </Button>
         </form>
 
-        {/* Divider */}
+        {/* Divider for social login */}
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-200 dark:border-gray-700" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">
+              Or continue with
+            </span>
+          </div>
+        </div>
+
+        {/* Google Login */}
+        <Button
+          type="button"
+          onClick={handleGoogleLogin}
+          className="w-full h-12 flex items-center justify-center gap-2 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl"
+        >
+          <FcGoogle className="w-5 h-5" />
+          Continue with Google
+        </Button>
+
+        {/* Divider before register */}
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-200 dark:border-gray-700" />

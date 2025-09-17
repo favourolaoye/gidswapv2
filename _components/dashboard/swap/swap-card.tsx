@@ -208,6 +208,8 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
   const isFormValid =
     !!sellUsdAmount && sellUsdAmountNum > 0 && !!sellCurrency && !!receiveCurrency && !!quote && !hasValidationError
 
+
+
   /** ✅ debounce fetchQuote so it doesn’t fire on every keystroke instantly */
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -223,6 +225,21 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
       setReceiveCurrency(alt || null)
     }
   }
+  // run on currecy change
+  useEffect(() => {
+    if (!quote) return
+
+    // Keep the amounts in sync whenever quote changes
+    if (sellUsdAmount) {
+      setSellUsdAmount(sellUsdAmount)
+    } else if (receiveUsdAmount) {
+      setReceiveUsdAmount(receiveUsdAmount)
+    } else {
+      // Initialize from the quote if neither side has a value yet
+      setSellUsdAmount(quote.from.usd.toFixed(2))
+      setReceiveUsdAmount(quote.to.usd.toFixed(2))
+    }
+  }, [quote])
 
   const handleReceiveCurrencySelect = (currency: Currency) => {
     setReceiveCurrency(currency)
