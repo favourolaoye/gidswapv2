@@ -397,17 +397,17 @@ export function CryptoFiatSwapCard({
 
       {/* Quote Section */}
       {quote && (
-        <div className="bg-[#2a2d3a] rounded-xl p-4 mb-4 text-sm">
+        <div className="bg-white border shadow-sm dark:bg-[#333746] rounded-xl p-4 mb-4 text-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-400">Rate</span>
-            <span className="text-white font-medium">
+            <span className="text-gray-700 dark:text-gray-200">Rate</span>
+            <span className="text-gray-700 dark:text-white font-medium">
               1 {selectedToken?.symbol} = {selectedCurrency?.symbol}
               {quote.rate.toLocaleString()}
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-gray-400">You'll receive</span>
-            <span className="text-white font-medium">
+            <span className="text-gray-800 dark:text-gray-200">You'll receive</span>
+            <span className="text-gray-800 dark:text-white font-medium">
               {selectedCurrency?.symbol}
               {quote.total.toLocaleString()}
             </span>

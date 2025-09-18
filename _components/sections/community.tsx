@@ -93,10 +93,10 @@ export default function Community() {
             {/* Stats Section */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               {[
-                { number: "0", label: "Community Members" },
+                { number: "10k+", label: "Community Members" },
                 { number: "24/7", label: "Active Support" },
                 { number: "100+", label: "Countries" },
-                { number: "1", label: "Transactions" },
+                { number: "1k+", label: "Transactions" },
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}
@@ -184,13 +184,13 @@ export default function Community() {
                 Choose your preferred platform and join thousands of users
                 worldwide
               </p>
-              <motion.button
+              {/* <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300"
               >
                 Join Our Newsletter
-              </motion.button>
+              </motion.button> */}
             </motion.div>
           </div>
         </motion.div>

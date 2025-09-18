@@ -35,18 +35,18 @@ export default function Hero() {
   return (
     <div
       id="hero"
-      className="relative bg-grid flex min-h-screen w-full flex-col items-center justify-center overflow-y-auto py-20"
+      className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-y-auto py-20"
     >
       {/* Background Glow Effects */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Top Left Glow */}
-        <div className="absolute top-[-200px] left-[-200px] h-[500px] w-[500px] rounded-full bg-blue-500/30 blur-[160px] animate-glow" />
+      
+        {/* <div className="absolute top-[-200px] left-[-200px] h-[500px] w-[500px] rounded-full bg-blue-500/30 blur-[160px] animate-glow" />
 
-        {/* Bottom Right Glow */}
+       
         <div className="absolute bottom-[-200px] right-[-200px] h-[500px] w-[500px] rounded-full bg-blue-500/30 blur-[160px] animate-glow" />
 
-        {/* Center Glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 h-[400px] w-[400px] rounded-full bg-indigo-400/20 blur-[200px] animate-glow" />
+      
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 h-[400px] w-[400px] rounded-full bg-indigo-400/20 blur-[200px] animate-glow" /> */}
       </div>
 
       {/* Hero Content */}

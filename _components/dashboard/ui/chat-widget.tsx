@@ -40,13 +40,13 @@ export function ChatWidget() {
             <div className="space-y-4 text-sm ">
               <a href="mailto:support@gidswap.com" className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-gray-900 dark:text-gray-50" />
-                <a href="mailto:support@gidswap.com" className="text-white hover:underline">
+                <a href="mailto:support@gidswap.com" className="text-gray-800 dark:text-gray-100 hover:underline">
                   support@gidswap.com
                 </a>
               </a>
               <a href="tel:+2349038958941" className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-gray-900 dark:text-gray-50" />
-                <a href="tel:+2349038958941" className="text-white hover:underline ">
+                <a href="tel:+2349038958941" className="text-gray-800 dark:text-gray-100 hover:underline">
                   +234 903 895 8941
                 </a>
               </a>

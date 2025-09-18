@@ -39,6 +39,11 @@ const faqs = [
     answer:
       "Gidswap connects users with liquidity providers through smart contracts to facilitate fast and secure currency exchanges.",
   },
+  {
+  question: "How does Stablecoin refunds work?",
+  answer: "For example, if you create an order at 1,500 and the rate suddenly drops to 1,480, the transaction may fall outside the allowed slippage of the provider. In that case, instead of completing the trade at the unfavorable rate, the system issues a stablecoin refund to you."
+}
+
 ];
 
 export const navLinks = [

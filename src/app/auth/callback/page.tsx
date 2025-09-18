@@ -17,7 +17,7 @@ function CallbackHandler() {
     if (token) {
       setCookie("token", token, { expires: 3 });
       setToken(token);
-      setAuthStatus(true);
+      // setAuthStatus(true);
 
       if (user) {
         try {
@@ -29,6 +29,7 @@ function CallbackHandler() {
 
       router.push("/dashboard");
     } else {
+      console.log("shit")
       router.push("/");
     }
   }, [searchParams, router, setAuthStatus, setToken]);

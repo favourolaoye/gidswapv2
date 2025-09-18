@@ -27,7 +27,7 @@ export function OrderInitializationCard({ onBack, onNext, onOrderComplete }: Ord
   const verifiedBank = Cookies.get("verifiedBank")
   const bankData = verifiedBank ? JSON.parse(verifiedBank) : null
 
-  const { selectedBank, accountNumber, accountName, bankName, bankCode } = bankData || {}
+  const { accountNumber, accountName, bankName, bankCode } = bankData || {}
 
   const validateForm = () => {
     const newErrors: { memo?: string; returnAddress?: string } = {}
@@ -54,7 +54,6 @@ export function OrderInitializationCard({ onBack, onNext, onOrderComplete }: Ord
       return
     }
 
-    // use values from cookie
     const payload = {
       institution: bankCode,
       accountIdentifier: accountNumber,
@@ -72,11 +71,16 @@ export function OrderInitializationCard({ onBack, onNext, onOrderComplete }: Ord
   }
 
   return (
-    <Card className="w-full bg-gray-900 border-gray-800">
+    <Card className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-        <CardTitle className="text-xl font-bold text-gray-200">Initialize Order</CardTitle>
+        <CardTitle className="text-xl font-bold text-gray-800 dark:text-gray-200">Initialize Order</CardTitle>
         {onBack && (
-          <Button variant="ghost" size="sm" onClick={onBack} className="text-gray-400 hover:text-white">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onBack}
+            className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+          >
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back
           </Button>
@@ -85,43 +89,43 @@ export function OrderInitializationCard({ onBack, onNext, onOrderComplete }: Ord
 
       <CardContent className="space-y-6">
         {/* Order Summary */}
-        <div className="bg-gray-800 rounded-lg p-4 space-y-2">
-          <h3 className="text-sm font-medium text-gray-300">Order Summary</h3>
+        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-2">
+          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Order Summary</h3>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Amount:</span>
-            <span className="text-white">
+            <span className="text-gray-600 dark:text-gray-400">Amount:</span>
+            <span className="text-gray-900 dark:text-white">
               {tokenAmount} {selectedToken?.symbol}
             </span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Rate:</span>
-            <span className="text-white">
+            <span className="text-gray-600 dark:text-gray-400">Rate:</span>
+            <span className="text-gray-900 dark:text-white">
               1 {selectedToken?.symbol} = {quote?.rate.toLocaleString()} {selectedCurrency?.code}
             </span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Total:</span>
-            <span className="text-white font-medium">
+            <span className="text-gray-600 dark:text-gray-400">Total:</span>
+            <span className="font-medium text-gray-900 dark:text-white">
               {quote?.total.toLocaleString()} {selectedCurrency?.code}
             </span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Bank:</span>
-            <span className="text-white">{bankName || "N/A"}</span>
+            <span className="text-gray-600 dark:text-gray-400">Bank:</span>
+            <span className="text-gray-900 dark:text-white">{bankName || "N/A"}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Account:</span>
-            <span className="text-white">{accountNumber || "N/A"}</span>
+            <span className="text-gray-600 dark:text-gray-400">Account:</span>
+            <span className="text-gray-900 dark:text-white">{accountNumber || "N/A"}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Account Name:</span>
-            <span className="text-white">{accountName || "N/A"}</span>
+            <span className="text-gray-600 dark:text-gray-400">Account Name:</span>
+            <span className="text-gray-900 dark:text-white">{accountName || "N/A"}</span>
           </div>
         </div>
 
         {/* Memo Input */}
         <div className="space-y-2">
-          <Label htmlFor="memo" className="text-sm font-medium text-gray-300">
+          <Label htmlFor="memo" className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Remarks *
           </Label>
           <Input
@@ -130,33 +134,37 @@ export function OrderInitializationCard({ onBack, onNext, onOrderComplete }: Ord
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
             placeholder="Enter payment description"
-            className="bg-gray-800 border-gray-700 text-white placeholder-gray-500"
+            className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
           />
-          {errors.memo && <p className="text-sm text-red-400">{errors.memo}</p>}
+          {errors.memo && <p className="text-sm text-red-500 dark:text-red-400">{errors.memo}</p>}
         </div>
 
         {/* Return Address Input */}
         <div className="space-y-2">
-          <Label htmlFor="returnAddress" className="text-sm font-medium text-gray-300">
-            Return Wallet Address *
+          <Label htmlFor="returnAddress" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            Refund Wallet Address (in case of error) *
           </Label>
           <Input
             id="returnAddress"
             type="text"
             value={returnAddress}
             onChange={(e) => setReturnAddress(e.target.value)}
-            placeholder="0x742d35Cc6634C0532925a3b8D395745e99F1E17A"
-            className="bg-gray-800 border-gray-700 text-white placeholder-gray-500 font-mono text-sm"
+            placeholder="0xwallet"
+            className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 font-mono text-sm"
           />
-          {errors.returnAddress && <p className="text-sm text-red-400">{errors.returnAddress}</p>}
-          <p className="text-xs text-gray-500">Address where funds will be returned if the transaction in case of issues</p>
+          {errors.returnAddress && (
+            <p className="text-sm text-red-500 dark:text-red-400">{errors.returnAddress}</p>
+          )}
+          <p className="text-xs text-gray-600 dark:text-gray-400">
+            Please do not use an exchange wallet address as the refund wallet address.
+          </p>
         </div>
 
         {/* Initialize Order Button */}
         <Button
           onClick={handleInitializeOrder}
           disabled={isInitializingOrder || !memo.trim() || !returnAddress.trim()}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 disabled:opacity-70 disabled:cursor-not-allowed"
         >
           {isInitializingOrder ? (
             <>

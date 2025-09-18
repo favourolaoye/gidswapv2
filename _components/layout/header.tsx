@@ -61,12 +61,12 @@ export default function Header() {
                 height={80}
               />
             )}
-            <ChevronDown className="hidden sm:inline size-5 text-gray-400 dark:text-white/50 transition-transform duration-200 group-hover:rotate-180" />
+            {/* <ChevronDown className="hidden sm:inline size-5 text-gray-400 dark:text-white/50 transition-transform duration-200 group-hover:rotate-180" /> */}
           </div>
 
 
           {/* Popup - stays inside same group */}
-          <div
+          {/* <div
             className="absolute top-full left-0 mt-2 flex-col gap-3 w-[9rem] text-gray-800 text-sm 
                   bg-white/90 dark:bg-transparent backdrop-blur-sm p-3 rounded-sm shadow-md 
                   dark:text-gray-200 z-50 hidden group-hover:flex"
@@ -77,8 +77,8 @@ export default function Header() {
             <Link href="/policy" className="hover:underline">
               Terms
             </Link>
-          </div>
-        </div>
+          </div>*/}
+        </div> 
 
         {/* CTA */}
         <div className="flex items-center gap-2">
