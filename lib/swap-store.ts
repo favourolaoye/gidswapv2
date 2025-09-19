@@ -63,9 +63,9 @@ interface SwapState {
 
 export const useSwapStore = create<SwapState>((set, get) => ({
   // Initial State
-  sellAmount: "0.0025",
+  sellAmount: "",
   receiveAmount: "",
-  sellUsdAmount: "100",
+  sellUsdAmount: "",
   receiveUsdAmount: "",
   showAdditionalInfo: false,
   activeLink: "Swap",
@@ -89,10 +89,19 @@ export const useSwapStore = create<SwapState>((set, get) => ({
     const { quote, sellCurrency } = get()
     set({ sellUsdAmount: usdAmount })
 
-    // Only calculate if it's a valid number (skip empty string or invalid)
     const usdValue = Number.parseFloat(usdAmount)
-    if (quote && sellCurrency && usdAmount !== "" && !isNaN(usdValue) && quote.from.usd > 0) {
-      const currencyAmount = ((usdValue / quote.from.usd) * Number.parseFloat(quote.from.amount)).toFixed(8)
+    // Only convert USD → crypto if quote matches the current coin
+    if (
+      quote &&
+      sellCurrency &&
+      quote.from.coin === sellCurrency.coin &&
+      usdAmount !== "" &&
+      !isNaN(usdValue) &&
+      quote.from.usd > 0
+    ) {
+      const currencyAmount = (
+        (usdValue / quote.from.usd) * Number.parseFloat(quote.from.amount)
+      ).toFixed(8)
       set({ sellAmount: currencyAmount })
     }
   },
@@ -101,10 +110,18 @@ export const useSwapStore = create<SwapState>((set, get) => ({
     const { quote, receiveCurrency } = get()
     set({ receiveUsdAmount: usdAmount })
 
-    // Only calculate if it's a valid number (skip empty string or invalid)
     const usdValue = Number.parseFloat(usdAmount)
-    if (quote && receiveCurrency && usdAmount !== "" && !isNaN(usdValue) && quote.to.usd > 0) {
-      const currencyAmount = ((usdValue / quote.to.usd) * Number.parseFloat(quote.to.amount)).toFixed(8)
+    if (
+      quote &&
+      receiveCurrency &&
+      quote.to.coin === receiveCurrency.coin &&
+      usdAmount !== "" &&
+      !isNaN(usdValue) &&
+      quote.to.usd > 0
+    ) {
+      const currencyAmount = (
+        (usdValue / quote.to.usd) * Number.parseFloat(quote.to.amount)
+      ).toFixed(8)
       set({ receiveAmount: currencyAmount })
     }
   },
@@ -113,7 +130,19 @@ export const useSwapStore = create<SwapState>((set, get) => ({
   setActiveLink: (link) => set({ activeLink: link }),
   setSwapStep: (step) => set({ swapStep: step }),
   setSwapData: (data) => set({ swapData: data }),
-  setSellCurrency: (currency) => set({ sellCurrency: currency }),
+
+  // 🔑 Reset amounts & quote when changing sellCurrency
+  setSellCurrency: (currency) => {
+    set({
+      sellCurrency: currency,
+      sellAmount: "",
+      sellUsdAmount: "",
+      receiveAmount: "",
+      receiveUsdAmount: "",
+      quote: null,
+    })
+  },
+
   setReceiveCurrency: (currency) => set({ receiveCurrency: currency }),
   setWalletAddress: (address) => set({ walletAddress: address }),
   setError: (error) => set({ error }),
@@ -160,18 +189,31 @@ export const useSwapStore = create<SwapState>((set, get) => ({
   },
 
   fetchQuote: async () => {
-    const { sellCurrency, receiveCurrency, sellAmount, sellUsdAmount } = get()
+    const { sellCurrency, receiveCurrency, sellAmount, sellUsdAmount, quote: currentQuote } = get()
     const api = process.env.NEXT_PUBLIC_PROD_API
     const token = Cookies.get("token")
 
     if (!api || !token || !sellCurrency || !receiveCurrency) return
 
-    let amountToUse = sellAmount
-    if (sellUsdAmount && Number.parseFloat(sellUsdAmount) > 0) {
-      amountToUse = sellAmount
+    let amountToUse: number | null = null
+
+    if (sellAmount && !isNaN(Number(sellAmount)) && Number(sellAmount) > 0) {
+      amountToUse = Number.parseFloat(sellAmount)
+    } else if (sellUsdAmount && !isNaN(Number(sellUsdAmount)) && Number(sellUsdAmount) > 0) {
+      if (
+        currentQuote &&
+        currentQuote.from.coin === sellCurrency.coin &&
+        currentQuote.from.usd > 0
+      ) {
+        amountToUse =
+          (Number.parseFloat(sellUsdAmount) / currentQuote.from.usd) *
+          Number.parseFloat(currentQuote.from.amount)
+      } else {
+        amountToUse = 1 // seed quote
+      }
     }
 
-    if (!amountToUse || Number.parseFloat(amountToUse) <= 0) return
+    if (!amountToUse || amountToUse <= 0) return
 
     set({ isLoadingQuote: true })
 
@@ -181,7 +223,7 @@ export const useSwapStore = create<SwapState>((set, get) => ({
         {
           fromCcy: sellCurrency.code,
           toCcy: receiveCurrency.code,
-          amount: Number.parseFloat(amountToUse),
+          amount: amountToUse,
           direction: "from",
           type: "float",
         },
@@ -190,17 +232,27 @@ export const useSwapStore = create<SwapState>((set, get) => ({
 
       if (response.data.code === 0) {
         const quoteData = response.data.data
+
+        let newSellAmount = sellAmount
+        let newSellUsdAmount = sellUsdAmount
+
+        if (sellUsdAmount && Number.parseFloat(sellUsdAmount) > 0) {
+          newSellAmount = (
+            (Number.parseFloat(sellUsdAmount) / quoteData.from.usd) *
+            Number.parseFloat(quoteData.from.amount)
+          ).toFixed(8)
+          newSellUsdAmount = sellUsdAmount
+        } else {
+          newSellUsdAmount = quoteData.from.usd.toFixed(2)
+        }
+
         set({
           quote: quoteData,
+          sellAmount: newSellAmount ?? "",
+          sellUsdAmount: newSellUsdAmount ?? "",
           receiveAmount: quoteData.to.amount.toString(),
           receiveUsdAmount: quoteData.to.usd.toFixed(2),
         })
-
-        // Only initialize sellUsdAmount if it's never been set
-        const { sellUsdAmount: currentSellUsd } = get()
-        if (currentSellUsd === undefined || currentSellUsd === null) {
-          set({ sellUsdAmount: quoteData.from.usd.toFixed(2) })
-        }
       }
     } catch (error) {
       console.error("Failed to fetch quote:", error)
