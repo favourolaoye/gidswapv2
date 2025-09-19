@@ -189,6 +189,7 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
     quote,
     isLoadingCurrencies,
     setSellUsdAmount,
+    setReceiveAmount,
     setReceiveUsdAmount,
     setSellCurrency,
     setReceiveCurrency,
@@ -212,11 +213,19 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
 
   /**  debounce fetchQuote so it doesn’t fire on every keystroke instantly */
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      fetchQuote()
-    }, 400)
-    return () => clearTimeout(timeout)
-  }, [sellUsdAmount, sellCurrency, receiveCurrency, fetchQuote])
+  // if user cleared input → reset and stop here
+  if (!sellUsdAmount || Number(sellUsdAmount) <= 0) {
+    setReceiveAmount("")
+    setReceiveUsdAmount("")
+    return
+  }
+
+  const timeout = setTimeout(() => {
+    fetchQuote()
+  }, 400)
+
+  return () => clearTimeout(timeout)
+}, [sellUsdAmount, sellCurrency, receiveCurrency, fetchQuote])
 
   const handleSellCurrencySelect = (currency: Currency) => {
     setSellCurrency(currency)
@@ -225,21 +234,19 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
       setReceiveCurrency(alt || null)
     }
   }
-  // run on currecy change
-  useEffect(() => {
-    if (!quote) return
+  
+    const hasInitialized = useRef(false)
 
-    // Keep the amounts in sync whenever quote changes
-    if (sellUsdAmount) {
-      setSellUsdAmount(sellUsdAmount)
-    } else if (receiveUsdAmount) {
-      setReceiveUsdAmount(receiveUsdAmount)
-    } else {
-      // Initialize from the quote if neither side has a value yet
-      setSellUsdAmount(quote.from.usd.toFixed(2))
-      setReceiveUsdAmount(quote.to.usd.toFixed(2))
-    }
-  }, [quote])
+    useEffect(() => {
+      if (!quote) return
+
+      
+      if (!hasInitialized.current) {
+        setSellUsdAmount(quote.from.usd.toFixed(4))
+        setReceiveUsdAmount(quote.to.usd.toFixed(4))
+        hasInitialized.current = true
+      }
+}, [quote, setSellUsdAmount, setReceiveUsdAmount])
 
   const handleReceiveCurrencySelect = (currency: Currency) => {
     setReceiveCurrency(currency)
@@ -357,7 +364,7 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
           <div className="flex justify-between mb-1">
             <span className="font-semibold text-blue-600 dark:text-blue-400">Rate</span>
             <span className="text-gray-900 dark:text-white">
-              1 {quote.from.coin} ≈ {quote.from.rate.toFixed(2)} {quote.to.coin}
+              1 {quote.from.coin} ≈ {quote.from.rate.toFixed(4)} {quote.to.coin}
             </span>
           </div>
         </div>
