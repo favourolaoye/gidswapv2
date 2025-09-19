@@ -20,11 +20,11 @@ interface SwapCardProps {
   isLoading?: boolean
 }
 
-/** ✅ only allow "", numbers, and one "." */
+/** only allow "", numbers, and one "." */
 function sanitizeNumericInput(value: string): string {
-  if (value === "") return "" // allow clearing
+  if (value === "") return ""
   if (/^\d*\.?\d*$/.test(value)) return value
-  return value.slice(0, -1) // drop last invalid char
+  return value.slice(0, -1)
 }
 
 function CurrencyDropdown({
@@ -160,7 +160,7 @@ function SwapSection({
           type="text"
           value={usdAmount ?? ""}
           onChange={(e) => onUsdAmountChange?.(sanitizeNumericInput(e.target.value))}
-          readOnly={type === "to"}
+          readOnly={type === "to"} // TO is read-only per your rule
           placeholder="0.00"
           className="w-full bg-transparent text-2xl md:text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 border-none outline-none pl-6"
         />
@@ -197,76 +197,131 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
     showQuote,
   } = useSwapStore()
 
-  const [sellDropdownOpen, setSellDropdownOpen] = useState(false)
-  const [receiveDropdownOpen, setReceiveDropdownOpen] = useState(false)
+  // local input for the editable FROM USD field (prevents flicker while typing)
+  const [localSellUsd, setLocalSellUsd] = useState<string>(sellUsdAmount || "")
 
-  const sellUsdAmountNum = Number.parseFloat(sellUsdAmount)
-  const sellAmountNum = Number.parseFloat(sellAmount)
-  const isAmountTooLow = quote && sellAmount && sellAmountNum < quote.from.min
-  const isAmountTooHigh = quote && sellAmount && sellAmountNum > quote.from.max
-  const hasValidationError = isAmountTooLow || isAmountTooHigh
+  // debounce timer ref
+  const debounceRef = useRef<number | null>(null)
+  // editing indicator
+  const editingRef = useRef(false)
 
-  const isFormValid =
-    !!sellUsdAmount && sellUsdAmountNum > 0 && !!sellCurrency && !!receiveCurrency && !!quote && !hasValidationError
-
-
-
-  /**  debounce fetchQuote so it doesn’t fire on every keystroke instantly */
+  // keep local in-sync on external changes unless user is actively typing
   useEffect(() => {
-  // if user cleared input → reset and stop here
-  if (!sellUsdAmount || Number(sellUsdAmount) <= 0) {
-    setReceiveAmount("")
-    setReceiveUsdAmount("")
-    return
+    if (!editingRef.current) {
+      setLocalSellUsd(sellUsdAmount || "")
+    }
+  }, [sellUsdAmount])
+
+  // clear debounce on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        window.clearTimeout(debounceRef.current)
+        debounceRef.current = null
+      }
+    }
+  }, [])
+
+  // handler for FROM input (local-first, debounced commit to store + fetch)
+  const handleLocalSellChange = (val: string) => {
+    const sanitized = sanitizeNumericInput(val)
+    setLocalSellUsd(sanitized)
+
+    // clearing the input — clear dependent fields immediately and cancel pending fetch
+    if (sanitized === "") {
+      if (debounceRef.current) {
+        window.clearTimeout(debounceRef.current)
+        debounceRef.current = null
+      }
+      editingRef.current = false
+      setSellUsdAmount("") // commit clear to store so no stale sellAmount is used
+      setReceiveAmount("")
+      setReceiveUsdAmount("")
+      return
+    }
+
+    // user is editing: debounce commit to store & fetch
+    editingRef.current = true
+    if (debounceRef.current) {
+      window.clearTimeout(debounceRef.current)
+      debounceRef.current = null
+    }
+    debounceRef.current = window.setTimeout(() => {
+      setSellUsdAmount(sanitized)
+      // fetchQuote will read sellUsdAmount from store; calling it immediately is fine
+      fetchQuote()
+      editingRef.current = false
+      debounceRef.current = null
+    }, 420)
   }
 
-  const timeout = setTimeout(() => {
-    fetchQuote()
-  }, 400)
+  // when quote arrives: ONLY update the receive side (do not overwrite FROM)
+  useEffect(() => {
+    if (!quote) return
+    // only update receive side (usd + crypto) — leave sell/local alone
+    setReceiveUsdAmount(quote.to.usd.toFixed(4))
+    setReceiveAmount(quote.to.amount.toString())
+    // note: we avoid touching sellUsdAmount/sellAmount to prevent overwriting user edit
+  }, [quote, setReceiveUsdAmount, setReceiveAmount])
 
-  return () => clearTimeout(timeout)
-}, [sellUsdAmount, sellCurrency, receiveCurrency, fetchQuote])
-
+  // sell currency selection — reset inputs (reset-to-empty behavior) and fetch nothing until user enters
   const handleSellCurrencySelect = (currency: Currency) => {
     setSellCurrency(currency)
-    if (currency.coin === receiveCurrency?.coin) {
-      const alt = currencies.find((c) => c.coin !== currency.coin)
-      setReceiveCurrency(alt || null)
-    }
+    // clear UI & store values relevant to amounts so no stale payloads
+    setLocalSellUsd("") // local UI
+    setSellUsdAmount("") // store
+    setReceiveAmount("")
+    setReceiveUsdAmount("")
+    // do not call fetchQuote yet — wait for user to type or change receive currency
   }
-  
-    const hasInitialized = useRef(false)
 
-    useEffect(() => {
-      if (!quote) return
-
-      
-      if (!hasInitialized.current) {
-        setSellUsdAmount(quote.from.usd.toFixed(4))
-        setReceiveUsdAmount(quote.to.usd.toFixed(4))
-        hasInitialized.current = true
-      }
-}, [quote, setSellUsdAmount, setReceiveUsdAmount])
-
+  // receive currency selection — keep current FROM amount and trigger a fresh quote if FROM has value
   const handleReceiveCurrencySelect = (currency: Currency) => {
     setReceiveCurrency(currency)
-    if (currency.coin === sellCurrency?.coin) {
-      const alt = currencies.find((c) => c.coin !== currency.coin)
-      setSellCurrency(alt || null)
+    // if there's an existing valid local FROM value, commit and fetch immediately
+    const localVal = localSellUsd.trim()
+    if (localVal && !isNaN(Number(localVal)) && Number(localVal) > 0) {
+      // commit to store then fetch a new quote for the new pair
+      setSellUsdAmount(localVal)
+      fetchQuote()
+    } else {
+      // otherwise ensure receive side is cleared (no stale data)
+      setReceiveAmount("")
+      setReceiveUsdAmount("")
     }
   }
 
-  const handleSwap = () => {
-    if (!isFormValid) return
+  // swap handler — ensure store has committed amount & quote, then open quote step
+  const handleSwap = async () => {
+    // basic validations
+    if (!sellCurrency || !receiveCurrency) return
+    const localVal = localSellUsd.trim()
+    if (!localVal || isNaN(Number(localVal)) || Number(localVal) <= 0) return
+
+    // ensure store has the same sellUsdAmount before fetch
+    if (sellUsdAmount !== localVal) {
+      setSellUsdAmount(localVal)
+      await fetchQuote()
+    } else if (!quote) {
+      await fetchQuote()
+    }
+
+    // read latest store state (ensure we use final values set by fetchQuote)
+    const state = (useSwapStore as any).getState() as ReturnType<typeof useSwapStore.getState>
+    if (!state.quote) {
+      // no valid quote -> abort
+      return
+    }
+
     const swapData = {
-      fromCcy: sellCurrency!.code,
-      toCcy: receiveCurrency!.code,
-      amount: Number.parseFloat(sellAmount),
+      fromCcy: state.sellCurrency!.code,
+      toCcy: state.receiveCurrency!.code,
+      amount: Number.parseFloat(state.sellAmount || "0"),
       direction: "from",
       type: "float",
-      quote,
-      sellCurrency,
-      receiveCurrency,
+      quote: state.quote,
+      sellCurrency: state.sellCurrency,
+      receiveCurrency: state.receiveCurrency,
     }
     showQuote(swapData)
   }
@@ -281,23 +336,30 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
     )
   }
 
+  // validation / UI state
+  const sellUsdNumber = Number.parseFloat(localSellUsd || "0")
+  const sellAmountNum = Number.parseFloat(sellAmount || "0")
+  const isAmountTooLow = quote && (sellAmount || "") && sellAmountNum < quote.from.min
+  const isAmountTooHigh = quote && (sellAmount || "") && sellAmountNum > quote.from.max
+  const hasValidationError = !!(isAmountTooLow || isAmountTooHigh)
+
+  const isFormValid =
+    !!localSellUsd && sellUsdNumber > 0 && !!sellCurrency && !!receiveCurrency && !!quote && !hasValidationError
+
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 mb-6">
         <div className="mb-4">
           <SwapSection
             type="from"
-            usdAmount={sellUsdAmount}
+            usdAmount={localSellUsd}
             currencyAmount={sellAmount}
             currency={sellCurrency}
             currencies={currencies}
-            onUsdAmountChange={setSellUsdAmount}
+            onUsdAmountChange={handleLocalSellChange}
             onCurrencySelect={handleSellCurrencySelect}
-            dropdownOpen={sellDropdownOpen}
-            onDropdownToggle={() => {
-              setSellDropdownOpen(!sellDropdownOpen)
-              setReceiveDropdownOpen(false)
-            }}
+            dropdownOpen={false}
+            onDropdownToggle={() => {}}
           />
           {hasValidationError && (
             <div className="mt-2 text-sm text-red-500">
@@ -332,13 +394,11 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
             currencyAmount={receiveAmount}
             currency={receiveCurrency}
             currencies={currencies}
-            onUsdAmountChange={setReceiveUsdAmount}
+            // TO input is read-only per your rule; still pass handler so store can be updated if needed elsewhere
+            onUsdAmountChange={() => {}}
             onCurrencySelect={handleReceiveCurrencySelect}
-            dropdownOpen={receiveDropdownOpen}
-            onDropdownToggle={() => {
-              setReceiveDropdownOpen(!receiveDropdownOpen)
-              setSellDropdownOpen(false)
-            }}
+            dropdownOpen={false}
+            onDropdownToggle={() => {}}
           />
         </div>
       </div>
