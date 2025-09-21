@@ -40,7 +40,7 @@ export default function Hero() {
 
       {/* Hero Content */}
       <AnimatedSection className="relative z-10 flex flex-col items-center justify-center text-center px-4">
-        <h1 className="flex flex-col gap-2 font-semibold poppins leading-tight">
+        <h1 className="font-poppins flex flex-col gap-2 font-semibold poppins leading-tight">
           <span className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] bg-gradient-to-b from-white to-blue-200 bg-clip-text text-transparent">
             <span
               ref={sellRef}
@@ -48,7 +48,7 @@ export default function Hero() {
             >
               Sell
             </span>{" "}
-            <span className="instrument text-4xl sm:text-5xl md:text-6xl lg:text-[7rem] italic font-medium bg-gradient-to-b from-white to-blue-300 bg-clip-text text-transparent">
+            <span className="font-instrument text-4xl sm:text-5xl md:text-6xl lg:text-[7rem] italic font-medium bg-gradient-to-b from-white to-blue-300 bg-clip-text text-transparent">
               Crypto
             </span>
           </span>
