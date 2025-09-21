@@ -1,7 +1,8 @@
 "use client"
 import { Button } from "@/src/components/ui/button"
 import { useEffect, useRef, useState } from "react"
-import { ArrowUpDown, ChevronDown } from "lucide-react"
+
+import { ArrowUpDown, ChevronDown, Info } from "lucide-react"
 import { useSwapStore } from "@/lib/swap-store"
 
 interface Currency {
@@ -46,11 +47,19 @@ function CurrencyDropdown({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        if (isOpen) onToggle()
+        if (isOpen) {
+          onToggle()
+        }
       }
     }
-    if (isOpen) document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
   }, [isOpen, onToggle])
 
   const filteredCurrencies = currencies.filter(
@@ -63,7 +72,7 @@ function CurrencyDropdown({
   return (
     <div className="relative" ref={dropdownRef}>
       <Button
-        className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-full px-4 py-2 flex items-center gap-2"
+        className="bg-accent hover:bg-accent/80 text-foreground rounded-full px-4 py-2 flex items-center gap-2"
         onClick={onToggle}
       >
         {currency ? (
@@ -78,14 +87,14 @@ function CurrencyDropdown({
       </Button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-72 sm:w-64 max-w-[calc(100vw-2rem)] bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg z-50 max-h-60 overflow-hidden">
-          <div className="p-3 border-b border-gray-200 dark:border-gray-700">
+        <div className="absolute top-full right-0 mt-2 w-72 sm:w-64 max-w-[calc(100vw-2rem)] bg-card rounded-xl border border-border shadow-lg z-50 max-h-60 overflow-hidden">
+          <div className="p-3 border-b border-border">
             <input
               type="text"
               placeholder="Search currencies..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 placeholder-gray-400 rounded-lg px-3 py-2 text-sm border-none outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-accent text-foreground placeholder-muted-foreground rounded-lg px-3 py-2 text-sm border-none outline-none focus:ring-2 focus:ring-primary"
               autoFocus
             />
           </div>
@@ -95,22 +104,22 @@ function CurrencyDropdown({
               filteredCurrencies.map((curr) => (
                 <button
                   key={curr.code}
-                  className="w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-700 text-left"
+                  className="w-full px-4 py-3 flex items-center gap-3 hover:bg-accent text-left"
                   onClick={() => {
                     onSelect?.(curr)
                     onToggle()
-                    setSearchTerm("")
+                    setSearchTerm("") // Clear search when currency is selected
                   }}
                 >
                   <img src={curr.logo || "/placeholder.svg"} alt={curr.coin} className="w-6 h-6 rounded-full" />
                   <div className="flex-1 min-w-0">
-                    <div className="text-gray-900 dark:text-white font-medium truncate">{curr.coin}</div>
-                    <div className="text-gray-500 dark:text-gray-400 text-sm truncate">{curr.name}</div>
+                    <div className="text-foreground font-medium truncate">{curr.coin}</div>
+                    <div className="text-muted-foreground text-sm truncate">{curr.name}</div>
                   </div>
                 </button>
               ))
             ) : (
-              <div className="px-4 py-6 text-center text-gray-500 dark:text-gray-400 text-sm">
+              <div className="px-4 py-6 text-center text-muted-foreground text-sm">
                 No currencies found for "{searchTerm}"
               </div>
             )}
@@ -127,7 +136,7 @@ function SwapSection({
   currencyAmount,
   currency,
   currencies,
-  onUsdAmountChange,
+  onCurrencyAmountChange,
   onCurrencySelect,
   dropdownOpen,
   onDropdownToggle,
@@ -137,7 +146,7 @@ function SwapSection({
   currencyAmount?: string
   currency: Currency | null
   currencies: Currency[]
-  onUsdAmountChange?: (value: string) => void
+  onCurrencyAmountChange?: (value: string) => void
   onCurrencySelect?: (currency: Currency) => void
   dropdownOpen: boolean
   onDropdownToggle: () => void
@@ -145,7 +154,7 @@ function SwapSection({
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <span className="text-gray-500 dark:text-gray-400 text-base font-medium capitalize">{type}</span>
+        <span className="text-muted-foreground text-base font-medium capitalize">{type}</span>
         <CurrencyDropdown
           currency={currency}
           currencies={currencies}
@@ -155,22 +164,18 @@ function SwapSection({
         />
       </div>
       <div className="relative">
-        <span className="absolute left-0 top-0 text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">$</span>
         <input
           type="text"
-          value={usdAmount ?? ""}
-          onChange={(e) => onUsdAmountChange?.(sanitizeNumericInput(e.target.value))}
-          readOnly={type === "to"} // TO is read-only per your rule
+          value={currencyAmount ?? ""}
+          onChange={(e) => onCurrencyAmountChange?.(sanitizeNumericInput(e.target.value))}
+          readOnly={type === "to"}
           placeholder="0.00"
-          className="w-full bg-transparent text-2xl md:text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 border-none outline-none pl-6"
+          className="w-full bg-transparent text-2xl md:text-3xl font-bold mb-2 text-foreground placeholder-muted-foreground border-none outline-none"
         />
       </div>
-      {currencyAmount && currency && (
+      {usdAmount && (
         <div className="flex items-center gap-2">
-          <img src={currency.logo || "/placeholder.svg"} alt={currency.coin} className="w-4 h-4 rounded-full" />
-          <span className="text-gray-600 dark:text-gray-400 font-semibold">
-            {Number.parseFloat(currencyAmount).toFixed(8)} {currency.coin}
-          </span>
+          <span className="text-muted-foreground font-semibold">≈ ${Number.parseFloat(usdAmount).toFixed(2)}</span>
         </div>
       )}
     </div>
@@ -188,130 +193,96 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
     receiveCurrency,
     quote,
     isLoadingCurrencies,
-    setSellUsdAmount,
+    setSellAmount,
     setReceiveAmount,
     setReceiveUsdAmount,
+    setSellUsdAmount,
     setSellCurrency,
     setReceiveCurrency,
     fetchQuote,
     showQuote,
   } = useSwapStore()
 
-  // local input for the editable FROM USD field (prevents flicker while typing)
-  const [localSellUsd, setLocalSellUsd] = useState<string>(sellUsdAmount || "")
-
-  // debounce timer ref
+  const [localSellAmount, setLocalSellAmount] = useState<string>(sellAmount || "")
   const debounceRef = useRef<number | null>(null)
-  // editing indicator
-  const editingRef = useRef(false)
+  const [sellDropdownOpen, setSellDropdownOpen] = useState(false)
+  const [receiveDropdownOpen, setReceiveDropdownOpen] = useState(false)
 
-  // keep local in-sync on external changes unless user is actively typing
-  useEffect(() => {
-    if (!editingRef.current) {
-      setLocalSellUsd(sellUsdAmount || "")
-    }
-  }, [sellUsdAmount])
-
-  // clear debounce on unmount
   useEffect(() => {
     return () => {
       if (debounceRef.current) {
         window.clearTimeout(debounceRef.current)
-        debounceRef.current = null
       }
     }
   }, [])
 
-  // handler for FROM input (local-first, debounced commit to store + fetch)
-  const handleLocalSellChange = (val: string) => {
-    const sanitized = sanitizeNumericInput(val)
-    setLocalSellUsd(sanitized)
 
-    // clearing the input — clear dependent fields immediately and cancel pending fetch
-    if (sanitized === "") {
-      if (debounceRef.current) {
-        window.clearTimeout(debounceRef.current)
-        debounceRef.current = null
-      }
-      editingRef.current = false
-      setSellUsdAmount("") // commit clear to store so no stale sellAmount is used
-      setReceiveAmount("")
-      setReceiveUsdAmount("")
-      return
-    }
 
-    // user is editing: debounce commit to store & fetch
-    editingRef.current = true
-    if (debounceRef.current) {
-      window.clearTimeout(debounceRef.current)
-      debounceRef.current = null
-    }
-    debounceRef.current = window.setTimeout(() => {
-      setSellUsdAmount(sanitized)
-      // fetchQuote will read sellUsdAmount from store; calling it immediately is fine
+const handleLocalSellChange = (val: string) => {
+  const sanitized = sanitizeNumericInput(val)
+  setLocalSellAmount(sanitized)
+
+  if (debounceRef.current) clearTimeout(debounceRef.current)
+
+  // If input is empty, just clear store and stop
+  if (sanitized === "") {
+  setSellAmount("")
+  setSellUsdAmount("")
+  setReceiveAmount("")
+  setReceiveUsdAmount("")
+  return
+}
+
+
+  debounceRef.current = window.setTimeout(() => {
+    // push only stable valid value
+    setSellAmount(sanitized)
+    if (sellCurrency && receiveCurrency) {
       fetchQuote()
-      editingRef.current = false
-      debounceRef.current = null
-    }, 420)
-  }
+    }
+  }, 600)
+}
 
-  // when quote arrives: ONLY update the receive side (do not overwrite FROM)
-  useEffect(() => {
-    if (!quote) return
-    // only update receive side (usd + crypto) — leave sell/local alone
-    setReceiveUsdAmount(quote.to.usd.toFixed(4))
-    setReceiveAmount(quote.to.amount.toString())
-    // note: we avoid touching sellUsdAmount/sellAmount to prevent overwriting user edit
-  }, [quote, setReceiveUsdAmount, setReceiveAmount])
 
-  // sell currency selection — reset inputs (reset-to-empty behavior) and fetch nothing until user enters
+useEffect(() => {
+  if (!quote) return
+  setSellUsdAmount(quote.from.usd.toFixed(4))
+  setReceiveUsdAmount(quote.to.usd.toFixed(4))
+  setReceiveAmount(quote.to.amount.toString())
+}, [quote, setSellUsdAmount, setReceiveUsdAmount, setReceiveAmount])
+
+
   const handleSellCurrencySelect = (currency: Currency) => {
     setSellCurrency(currency)
-    // clear UI & store values relevant to amounts so no stale payloads
-    setLocalSellUsd("") // local UI
-    setSellUsdAmount("") // store
     setReceiveAmount("")
     setReceiveUsdAmount("")
-    // do not call fetchQuote yet — wait for user to type or change receive currency
   }
 
-  // receive currency selection — keep current FROM amount and trigger a fresh quote if FROM has value
   const handleReceiveCurrencySelect = (currency: Currency) => {
     setReceiveCurrency(currency)
-    // if there's an existing valid local FROM value, commit and fetch immediately
-    const localVal = localSellUsd.trim()
-    if (localVal && !isNaN(Number(localVal)) && Number(localVal) > 0) {
-      // commit to store then fetch a new quote for the new pair
-      setSellUsdAmount(localVal)
+    if (localSellAmount && Number(localSellAmount) > 0) {
+      setSellAmount(localSellAmount)
       fetchQuote()
     } else {
-      // otherwise ensure receive side is cleared (no stale data)
       setReceiveAmount("")
       setReceiveUsdAmount("")
     }
   }
 
-  // swap handler — ensure store has committed amount & quote, then open quote step
   const handleSwap = async () => {
-    // basic validations
     if (!sellCurrency || !receiveCurrency) return
-    const localVal = localSellUsd.trim()
-    if (!localVal || isNaN(Number(localVal)) || Number(localVal) <= 0) return
+    const localVal = localSellAmount.trim()
+    if (!localVal || Number(localVal) <= 0) return
 
-    // ensure store has the same sellUsdAmount before fetch
-    if (sellUsdAmount !== localVal) {
-      setSellUsdAmount(localVal)
+    if (sellAmount !== localVal) {
+      setSellAmount(localVal)
       await fetchQuote()
     } else if (!quote) {
       await fetchQuote()
     }
 
-    // read latest store state (ensure we use final values set by fetchQuote)
-    const state = (useSwapStore as any).getState() as ReturnType<typeof useSwapStore.getState>
-    if (!state.quote) {
-      // no valid quote -> abort
-      return
-    }
+    const state = (useSwapStore as any).getState()
+    if (!state.quote) return
 
     const swapData = {
       fromCcy: state.sellCurrency!.code,
@@ -329,40 +300,46 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
   if (isLoadingCurrencies) {
     return (
       <div className="w-full max-w-md mx-auto">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center">
-          <span className="text-gray-600 dark:text-gray-400">Loading currencies...</span>
+        <div className="bg-card rounded-2xl p-6 text-center">
+          <span className="text-muted-foreground">Loading currencies...</span>
         </div>
       </div>
     )
   }
 
-  // validation / UI state
-  const sellUsdNumber = Number.parseFloat(localSellUsd || "0")
   const sellAmountNum = Number.parseFloat(sellAmount || "0")
-  const isAmountTooLow = quote && (sellAmount || "") && sellAmountNum < quote.from.min
-  const isAmountTooHigh = quote && (sellAmount || "") && sellAmountNum > quote.from.max
+  const isAmountTooLow = quote && sellAmount && sellAmountNum < quote.from.min
+  const isAmountTooHigh = quote && sellAmount && sellAmountNum > quote.from.max
   const hasValidationError = !!(isAmountTooLow || isAmountTooHigh)
 
   const isFormValid =
-    !!localSellUsd && sellUsdNumber > 0 && !!sellCurrency && !!receiveCurrency && !!quote && !hasValidationError
+    !!localSellAmount &&
+    Number(localSellAmount) > 0 &&
+    !!sellCurrency &&
+    !!receiveCurrency &&
+    !!quote &&
+    !hasValidationError
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 mb-6">
+      <div className="bg-card rounded-2xl p-6 mb-6">
         <div className="mb-4">
           <SwapSection
             type="from"
-            usdAmount={localSellUsd}
-            currencyAmount={sellAmount}
+            usdAmount={sellUsdAmount}
+            currencyAmount={localSellAmount}
             currency={sellCurrency}
             currencies={currencies}
-            onUsdAmountChange={handleLocalSellChange}
+            onCurrencyAmountChange={handleLocalSellChange}
             onCurrencySelect={handleSellCurrencySelect}
-            dropdownOpen={false}
-            onDropdownToggle={() => {}}
+            dropdownOpen={sellDropdownOpen}
+            onDropdownToggle={() => {
+              setSellDropdownOpen(!sellDropdownOpen)
+              setReceiveDropdownOpen(false)
+            }}
           />
           {hasValidationError && (
-            <div className="mt-2 text-sm text-red-500">
+            <div className="mt-2 text-sm text-destructive">
               {isAmountTooLow && (
                 <span>
                   Amount too low. Minimum: {quote.from.min} {quote.from.coin}
@@ -378,12 +355,8 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
         </div>
 
         <div className="flex justify-center my-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full p-2"
-          >
-            <ArrowUpDown className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+          <Button variant="ghost" size="sm" className="bg-accent hover:bg-accent/80 rounded-full p-2">
+            <ArrowUpDown className="w-5 h-5 text-muted-foreground" />
           </Button>
         </div>
 
@@ -394,44 +367,49 @@ export function SwapCard({ onSwap, isLoading }: SwapCardProps) {
             currencyAmount={receiveAmount}
             currency={receiveCurrency}
             currencies={currencies}
-            // TO input is read-only per your rule; still pass handler so store can be updated if needed elsewhere
-            onUsdAmountChange={() => {}}
+            onCurrencyAmountChange={() => {}}
             onCurrencySelect={handleReceiveCurrencySelect}
-            dropdownOpen={false}
-            onDropdownToggle={() => {}}
+            dropdownOpen={receiveDropdownOpen}
+            onDropdownToggle={() => {
+              setReceiveDropdownOpen(!receiveDropdownOpen)
+              setSellDropdownOpen(false)
+            }}
           />
         </div>
       </div>
 
       {quote && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-4 mb-4 text-sm text-gray-600 dark:text-gray-300">
+        <div className="bg-card rounded-xl p-4 mb-4 text-sm text-muted-foreground">
           <div className="flex justify-between mb-1">
-            <span className="font-semibold text-blue-600 dark:text-blue-400">Minimum</span>
-            <span className="text-gray-900 dark:text-white">
+            <span className="font-semibold text-primary">Minimum</span>
+            <span className="text-foreground">
               {quote.from.min} {quote.from.coin}
             </span>
           </div>
           <div className="flex justify-between mb-1">
-            <span className="font-semibold text-blue-600 dark:text-blue-400">Maximum</span>
-            <span className="text-gray-900 dark:text-white">
+            <span className="font-semibold text-primary">Maximum</span>
+            <span className="text-foreground">
               {quote.from.max} {quote.from.coin}
             </span>
           </div>
           <div className="flex justify-between mb-1">
-            <span className="font-semibold text-blue-600 dark:text-blue-400">Network</span>
-            <span className="text-gray-900 dark:text-white">{quote.to.network}</span>
+            <span className="font-semibold text-primary">Network</span>
+            <span className="text-foreground">{quote.to.network}</span>
           </div>
           <div className="flex justify-between mb-1">
-            <span className="font-semibold text-blue-600 dark:text-blue-400">Rate</span>
-            <span className="text-gray-900 dark:text-white">
+            <span className="font-semibold text-primary">Rate</span>
+            <span className="text-foreground">
               1 {quote.from.coin} ≈ {quote.from.rate.toFixed(4)} {quote.to.coin}
             </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-foreground text-sm">{quote.fee}</span>
           </div>
         </div>
       )}
 
       <Button
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
         onClick={handleSwap}
         disabled={!isFormValid || isLoading}
       >

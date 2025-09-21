@@ -59,21 +59,17 @@ export interface PaymentOrder {
 }
 
 interface CryptoFiatState {
-  // Tokens and currencies
   tokens: Token[]
   currencies: FiatCurrency[]
   isLoadingTokens: boolean
   isLoadingCurrencies: boolean
 
-  // Selected values
   selectedToken: Token | null
   selectedCurrency: FiatCurrency | null
 
-  // Amounts
   tokenAmount: string
   fiatAmount: string
 
-  // Quote
   quote: Quote | null
   isLoadingQuote: boolean
 
@@ -82,7 +78,6 @@ interface CryptoFiatState {
   orderReference: string | null
   paymentOrder: PaymentOrder | null
 
-  // Actions
   fetchTokens: () => Promise<void>
   fetchCurrencies: () => Promise<void>
   fetchQuote: (tokenSymbol: string, amount: string, currency: string) => Promise<void>
@@ -97,7 +92,6 @@ interface CryptoFiatState {
 }
 
 const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
-  // Initial state
   tokens: [],
   currencies: [],
   isLoadingTokens: false,
@@ -114,7 +108,7 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
   orderReference: null,
   paymentOrder: null,
 
-  // Fetch tokens from API
+  // ✅ Fetch tokens with filtering + sorting
   fetchTokens: async () => {
     set({ isLoadingTokens: true })
     try {
@@ -125,8 +119,39 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
       })
       const tokensData = response.data.data || []
 
-      // Add logos from elbstream API
-      const tokensWithLogos = tokensData.map((token: any) => ({
+      // Allowed symbol + network pairs (sorted order)
+      const allowedTokens = [
+        { symbol: "USDT", network: "bnb-smart-chain" },
+        { symbol: "USDC", network: "bnb-smart-chain" },
+        { symbol: "USDT", network: "polygon" },
+        { symbol: "USDC", network: "polygon" },
+        { symbol: "USDT", network: "arbitrum-one" },
+        { symbol: "USDT", network: "base" },
+        { symbol: "USDC", network: "base" },
+      ]
+
+      // Filter only allowed tokens
+      const filteredTokens = tokensData.filter((token: any) =>
+        allowedTokens.some(
+          (allowed) =>
+            token.symbol.toUpperCase() === allowed.symbol &&
+            token.network.toLowerCase() === allowed.network.toLowerCase()
+        )
+      )
+
+      // ✅ Sort according to allowedTokens order
+      const sortedTokens = allowedTokens
+        .map((allowed) =>
+          filteredTokens.find(
+            (token: { symbol: string; network: string }) =>
+              token.symbol.toUpperCase() === allowed.symbol &&
+              token.network.toLowerCase() === allowed.network.toLowerCase()
+          )
+        )
+        .filter(Boolean) // remove any undefined if API missed one
+
+      // Add logos
+      const tokensWithLogos = sortedTokens.map((token: any) => ({
         symbol: token.symbol,
         contractAddress: token.contractAddress,
         decimals: token.decimals,
@@ -138,7 +163,6 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
       set({ tokens: tokensWithLogos })
     } catch (error) {
       console.error("Failed to fetch tokens:", error)
-      // Fallback mock data
       set({
         tokens: [
           {
@@ -146,16 +170,8 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
             contractAddress: "0x...",
             decimals: 6,
             baseCurrency: "USD",
-            network: "Ethereum",
+            network: "bnb-smart-chain",
             logo: "https://api.elbstream.com/logos/crypto/usdt",
-          },
-          {
-            symbol: "USDC",
-            contractAddress: "0x...",
-            decimals: 6,
-            baseCurrency: "USD",
-            network: "Ethereum",
-            logo: "https://api.elbstream.com/logos/crypto/usdc",
           },
         ],
       })
@@ -164,7 +180,7 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
     }
   },
 
-  // Fetch currencies from API
+  // ✅ Fetch currencies (still only NGN)
   fetchCurrencies: async () => {
     set({ isLoadingCurrencies: true })
     try {
@@ -175,7 +191,6 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
       })
 
       const currenciesData = response.data.data || []
-
       const currencies = currenciesData
         .filter((currency: any) => currency.code === "NGN")
         .map((currency: any) => ({
@@ -207,41 +222,33 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
     }
   },
 
-  // Fetch quote from API
+  // ✅ Fetch quote
   fetchQuote: async (tokenSymbol: string, amount: string, currency: string) => {
     if (!tokenSymbol || !amount || !currency || Number.parseFloat(amount) <= 0) return
-
     set({ isLoadingQuote: true })
     try {
       const authToken = Cookies.get("token")
       const api_url = process.env.NEXT_PUBLIC_PROD_API
       const response = await axios.get(
         `${api_url}/api/payCrest/trade/tokenRates/${tokenSymbol}/${amount}/${currency}`,
-        {
-          headers: { Authorization: `Bearer ${authToken}` },
-        },
+        { headers: { Authorization: `Bearer ${authToken}` } },
       )
       const quoteData = response.data
 
       if (quoteData.status === "success") {
-        const ratePerUnit = Number.parseFloat(quoteData.data) // data is the rate as string
+        const ratePerUnit = Number.parseFloat(quoteData.data)
         const amountNum = Number.parseFloat(amount)
         const total = amountNum * ratePerUnit
 
         const quote: Quote = {
           rate: ratePerUnit,
-          total: total,
-          tokenSymbol: tokenSymbol,
+          total,
+          tokenSymbol,
           currencyCode: currency,
         }
 
-        set({
-          quote,
-          fiatAmount: total.toFixed(2),
-        })
-
-        // Store in cookies
-        Cookies.set("crypto-fiat-quote", JSON.stringify(quote), { expires: 1 / 24 }) // 1 hour
+        set({ quote, fiatAmount: total.toFixed(2) })
+        Cookies.set("crypto-fiat-quote", JSON.stringify(quote), { expires: 1 / 24 })
       }
     } catch (error) {
       console.error("Failed to fetch quote:", error)
@@ -251,12 +258,10 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
     }
   },
 
-  // Setters
   setSelectedToken: (token) => {
     set({ selectedToken: token })
     Cookies.set("selected-token", JSON.stringify(token), { expires: 7 })
 
-    // Fetch quote if all required data is available
     const { selectedCurrency, tokenAmount } = get()
     if (token && selectedCurrency && tokenAmount) {
       get().fetchQuote(token.symbol, tokenAmount, selectedCurrency.code)
@@ -267,7 +272,6 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
     set({ selectedCurrency: currency })
     Cookies.set("selected-currency", JSON.stringify(currency), { expires: 7 })
 
-    // Fetch quote if all required data is available
     const { selectedToken, tokenAmount } = get()
     if (selectedToken && currency && tokenAmount) {
       get().fetchQuote(selectedToken.symbol, tokenAmount, currency.code)
@@ -276,8 +280,6 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
 
   setTokenAmount: (amount) => {
     set({ tokenAmount: amount })
-
-    // Fetch quote if all required data is available
     const { selectedToken, selectedCurrency } = get()
     if (selectedToken && selectedCurrency && amount) {
       get().fetchQuote(selectedToken.symbol, amount, selectedCurrency.code)
@@ -290,33 +292,13 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
 
   initializeOrder: async (memo: string, returnAddress: string, bankData: any) => {
     const { selectedToken, selectedCurrency, tokenAmount, quote } = get()
-
-    console.log("[v0] Order initialization started with data:", {
-      selectedToken,
-      selectedCurrency,
-      tokenAmount,
-      quote,
-      bankData,
-      memo,
-      returnAddress,
-    })
-
     if (!selectedToken || !selectedCurrency || !tokenAmount || !quote || !bankData) {
-      console.error("[v0] Missing required data for order initialization:", {
-        hasToken: !!selectedToken,
-        hasCurrency: !!selectedCurrency,
-        hasAmount: !!tokenAmount,
-        hasQuote: !!quote,
-        hasBankData: !!bankData,
-      })
+      console.error("Missing required data for order initialization")
       return false
     }
-
     set({ isInitializingOrder: true })
-
     try {
       const reference = get().generateReference()
-
       const orderData: OrderData = {
         amount: Number.parseFloat(tokenAmount),
         token: selectedToken.symbol,
@@ -326,59 +308,33 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
           institution: bankData.institution,
           accountIdentifier: bankData.accountIdentifier,
           accountName: bankData.accountName,
-          memo: memo,
+          memo,
           currency: selectedCurrency.code,
           metadata: {},
         },
-        reference: reference,
-        returnAddress: returnAddress,
+        reference,
+        returnAddress,
       }
-
-      console.log("[v0] Sending order data to API:", orderData)
 
       const authToken = Cookies.get("token")
       const api_url = process.env.NEXT_PUBLIC_PROD_API
-
-      console.log("[v0] API URL and auth token:", { api_url, hasToken: !!authToken })
-
       const response = await axios.post(`${api_url}/api/payCrest/trade/init-order`, orderData, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-        },
+        headers: { Authorization: `Bearer ${authToken}`, "Content-Type": "application/json" },
       })
-
-      console.log("[v0] API response:", response.data)
 
       if (response.data.status === "success") {
         const paymentOrder: PaymentOrder = response.data.data
-
-        set({
-          orderData,
-          orderReference: reference,
-          paymentOrder,
-        })
-
-        // Store order data in cookies
-        Cookies.set("order-data", JSON.stringify(orderData), { expires: 1 / 24 }) // 1 hour
+        set({ orderData, orderReference: reference, paymentOrder })
+        Cookies.set("order-data", JSON.stringify(orderData), { expires: 1 / 24 })
         Cookies.set("order-reference", reference, { expires: 1 / 24 })
         Cookies.set("payment-order", JSON.stringify(paymentOrder), { expires: 1 / 24 })
-
-        console.log("[v0] Order initialization successful")
         return true
       } else {
-        console.error("[v0] Order initialization failed:", response.data.message)
+        console.error("Order initialization failed:", response.data.message)
         return false
       }
     } catch (error) {
-      console.error("[v0] Failed to initialize order:", error)
-      if (axios.isAxiosError(error)) {
-        console.error("[v0] API Error details:", {
-          status: error.response?.status,
-          data: error.response?.data,
-          message: error.message,
-        })
-      }
+      console.error("Failed to initialize order:", error)
       return false
     } finally {
       set({ isInitializingOrder: false })

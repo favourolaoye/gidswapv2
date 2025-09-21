@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { FaFacebookF, FaTelegramPlane } from "react-icons/fa";
+import { FaFacebookF, FaTelegramPlane, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import { AiOutlineDiscord } from "react-icons/ai";
 import { BsTwitterX } from "react-icons/bs";
 import Link from "next/link";
@@ -15,16 +15,16 @@ export default function Community() {
       hoverColor: "hover:from-blue-500 hover:to-blue-700",
     },
     {
-      href: "https://www.facebook.com/gidswap",
-      icon: FaFacebookF,
-      label: "Facebook",
+      href: "https://wa.me/+234",
+      icon: FaWhatsapp,
+      label: "Whatsapp",
       color: "from-blue-500 to-blue-700",
       hoverColor: "hover:from-blue-600 hover:to-blue-800",
     },
     {
-      href: "https://discord.gg/gidswap",
-      icon: AiOutlineDiscord,
-      label: "Discord",
+      href: "https://tiktok.gg/gidswap",
+      icon: FaTiktok,
+      label: "Tiktok",
       color: "from-indigo-400 to-purple-600",
       hoverColor: "hover:from-indigo-500 hover:to-purple-700",
     },
@@ -93,9 +93,9 @@ export default function Community() {
             {/* Stats Section */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               {[
-                { number: "10k+", label: "Community Members" },
+                { number: "500+", label: "Community Members" },
                 { number: "24/7", label: "Active Support" },
-                { number: "100+", label: "Countries" },
+                { number: "50+", label: "Currencies" },
                 { number: "1k+", label: "Transactions" },
               ].map((stat, index) => (
                 <motion.div

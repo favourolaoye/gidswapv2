@@ -18,6 +18,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
 export const metadata: Metadata = {
   title: "Gidswap",
   description: "Your crypto paddy",
@@ -28,9 +29,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full bg-neutral-900`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased w-full bg-neutral-900`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
