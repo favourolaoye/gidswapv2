@@ -48,7 +48,7 @@ export default function Hero() {
             >
               Sell
             </span>{" "}
-            <span className="font-instrument text-4xl sm:text-5xl md:text-6xl lg:text-[7rem] italic font-medium bg-gradient-to-b from-white to-blue-300 bg-clip-text text-transparent">
+            <span className="font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-[7rem] italic font-medium bg-gradient-to-b from-white to-blue-300 bg-clip-text text-transparent">
               Crypto
             </span>
           </span>
