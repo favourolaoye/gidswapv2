@@ -418,27 +418,22 @@ export function CryptoFiatSwapCard({
           </div>
 
           {/* LP Fee */}
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-700 dark:text-gray-200 flex items-center gap-1">
-              LP fee
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="w-4 h-4 text-gray-400 cursor-pointer" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>A 1% Liquidity Provider fee is deducted from your total.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </span>
-            <span className="text-gray-700 dark:text-white font-medium">
-              {selectedCurrency?.symbol}
-              {lpFee.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
-            </span>
+          <div className="relative flex items-center gap-1 group">
+            <span className="text-gray-700 dark:text-gray-200">LP fee</span>
+
+            {/* Info icon */}
+            <Info className="w-4 h-4 text-gray-400 cursor-pointer" />
+
+            {/* Hover popup */}
+            <div
+              className="absolute left-6 top-1/2 -translate-y-1/2 z-10 
+               hidden group-hover:block
+               bg-white dark:bg-neutral-800 text-gray-700 dark:text-gray-200 
+               border border-gray-200 dark:border-gray-700 shadow-md 
+               rounded-lg px-3 py-2 text-xs w-56"
+            >
+              A 1% Liquidity Provider fee is deducted from your total.
+            </div>
           </div>
 
           {/* Total */}
