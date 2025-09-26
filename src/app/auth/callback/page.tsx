@@ -17,8 +17,6 @@ function CallbackHandler() {
     if (token) {
       setCookie("token", token, { expires: 3 });
       setToken(token);
-      // setAuthStatus(true);
-
       if (user) {
         try {
           setCookie("user", user, { expires: 3 });

@@ -1,6 +1,60 @@
 import { Currency } from "./types";
 import { ArrowUpDown, BarChart3, History, Home } from "lucide-react";
 
+
+
+export const currencies: Currency[] = [
+  {
+    id: "btc",
+    name: "Bitcoin",
+    symbol: "BTC",
+    logo: "/images/bitcoin.png",
+    type: "crypto",
+    coingeckoId: "bitcoin",
+  },
+  {
+    id: "eth",
+    name: "Ethereum",
+    symbol: "ETH",
+    logo: "/images/ethereum.png",
+    type: "crypto",
+    coingeckoId: "ethereum", 
+  },
+  {
+    id: "usdt",
+    name: "Tether",
+    symbol: "USDT",
+    logo: "/images/usdt.png",
+    type: "crypto",
+    coingeckoId: "tether", 
+  },
+  {
+    id: "usd",
+    name: "US Dollar",
+    symbol: "USD",
+    logo: "/images/usdt.png",
+    type: "fiat",
+    coingeckoId: "usd",
+  },
+  {
+    id: "eur",
+    name: "Euro",
+    symbol: "EUR",
+    logo: "/logos/eur.svg",
+    type: "fiat",
+    coingeckoId: "eur", 
+  },
+  {
+  id: "ngn",
+  name: "Nigerian Naira",
+  symbol: "NGN",
+  logo: "/logos/ngn.svg", 
+  type: "fiat",
+  coingeckoId: "ngn",
+}
+];
+
+
 export const useCaseNoExp = [
   {
     icon: "/images/transfer-stable-coin.svg",
@@ -68,58 +122,6 @@ export const navLinks = [
     href: "/dashboard/markets",
   },
 ];
-export const currencies: Currency[] = [
-  {
-    name: "USDC",
-    logo: "/placeholder.svg?height=24&width=24&text=USDC",
-    rate: 1,
-    symbol: "USDC",
-    type: "crypto",
-  },
-  {
-    name: "USDT",
-    logo: "/placeholder.svg?height=24&width=24&text=USDT",
-    rate: 0.999,
-    symbol: "USDT",
-    type: "crypto",
-  },
-  {
-    name: "BTC",
-    logo: "/placeholder.svg?height=24&width=24&text=BTC",
-    rate: 45000,
-    symbol: "BTC",
-    type: "crypto",
-  },
-  {
-    name: "ETH",
-    logo: "/placeholder.svg?height=24&width=24&text=ETH",
-    rate: 2800,
-    symbol: "ETH",
-    type: "crypto",
-  },
-  {
-    name: "NGN",
-    logo: "/placeholder.svg?height=24&width=24&text=NGN",
-    rate: 0.0013,
-    symbol: "₦",
-    type: "fiat",
-  },
-  {
-    name: "USD",
-    logo: "/placeholder.svg?height=24&width=24&text=USD",
-    rate: 1,
-    symbol: "$",
-    type: "fiat",
-  },
-  {
-    name: "GHS",
-    logo: "/placeholder.svg?height=24&width=24&text=GHS",
-    rate: 0.084,
-    symbol: "₵",
-    type: "fiat",
-  },
-];
-
 // Mock data
 export const portfolioValue = 12847.32;
 export const portfolioChange = 5.67;

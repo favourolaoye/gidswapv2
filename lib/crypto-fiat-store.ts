@@ -222,7 +222,7 @@ const useCryptoFiatStore = create<CryptoFiatState>((set, get) => ({
     }
   },
 
-  // ✅ Fetch quote
+  // Fetch quote
   fetchQuote: async (tokenSymbol: string, amount: string, currency: string) => {
     if (!tokenSymbol || !amount || !currency || Number.parseFloat(amount) <= 0) return
     set({ isLoadingQuote: true })

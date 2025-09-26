@@ -1,12 +1,18 @@
 "use client";
 import { Button } from "@/src/components/ui/button";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpDown, ChevronDown, Search } from "lucide-react";
+import { ArrowUpDown, ChevronDown, Search, Info } from "lucide-react";
 import {
   useCryptoFiatStore,
   type Token,
   type FiatCurrency,
 } from "@/lib/crypto-fiat-store";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/src/components/ui/tooltip";
 
 interface TokenDropdownProps {
   token: Token | null;
@@ -320,6 +326,10 @@ export function CryptoFiatSwapCard({
     );
   }
 
+  // LP fee + net total
+  const lpFee = quote ? quote.total * 0.01 : 0;
+  const netTotal = quote ? quote.total - lpFee : 0;
+
   return (
     <div className="w-full max-w-lg sm:max-w-md mx-auto px-2 sm:px-0">
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm rounded-2xl py-6 px-4 mb-4 relative flex flex-col gap-1">
@@ -398,6 +408,7 @@ export function CryptoFiatSwapCard({
       {/* Quote Section */}
       {quote && (
         <div className="bg-white border shadow-sm dark:bg-[#333746] rounded-xl p-4 mb-4 text-sm">
+          {/* Rate */}
           <div className="flex justify-between items-center mb-2">
             <span className="text-gray-700 dark:text-gray-200">Rate</span>
             <span className="text-gray-700 dark:text-white font-medium">
@@ -405,11 +416,40 @@ export function CryptoFiatSwapCard({
               {quote.rate.toLocaleString()}
             </span>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-800 dark:text-gray-200">You'll receive</span>
-            <span className="text-gray-800 dark:text-white font-medium">
+
+          {/* LP Fee */}
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-gray-700 dark:text-gray-200 flex items-center gap-1">
+              LP fee
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="w-4 h-4 text-gray-400 cursor-pointer" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>A 1% Liquidity Provider fee is deducted from your total.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </span>
+            <span className="text-gray-700 dark:text-white font-medium">
               {selectedCurrency?.symbol}
-              {quote.total.toLocaleString()}
+              {lpFee.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </span>
+          </div>
+
+          {/* Total */}
+          <div className="flex justify-between items-center font-semibold">
+            <span className="text-gray-900 dark:text-gray-100">Total</span>
+            <span className="text-gray-900 dark:text-white">
+              {selectedCurrency?.symbol}
+              {netTotal.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </span>
           </div>
         </div>

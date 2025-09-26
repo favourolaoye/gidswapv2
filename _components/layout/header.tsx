@@ -37,7 +37,9 @@ export default function Header() {
   const { theme } = useTheme();
   return (
     <header
-      className={`sticky left-0 top-0 z-20 w-full bg-transparent backdrop-blur transition-all dark:bg-transparent ${
+      className={theme === "dark" ? `sticky left-0 top-0 z-20 w-full bg-transparent backdrop-blur transition-all dark:bg-transparent ${
+        hideHeader ? "hidden" : "block"
+      }`: `sticky left-0 top-0 z-20 w-full bg-white backdrop-blur transition-all dark:bg-transparent ${
         hideHeader ? "hidden" : "block"
       }`}
     >

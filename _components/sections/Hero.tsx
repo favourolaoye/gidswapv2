@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { AnimatedSection } from "@/src/components/ui/animate-section";
 import HeroSwapForm from "./HeroSwapForm";
 import { currencies } from "@/lib/constants";
+import type { Currency } from "@/lib/types";
 import gsap from "gsap";
 import { TextPlugin } from "gsap/TextPlugin";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
@@ -14,6 +15,20 @@ export default function Hero() {
   const sellRef = useRef<HTMLSpanElement>(null);
   const cycleWords = ["Sell", "Swap", "Buy"];
 
+  // 🔹 SwapForm state
+  const [sendAmount, setSendAmount] = useState("0");
+  const [receiveAmount, setReceiveAmount] = useState("0");
+  const [sendCurrency, setSendCurrency] = useState<Currency>(currencies[0]);
+  const [receiveCurrency, setReceiveCurrency] = useState<Currency>({
+    name: "Select currency",
+    logo: "",
+    rate: 1,
+    id: "",
+    symbol: "",
+    type: 'crypto',
+  });
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     if (!sellRef.current) return;
 
@@ -23,14 +38,14 @@ export default function Hero() {
         duration: 1.2,
         scrambleText: word,
         ease: "power2.inOut",
-      }).to({}, { duration: 1 }); 
+      }).to({}, { duration: 1 });
     });
   }, []);
 
   return (
     <div
       id="hero"
-      className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-transparent pt-0 pb-10 text-white"
+      className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-transparent pt-10 pb-10 text-white"
     >
       {/* Background radial glows */}
       <div className="absolute inset-0 overflow-hidden">
@@ -41,18 +56,15 @@ export default function Hero() {
       {/* Hero Content */}
       <AnimatedSection className="relative z-10 flex flex-col items-center justify-center text-center px-4">
         <h1 className="font-poppins flex flex-col gap-2 font-semibold poppins leading-tight">
-          <span className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] bg-gradient-to-b from-white to-blue-200 bg-clip-text text-transparent">
-            <span
-              ref={sellRef}
-              className="inline-block"
-            >
+          <span className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] bg-gradient-to-b from-gray-800 to-blue-600 dark:from-white dark:to-blue-200 bg-clip-text text-transparent">
+            <span ref={sellRef} className="inline-block">
               Sell
             </span>{" "}
-            <span className="font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-[7rem] italic font-medium bg-gradient-to-b from-white to-blue-300 bg-clip-text text-transparent">
+            <span className="font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-[7rem] italic font-medium bg-gradient-to-b from-gray-900 to-blue-700 dark:from-white dark:to-blue-300 bg-clip-text text-transparent">
               Crypto
             </span>
           </span>
-          <span className="text-4xl sm:text-5xl md:text-6xl lg:text-[6rem] font-medium bg-gradient-to-b from-white to-blue-200 bg-clip-text text-transparent">
+          <span className="text-4xl sm:text-5xl md:text-6xl lg:text-[6rem] font-medium bg-gradient-to-b from-gray-800 to-blue-600 dark:from-white dark:to-blue-200 bg-clip-text text-transparent">
             in seconds
           </span>
         </h1>
@@ -61,20 +73,16 @@ export default function Hero() {
         <AnimatedSection delay={0.2}>
           <div className="mt-12 w-full max-w-md rounded-2xl bg-neutral-900/60 backdrop-blur-md border border-white/10 shadow-xl px-6 py-8">
             <HeroSwapForm
-              sendAmount="0"
-              setSendAmount={() => {}}
-              sendCurrency={currencies[0]}
-              setSendCurrency={() => {}}
-              receiveAmount="0"
-              setReceiveAmount={() => {}}
-              receiveCurrency={{
-                name: "Select currency",
-                logo: "",
-                rate: 1,
-              }}
-              setReceiveCurrency={() => {}}
-              setShowModal={() => {}}
-              tab="sell"
+              sendAmount={sendAmount}
+              setSendAmount={setSendAmount}
+              sendCurrency={sendCurrency}
+              setSendCurrency={setSendCurrency}
+              receiveAmount={receiveAmount}
+              setReceiveAmount={setReceiveAmount}
+              receiveCurrency={receiveCurrency}
+              setReceiveCurrency={setReceiveCurrency}
+              setShowModal={setShowModal}
+              tab=""
             />
           </div>
         </AnimatedSection>
@@ -89,6 +97,25 @@ export default function Hero() {
           </div>
         </AnimatedSection>
       </AnimatedSection>
+
+      {/* Example Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-white dark:bg-neutral-900 p-6 rounded-lg shadow-xl">
+            <h2 className="text-lg font-semibold">Confirm Swap</h2>
+            <p className="mt-2 text-gray-700 dark:text-gray-300">
+              Swapping {sendAmount} {sendCurrency.name} → {receiveAmount}{" "}
+              {receiveCurrency.name}
+            </p>
+            <button
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              onClick={() => setShowModal(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

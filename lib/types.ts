@@ -1,19 +1,22 @@
-export interface Currency {
+export type Currency = {
+  id: string;
   name: string;
+  symbol: string;
   logo: string;
-  rate: number;
-  symbol?: string;
-  type?: "crypto" | "fiat";
-}
+  rate?: number;
+  coingeckoId: string   
+  type: "crypto" | "fiat";
+};
+
 
 export interface SwapFormProps {
   sendAmount: string;
   setSendAmount: (value: string) => void;
-  sendCurrency: Currency;
+  sendCurrency: Currency | null;
   setSendCurrency: (currency: Currency) => void;
   receiveAmount: string;
   setReceiveAmount: (value: string) => void;
-  receiveCurrency: Currency;
+  receiveCurrency: Currency | null;
   setReceiveCurrency: (currency: Currency) => void;
   setShowModal: (value: boolean) => void;
   tab: string;
