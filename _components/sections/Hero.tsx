@@ -26,6 +26,7 @@ export default function Hero() {
     id: "",
     symbol: "",
     type: 'crypto',
+    coingeckoId: ""
   });
   const [showModal, setShowModal] = useState(false);
 

@@ -61,6 +61,7 @@ const SwapForm: React.FC<{
       const sendValue = Number.parseFloat(sendAmount) || 0;
       const converted = sendValue * rate;
       setReceiveAmount(converted.toFixed(4));
+      
     } else {
       setReceiveAmount("0");
     }
